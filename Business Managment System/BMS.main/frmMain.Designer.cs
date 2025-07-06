@@ -64,10 +64,10 @@
             الحساباتToolStripMenuItem = new ToolStripMenuItem();
             SettingstoolStripMenuItem = new ToolStripMenuItem();
             msMain = new MenuStrip();
-            pnlMenu = new Panel();
-            pnlContainer = new Panel();
             HelptoolstripMenuItem = new ToolStripMenuItem();
             AbouttoolStripMenuItem = new ToolStripMenuItem();
+            pnlMenu = new Panel();
+            pnlContainer = new Panel();
             msMain.SuspendLayout();
             pnlMenu.SuspendLayout();
             SuspendLayout();
@@ -86,6 +86,7 @@
             EmployeesToolStripMenuItem.Text = "الموظفين  ";
             EmployeesToolStripMenuItem.TextImageRelation = TextImageRelation.ImageAboveText;
             EmployeesToolStripMenuItem.ToolTipText = "ادارة الموظفين";
+           
             // 
             // EmployeesSettingstoolStripMenuItem
             // 
@@ -433,6 +434,28 @@
             msMain.TabIndex = 0;
             msMain.TabStop = true;
             // 
+            // HelptoolstripMenuItem
+            // 
+            HelptoolstripMenuItem.Font = new Font("Tahoma", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            HelptoolstripMenuItem.Image = Properties.Resources.help__1_;
+            HelptoolstripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
+            HelptoolstripMenuItem.Name = "HelptoolstripMenuItem";
+            HelptoolstripMenuItem.Size = new Size(141, 109);
+            HelptoolstripMenuItem.Text = "المساعدة ";
+            HelptoolstripMenuItem.TextImageRelation = TextImageRelation.ImageAboveText;
+            HelptoolstripMenuItem.ToolTipText = "الدروس التعليمية";
+            // 
+            // AbouttoolStripMenuItem
+            // 
+            AbouttoolStripMenuItem.Font = new Font("Tahoma", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            AbouttoolStripMenuItem.Image = Properties.Resources.info;
+            AbouttoolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
+            AbouttoolStripMenuItem.Name = "AbouttoolStripMenuItem";
+            AbouttoolStripMenuItem.Size = new Size(76, 109);
+            AbouttoolStripMenuItem.Text = "حول";
+            AbouttoolStripMenuItem.TextImageRelation = TextImageRelation.ImageAboveText;
+            AbouttoolStripMenuItem.ToolTipText = "حول النظام و أخر التحديثات";
+            // 
             // pnlMenu
             // 
             pnlMenu.AutoScroll = true;
@@ -458,28 +481,6 @@
             pnlContainer.Size = new Size(1064, 551);
             pnlContainer.TabIndex = 3;
             // 
-            // HelptoolstripMenuItem
-            // 
-            HelptoolstripMenuItem.Font = new Font("Tahoma", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            HelptoolstripMenuItem.Image = Properties.Resources.help__1_;
-            HelptoolstripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
-            HelptoolstripMenuItem.Name = "HelptoolstripMenuItem";
-            HelptoolstripMenuItem.Size = new Size(141, 109);
-            HelptoolstripMenuItem.Text = "المساعدة ";
-            HelptoolstripMenuItem.TextImageRelation = TextImageRelation.ImageAboveText;
-            HelptoolstripMenuItem.ToolTipText = "الدروس التعليمية";
-            // 
-            // AbouttoolStripMenuItem
-            // 
-            AbouttoolStripMenuItem.Font = new Font("Tahoma", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            AbouttoolStripMenuItem.Image = Properties.Resources.info;
-            AbouttoolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
-            AbouttoolStripMenuItem.Name = "AbouttoolStripMenuItem";
-            AbouttoolStripMenuItem.Size = new Size(76, 109);
-            AbouttoolStripMenuItem.Text = "حول";
-            AbouttoolStripMenuItem.TextImageRelation = TextImageRelation.ImageAboveText;
-            AbouttoolStripMenuItem.ToolTipText = "حول النظام و أخر التحديثات";
-            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
@@ -501,7 +502,6 @@
             Text = "Adham Managment System";
             WindowState = FormWindowState.Maximized;
             FormClosing += frmMain_FormClosing;
-            Load += frmMain_Load;
             msMain.ResumeLayout(false);
             msMain.PerformLayout();
             pnlMenu.ResumeLayout(false);

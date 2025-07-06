@@ -1,4 +1,5 @@
 ﻿
+using BMS.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
+
     public interface ICryptoHelper
     {
         
@@ -20,13 +22,26 @@ namespace Utilities
 
     public class CryptoHelper : ICryptoHelper
     {
+
+        private readonly byte[] _key;
+        private readonly byte[] _iv;
+
+
+
+        public CryptoHelper()
+        {
+            _key = GetValidatedKey("AESKey");
+            _iv = GetValidatedKey("AESIV");
+        }
+
         /// <summary>
         /// using SHA256 to compute hash of a string
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public string ComputeHash(string input)
+
+        public  string ComputeHash(string input)
         {
             try
             {
@@ -41,7 +56,7 @@ namespace Utilities
             catch (Exception ex)
             {
                 Logger.LogError($"Error in ComputeHash: {ex.Message}", true);
-                throw new Exception("Error in ComputeHash", ex);
+                throw;
             }
         }
 
@@ -51,19 +66,17 @@ namespace Utilities
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+
         public string Encrypt(string input)
         {
-
-            byte[] Key = GetValidatedKey("AESkey");
-            byte[] IV = GetValidatedKey("AESIV");
 
             try
             {
 
                 using (Aes aes = Aes.Create())
                 {
-                    aes.Key = Key;
-                    aes.IV = IV;
+                    aes.Key = _key;
+                    aes.IV = _iv;
 
                     ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -83,7 +96,7 @@ namespace Utilities
             }catch (Exception ex)
             {
                 Logger.LogError($"Error in AesEncrypt: {ex.Message}", true);
-                throw new Exception("Error in AesEncrypt", ex);
+                throw;
             }
         }
 
@@ -94,6 +107,7 @@ namespace Utilities
         /// <param name="encryptedinput"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+
         public string Decrypt(string encryptedinput)
         {
             if (string.IsNullOrEmpty(encryptedinput))
@@ -103,8 +117,8 @@ namespace Utilities
 
 
 
-            byte[] Key = GetValidatedKey("AESkey");
-            byte[] IV = GetValidatedKey("AESIV");
+            byte[] Key = _key;
+            byte[] IV = _iv;
 
             try
             {

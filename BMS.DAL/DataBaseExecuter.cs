@@ -1,16 +1,25 @@
-﻿using System;
+﻿
+using DAL;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Utilities;
-using Microsoft.Data.SqlClient;
 
-public static class clsGlobalDatabase 
+public  class DataBaseExecuter : IStoredProcedureRunner
 {
 
 
-    private static readonly string _connectionString = ConfigReader.GetConnectionString();
+
+    private readonly ISqlConnectionFactory _connectionFactory;
+
+    public DataBaseExecuter(ISqlConnectionFactory connectionFactory)
+    {
+        _connectionFactory = connectionFactory;
+    }
 
 
 
@@ -23,41 +32,49 @@ public static class clsGlobalDatabase
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     /// <exception cref="SqlException"></exception>
-    public static async Task <DataTable> GetAllAsyncByStoredProcedure(string ProcedureName, SqlParameter[]? parameters = null)
+    public async Task<List<T>> GetAllBySPAsync<T>(string procedureName, SqlParameter[]? parameters = null) where T : new()
     {
-        using(SqlConnection connection = new SqlConnection(_connectionString))
+        var result = new List<T>();
+        using var conn = _connectionFactory.CreateConnection();
+        using var cmd = new SqlCommand(procedureName, conn)
         {
-            using (SqlCommand command = new SqlCommand(ProcedureName, connection))
+            CommandType = CommandType.StoredProcedure
+        };
+        AddParameters(cmd, parameters);
+
+        
+
+        try
+        {
+            await conn.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+            var props = typeof(T).GetProperties();
+
+            while (await reader.ReadAsync())
             {
-               
-                command.CommandType = CommandType.StoredProcedure;
-                AddParameters(command, parameters);
-
-
-
-                try
+                T item = new T();
+                foreach (var prop in props)
                 {
-                    await connection.OpenAsync();
-                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+
+                    if(!reader.HasColumn(prop.Name))
+                        continue;
+                    if (!reader.IsDBNull(reader.GetOrdinal(prop.Name)))
                     {
-                        DataTable results = new DataTable();
-                        results.Load(reader);
-                        return results;
+                        var value = reader[prop.Name];
+                        var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        prop.SetValue(item, Convert.ChangeType(value, targetType));
                     }
                 }
-                catch(SqlException ex)
-                {
-                    Logger.LogError($"Procedure: {ProcedureName}, Error: {ex.Message}", true);
-                    throw new Exception("An error occurred while processing your request. Please contact the administrator.", ex);
-                }
-                catch(Exception ex)
-                {
-                    Logger.LogError($"Procedure: {ProcedureName}, Error: {ex.Message}", true);
-                    throw new Exception("An error occurred while processing your request. Please contact the administrator.", ex);
-
-                }
+                result.Add(item);
             }
-        }     
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError($"[SP: {procedureName}] GetAll error: {ex.Message}", true);
+            throw;
+        }
     }
 
 
@@ -69,37 +86,38 @@ public static class clsGlobalDatabase
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     /// <exception cref="SqlException"></exception>
-    public static async Task<Dictionary<string,object>> GetSingleRecord(string ProcedureName, SqlParameter[]? parameters = null)
+    public  async Task<T> GetSingleRecordBySPAsync<T>(string ProcedureName, SqlParameter[]? parameters = null) where T : new()
     {
-        using (SqlConnection connection = new SqlConnection(_connectionString))
-        {
-            using (SqlCommand command = new SqlCommand(ProcedureName, connection))
+      
+            using var conn = _connectionFactory.CreateConnection();
+            using (SqlCommand command = new SqlCommand(ProcedureName, conn))
             {
-                
+
                 command.CommandType = CommandType.StoredProcedure;
                 AddParameters(command, parameters);
 
-                Dictionary<string, object?> RecordData = new Dictionary<string, object?>();
+                T item = new T();
+                var props = typeof(T).GetProperties();
 
 
                 try
                 {
-                    await connection.OpenAsync();
+                    await conn.OpenAsync();
                     using (SqlDataReader reader = await command.ExecuteReaderAsync())
                     {
                         if (reader.Read())
                         {
-                            for (int i = 0; i < reader.FieldCount; i++)
+                            foreach(var prop in props)
                             {
-                                string ColumnName = reader.GetName(i);
+                                object value = reader[prop.Name];
 
-                                object? value = reader.IsDBNull(i) ? null : reader.GetValue(i);
-                                RecordData[ColumnName] = value ;
+                                if (value != DBNull.Value)
+                                    prop.SetValue(item, Convert.ChangeType(value, prop.PropertyType));
                             }
 
                         }
                     }
-                    return RecordData;
+                    return item;
                 }
                 catch (SqlException ex)
                 {
@@ -114,7 +132,8 @@ public static class clsGlobalDatabase
 
                 }
             }
-        }
+        
+        
     }
 
 
@@ -129,11 +148,10 @@ public static class clsGlobalDatabase
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     /// <exception cref="SqlException"></exception>
-    public static  async Task<int> ExecuteNonQueryAsync(string procedureName, SqlParameter[]? parameters = null)
+    public async Task<int> ExecuteNonQueryAsync(string procedureName, SqlParameter[]? parameters = null)
     {
-        using (SqlConnection conn = new SqlConnection(_connectionString))
-        {
-            using (SqlCommand cmd = new SqlCommand(procedureName, conn))
+        using var conn = _connectionFactory.CreateConnection();
+        using (SqlCommand cmd = new SqlCommand(procedureName, conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 AddParameters(cmd, parameters);
@@ -158,11 +176,45 @@ public static class clsGlobalDatabase
 
                 }
             }
+       
+    }
+
+    public async Task<int> GetNumberOfActiveRecordsAsync(string procedureName, SqlParameter[]? parameters = null)
+    {
+        int Result =0;
+        using var conn = _connectionFactory.CreateConnection();
+        using (SqlCommand cmd = new SqlCommand(procedureName, conn))
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+            AddParameters(cmd, parameters);
+            try
+            {
+                await conn.OpenAsync();
+                if(cmd.ExecuteScalar() is int count)
+                {
+                    Result = count;
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                Logger.LogError($"Procedure: {procedureName}, Error: {ex.Message}", true);
+                throw new Exception("An error occurred while processing your request. Please contact the administrator.", ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Procedure: {procedureName}, Error: {ex.Message}", true);
+                throw new Exception("An error occurred while processing your request. Please contact the administrator.", ex);
+            }
+           
         }
+
+        return Result;
     }
 
 
- 
+
+
     private static void AddParameters(SqlCommand cmd, SqlParameter[]? parameters = null)
     {
         if (parameters != null && parameters.Length > 0)
@@ -188,7 +240,6 @@ public static class clsGlobalDatabase
 
 
 }
-
 
 
 

@@ -45,7 +45,7 @@ namespace BMS
         {
             if(string.IsNullOrEmpty(txtDepartment.Text))
             {
-                e.Cancel = true;
+                //e.Cancel = true;
                 ep.SetError(txtDepartment, "يجب إدخال أسم القسم");
             }else
                 ep.SetError(txtDepartment, null);

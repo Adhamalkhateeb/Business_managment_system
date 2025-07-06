@@ -47,7 +47,7 @@ namespace DAL
         /// </summary>
         /// <returns>Data Table Filled with Departments Records </returns>
         public static async Task<DataTable> GetAllDepartmentsAsync(int? PageNumber,int? Records,string? FilterColumn,string? FilterValue) =>
-            await clsGlobalDatabase.GetAllAsyncByStoredProcedure("sp_GetAll_Departments", new SqlParameter[] 
+            await clsGlobalDatabase.GetAllAsyncByStoredProcedure("SP_GetAllDepartments", new SqlParameter[] 
             {
             new SqlParameter("@PageNumber",PageNumber),
             new SqlParameter("@Records",Records),
@@ -65,14 +65,15 @@ namespace DAL
         /// <returns>Success or Fail of Deleting Record</returns>
         public static async Task<bool> DeleteDepartmentAsync(int departmentID, int? UserID)
         {
-            if (await clsGlobalDatabase.ExecuteNonQueryAsync("CheckDepartmentDependencies", new SqlParameter[] { new SqlParameter("@DepartmentID", departmentID) }) != 1)
-             return await clsGlobalDatabase.ExecuteNonQueryAsync("sp_Delete_Department", new SqlParameter[]
+            if (await clsGlobalDatabase.ExecuteNonQueryAsync("CheckDepartmentDependencies", new SqlParameter[] { new SqlParameter("@DepartmentID", departmentID) }) != -1)
+             return await clsGlobalDatabase.ExecuteNonQueryAsync("SP_DeleteDepartment", new SqlParameter[]
              { 
                  new SqlParameter("@DepartmentID", departmentID),
                  new SqlParameter("@UpdatedBy", UserID)
              }) != -1;
             else
                 return false;
+        
         }
 
 
@@ -82,7 +83,7 @@ namespace DAL
         /// <param name="departmentID"></param>
         /// <returns>Dictionary<string ,object> contains Record data</returns>
         public static async Task<Dictionary<string, object>> GetDepartmentByIDAsync(int departmentID) =>
-             await clsGlobalDatabase.GetSingleRecord("sp_Get_Department", new SqlParameter[]
+             await clsGlobalDatabase.GetSingleRecord("SP_GetDepartmentByID", new SqlParameter[]
              {
                  new SqlParameter("@DepartmentID",departmentID)
              });
@@ -95,7 +96,7 @@ namespace DAL
         /// <param name="DepartmentName"></param>
         /// <returns> Dictionary<string ,object> contains Record data </returns>
         public static async Task<Dictionary<string, object>> GetDepartmentByNameAsync(string DepartmentName) =>
-              await clsGlobalDatabase.GetSingleRecord("sp_Get_Department_ByName", new SqlParameter[]
+              await clsGlobalDatabase.GetSingleRecord("SP_GetDepartmentByName", new SqlParameter[]
               {
                  new SqlParameter("@DepartmentName",DepartmentName)
               });

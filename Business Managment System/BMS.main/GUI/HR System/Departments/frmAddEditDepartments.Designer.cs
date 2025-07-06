@@ -28,162 +28,183 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblDepartmentID = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtDepartment = new System.Windows.Forms.TextBox();
-            this.ep = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtDescription = new System.Windows.Forms.TextBox();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.ep)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            label1 = new Label();
+            lblDepartmentID = new Label();
+            label3 = new Label();
+            txtDepartment = new TextBox();
+            ep = new ErrorProvider(components);
+            lblTitle = new Label();
+            label2 = new Label();
+            txtDescription = new TextBox();
+            btnSave = new Button();
+            btnClose = new Button();
+            btnNew = new Button();
+            ((System.ComponentModel.ISupportInitialize)ep).BeginInit();
+            SuspendLayout();
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(390, 84);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(127, 23);
-            this.label1.TabIndex = 2;
-            this.label1.Text = " رقم القسم :";
+            label1.AutoSize = true;
+            label1.Font = new Font("Tahoma", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(390, 84);
+            label1.Margin = new Padding(2, 0, 2, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(127, 23);
+            label1.TabIndex = 2;
+            label1.Text = " رقم القسم :";
             // 
             // lblDepartmentID
             // 
-            this.lblDepartmentID.AutoSize = true;
-            this.lblDepartmentID.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDepartmentID.Location = new System.Drawing.Point(303, 84);
-            this.lblDepartmentID.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblDepartmentID.Name = "lblDepartmentID";
-            this.lblDepartmentID.Size = new System.Drawing.Size(68, 23);
-            this.lblDepartmentID.TabIndex = 3;
-            this.lblDepartmentID.Text = "تلقائي";
+            lblDepartmentID.AutoSize = true;
+            lblDepartmentID.Font = new Font("Tahoma", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDepartmentID.Location = new Point(303, 84);
+            lblDepartmentID.Margin = new Padding(2, 0, 2, 0);
+            lblDepartmentID.Name = "lblDepartmentID";
+            lblDepartmentID.Size = new Size(68, 23);
+            lblDepartmentID.TabIndex = 3;
+            lblDepartmentID.Text = "تلقائي";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(383, 133);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(135, 23);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "اسم القسم : ";
+            label3.AutoSize = true;
+            label3.Font = new Font("Tahoma", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(383, 133);
+            label3.Margin = new Padding(2, 0, 2, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(135, 23);
+            label3.TabIndex = 4;
+            label3.Text = "اسم القسم : ";
             // 
             // txtDepartment
             // 
-            this.txtDepartment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDepartment.Location = new System.Drawing.Point(29, 127);
-            this.txtDepartment.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.txtDepartment.Name = "txtDepartment";
-            this.txtDepartment.Size = new System.Drawing.Size(344, 30);
-            this.txtDepartment.TabIndex = 0;
-            this.txtDepartment.Validating += new System.ComponentModel.CancelEventHandler(this.txtDepartment_Validating);
+            txtDepartment.BorderStyle = BorderStyle.FixedSingle;
+            txtDepartment.Location = new Point(29, 127);
+            txtDepartment.Margin = new Padding(2);
+            txtDepartment.Name = "txtDepartment";
+            txtDepartment.Size = new Size(344, 30);
+            txtDepartment.TabIndex = 0;
+            txtDepartment.Validating += txtDepartment_Validating;
             // 
             // ep
             // 
-            this.ep.ContainerControl = this;
+            ep.ContainerControl = this;
             // 
             // lblTitle
             // 
-            this.lblTitle.Font = new System.Drawing.Font("Tahoma", 28F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblTitle.Location = new System.Drawing.Point(62, 7);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(403, 46);
-            this.lblTitle.TabIndex = 6;
-            this.lblTitle.Text = "اضافة قسم";
-            this.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lblTitle.Click += new System.EventHandler(this.lblTitle_Click);
+            lblTitle.Font = new Font("Tahoma", 28F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.ForeColor = Color.DarkRed;
+            lblTitle.Location = new Point(62, 7);
+            lblTitle.Margin = new Padding(2, 0, 2, 0);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(403, 46);
+            lblTitle.TabIndex = 6;
+            lblTitle.Text = "اضافة قسم";
+            lblTitle.TextAlign = ContentAlignment.TopCenter;
+            lblTitle.Click += lblTitle_Click;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(390, 183);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 23);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "الوصف  :";
+            label2.AutoSize = true;
+            label2.Font = new Font("Tahoma", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(390, 183);
+            label2.Margin = new Padding(2, 0, 2, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(90, 23);
+            label2.TabIndex = 7;
+            label2.Text = "الوصف  :";
             // 
             // txtDescription
             // 
-            this.txtDescription.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDescription.Location = new System.Drawing.Point(29, 183);
-            this.txtDescription.Margin = new System.Windows.Forms.Padding(2);
-            this.txtDescription.Multiline = true;
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(344, 96);
-            this.txtDescription.TabIndex = 8;
+            txtDescription.BorderStyle = BorderStyle.FixedSingle;
+            txtDescription.Location = new Point(29, 183);
+            txtDescription.Margin = new Padding(2);
+            txtDescription.Multiline = true;
+            txtDescription.Name = "txtDescription";
+            txtDescription.Size = new Size(344, 96);
+            txtDescription.TabIndex = 8;
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Image = global::BMS.Properties.Resources.diskette;
-            this.btnSave.Location = new System.Drawing.Point(11, 304);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(104, 40);
-            this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "حفظ  ";
-            this.btnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            btnSave.BackColor = Color.WhiteSmoke;
+            btnSave.Cursor = Cursors.Hand;
+            btnSave.Font = new Font("Tahoma", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSave.Image = Properties.Resources.diskette;
+            btnSave.Location = new Point(11, 304);
+            btnSave.Margin = new Padding(2);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(104, 40);
+            btnSave.TabIndex = 1;
+            btnSave.Text = "حفظ  ";
+            btnSave.TextImageRelation = TextImageRelation.TextBeforeImage;
+            btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += btnSave_Click;
             // 
             // btnClose
             // 
-            this.btnClose.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Image = global::BMS.Properties.Resources.error;
-            this.btnClose.Location = new System.Drawing.Point(119, 304);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(104, 40);
-            this.btnClose.TabIndex = 2;
-            this.btnClose.Text = "إغلاق";
-            this.btnClose.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            btnClose.BackColor = Color.WhiteSmoke;
+            btnClose.Cursor = Cursors.Hand;
+            btnClose.DialogResult = DialogResult.Cancel;
+            btnClose.Font = new Font("Tahoma", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnClose.Image = Properties.Resources.error;
+            btnClose.Location = new Point(119, 304);
+            btnClose.Margin = new Padding(2);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(104, 40);
+            btnClose.TabIndex = 2;
+            btnClose.Text = "إغلاق";
+            btnClose.TextImageRelation = TextImageRelation.TextBeforeImage;
+            btnClose.UseVisualStyleBackColor = false;
+            btnClose.Click += btnClose_Click;
+            // 
+            // btnNew
+            // 
+            btnNew.BackColor = Color.WhiteSmoke;
+            btnNew.CausesValidation = false;
+            btnNew.Cursor = Cursors.Hand;
+            btnNew.Font = new Font("Tahoma", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNew.Image = Properties.Resources.add__3_;
+            btnNew.ImageAlign = ContentAlignment.MiddleLeft;
+            btnNew.Location = new Point(412, 304);
+            btnNew.Margin = new Padding(2);
+            btnNew.Name = "btnNew";
+            btnNew.Size = new Size(104, 45);
+            btnNew.TabIndex = 9;
+            btnNew.Text = "جديد";
+            btnNew.TextImageRelation = TextImageRelation.TextBeforeImage;
+            btnNew.UseVisualStyleBackColor = true;
+            btnNew.Visible = false;
+            btnNew.Click += btnNew_Click;
             // 
             // frmAddEditDepartments
             // 
-            this.AcceptButton = this.btnSave;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(527, 355);
-            this.Controls.Add(this.txtDescription);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtDepartment);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.lblDepartmentID);
-            this.Controls.Add(this.label1);
-            this.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "frmAddEditDepartments";
-            this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmAddEditDepartments";
-            this.Load += new System.EventHandler(this.frmAddEditDepartments_Load_1);
-            ((System.ComponentModel.ISupportInitialize)(this.ep)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AcceptButton = btnSave;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            CancelButton = btnClose;
+            ClientSize = new Size(527, 355);
+            Controls.Add(btnNew);
+            Controls.Add(txtDescription);
+            Controls.Add(label2);
+            Controls.Add(lblTitle);
+            Controls.Add(btnClose);
+            Controls.Add(btnSave);
+            Controls.Add(txtDepartment);
+            Controls.Add(label3);
+            Controls.Add(lblDepartmentID);
+            Controls.Add(label1);
+            Font = new Font("Tahoma", 14F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Margin = new Padding(2);
+            Name = "frmAddEditDepartments";
+            RightToLeft = RightToLeft.Yes;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "frmAddEditDepartments";
+            Load += frmAddEditDepartments_Load_1;
+            ((System.ComponentModel.ISupportInitialize)ep).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -198,5 +219,6 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.Label label2;
+        private Button btnNew;
     }
 }

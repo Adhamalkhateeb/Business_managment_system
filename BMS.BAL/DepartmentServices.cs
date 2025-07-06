@@ -7,25 +7,25 @@ using DAL;
 
 namespace BAL
 {
-    public class DepartmentService :IDepartmentService
+    public class DepartmentService : IDepartmentService
     {
- 
+
 
         private readonly IDepartmentRepository _departmentRepository;
 
 
         public DepartmentService(IDepartmentRepository repo)
         {
-              _departmentRepository = repo;
+            _departmentRepository = repo;
         }
 
         /// <summary>
         /// Get part of Departments Asyncronusly by page number and rows count
         /// </summary>
         /// <returns> List filled with Departments/returns>
-        public async Task<List<Department>> GetAllDepartmentsAsync(int? page, int? rowCount, string? column = null, string? value = null) 
+        public async Task<List<Departments>> GetAllDepartmentsAsync(int? page, int? rowCount, string? column = null, string? value = null)
         {
-            return await _departmentRepository.GetAllDepartmentsAsync<Department>(page, rowCount, column, value);
+            return await _departmentRepository.GetAllDepartmentsAsync<Departments>(page, rowCount, column, value);
         }
 
 
@@ -34,26 +34,26 @@ namespace BAL
         /// </summary>
         /// <param name="departmentID"></param>
         /// <returns></returns>
-         public async Task<Department> GetDepartmentAsync(int departmentID)
-         {
-                Department result = await _departmentRepository.GetDepartmentByIDAsync<Department>(departmentID);
-                return result;
-
-         }
-
-
-
-          /// <summary>
-          /// Get Department By Name Asyncronusly
-          /// </summary>
-          /// <param name="DepartmentName"></param>
-          /// <returns></returns>
-          public async Task<Department> GetDepartment(string DepartmentName)
-          {
-              Department result = await _departmentRepository.GetDepartmentByNameAsync<Department>(DepartmentName);
+        public async Task<Departments> GetDepartmentAsync(int departmentID)
+        {
+            Departments result = await _departmentRepository.GetDepartmentByIDAsync<Departments>(departmentID);
             return result;
 
-          }
+        }
+
+
+
+        /// <summary>
+        /// Get Department By Name Asyncronusly
+        /// </summary>
+        /// <param name="DepartmentName"></param>
+        /// <returns></returns>
+        public async Task<Departments> GetDepartment(string DepartmentName)
+        {
+            Departments result = await _departmentRepository.GetDepartmentByNameAsync<Departments>(DepartmentName);
+            return result;
+
+        }
 
 
 
@@ -61,17 +61,17 @@ namespace BAL
         /// Save new department or update existing one depending on mode
         /// </summary>
         /// <returns>bool</returns>
-        public async Task<bool> SaveAsync(Department department)
+        public async Task<bool> SaveAsync(Departments department)
         {
             if (department.ID == -1)
             {
-                var newId = await _departmentRepository.AddDepartmentAsync(department.Name,department.Description,department.CreatedByUserID);
+                var newId = await _departmentRepository.AddDepartmentAsync(department.Name, department.Description, department.CreatedByUserID);
                 department.ID = newId;
                 return newId != -1;
             }
             else
             {
-                return await _departmentRepository.UpdateDepartmentAsync(department.ID,department.Description,department.Name,department.UpdatedByUserID);
+                return await _departmentRepository.UpdateDepartmentAsync(department.ID, department.Description, department.Name, department.UpdatedByUserID);
             }
         }
 
@@ -84,11 +84,17 @@ namespace BAL
         public async Task<bool> DeleteDepartmentAsync(int id, int? modifiedBy)
         {
 
-                return await _departmentRepository.DeleteDepartmentAsync(id,modifiedBy);
+            return await _departmentRepository.DeleteDepartmentAsync(id, modifiedBy);
         }
-          
+
+
+        public async Task<int> GetNumberOfDepartmentsAsync(string TableName)
+        {
+            return await _departmentRepository.GetNumberOfDepartmentsRecordsAsync(TableName);
+
         }
     }
+}
 
 
 

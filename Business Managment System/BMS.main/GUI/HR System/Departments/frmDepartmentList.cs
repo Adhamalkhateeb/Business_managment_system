@@ -1,43 +1,46 @@
 ﻿using System.Data;
+using System.Threading.Tasks;
 using BAL;
 
 namespace BMS
 {
     public partial class frmDepartmentList : Form
     {
-        private DataTable _dtAllDepartments;
-        private int NumOfRecords = -1;
+        private List<Departments> _dtAllDepartments;
+        private readonly IDepartmentService _departmentService;
         private int _PageNumber = 1;
         private int _PageSize = 8;
 
-        public frmDepartmentList()
+
+
+        public  frmDepartmentList(IDepartmentService departmentService)
         {
             InitializeComponent();
-
+            _departmentService = departmentService;
+           
         }
 
 
-        private async void frmDepartments_Load(object sender, EventArgs e)
+        private async Task LoadDepartmentsAsync()
         {
-
             btnBack.Enabled = _PageNumber > 1;
-
-
 
             clsglobalSettings.AdjustGridDesign(dgvDepartments);
 
-            _dtAllDepartments = await Task.Run(() => Department.GetAllDepartments(_PageNumber, _PageSize));
+            _dtAllDepartments = await _departmentService.GetAllDepartmentsAsync(_PageNumber, _PageSize);
             dgvDepartments.DataSource = _dtAllDepartments;
-            cbFilter.SelectedIndex = 0;
+
+            foreach (DataGridViewColumn col in dgvDepartments.Columns)
+            {
+                if (col.Name != "ID" && col.Name != "Name" && col.Name != "Description" && col.Name != "LastUpdatedDate")
+                    col.Visible = false;
+            }
 
 
-            NumOfRecords = dgvDepartments.Rows.Count;
-            lblCount.Text = NumOfRecords.ToString();
-
+            lblCount.Text = dgvDepartments.Rows.Count.ToString();
 
             if (dgvDepartments.Rows.Count > 0)
             {
-
                 cbFilter.Visible = true;
 
                 dgvDepartments.Columns[0].HeaderText = "رقم المسلسل";
@@ -47,30 +50,33 @@ namespace BMS
                 dgvDepartments.Columns[1].Width = 190;
 
                 dgvDepartments.Columns[2].HeaderText = "وصف القسم";
-                dgvDepartments.Columns[2].Width = 300;
+                dgvDepartments.Columns[2].Width = 250;
 
-                dgvDepartments.Columns[3].HeaderText = "تاريخ التعديل";
-                dgvDepartments.Columns[3].Width = 165;
+                dgvDepartments.Columns[6].HeaderText = "تاريخ التعديل";
+                dgvDepartments.Columns[6].Width = 215;
             }
 
-            btnForward.Enabled = (dgvDepartments.Rows.Count == 8);
+            btnForward.Enabled = (await _departmentService.GetNumberOfDepartmentsAsync(nameof(Departments)) > _PageSize * _PageNumber);
+        }
+
+        private void frmDepartments_Load(object sender, EventArgs e)
+        {
+
+            cbFilter.SelectedIndex = 0;
+
         }
 
 
 
-        private void cbFilter_SelectedIndexChanged(object sender, EventArgs e)
+        private async void cbFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            btnSearch.Enabled = btnSearch.Visible  = txtFilter.Visible = cbFilter.Text != "الكل";
+            btnSearch.Enabled = btnSearch.Visible = txtFilter.Visible = cbFilter.Text != "الكل";
 
             if (txtFilter.Visible)
-                { txtFilter.Focus();  txtFilter.Text = ""; }
+            { txtFilter.Focus(); txtFilter.Text = ""; }
             else
-                frmDepartments_Load(null, null);
-                
-           
-
-
+               { await LoadDepartmentsAsync(); _PageNumber = 1; }
 
         }
 
@@ -82,44 +88,46 @@ namespace BMS
                 e.Handled = !char.IsDigit(e.KeyChar) && !(e.KeyChar == (char)Keys.Back);
         }
 
-        
 
 
 
 
-        private void btnAdd_Click(object sender, EventArgs e)
+
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
-            frmAddEditDepartments frm = new frmAddEditDepartments();
+            using var frm = new frmAddEditDepartments(_departmentService);
             frm.ShowDialog();
 
             // Refresh the grid with latest data after adding or editing a department
-            frmDepartments_Load(null, null);
+            await LoadDepartmentsAsync();
         }
 
-        private void AddDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void AddDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmAddEditDepartments frm = new frmAddEditDepartments();
+            using var frm = new frmAddEditDepartments(_departmentService);
             frm.ShowDialog();
-            frmDepartments_Load(null, null);
+            await LoadDepartmentsAsync();
         }
 
-        private void UpdateDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void UpdateDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmAddEditDepartments frm = new frmAddEditDepartments(Convert.ToInt32(dgvDepartments.CurrentRow.Cells[0].Value));
+            int id = Convert.ToInt32(dgvDepartments.CurrentRow.Cells[0].Value);
+            using var frm = new frmAddEditDepartments(id,_departmentService);
             frm.ShowDialog();
-            frmDepartments_Load(null, null);
+            await LoadDepartmentsAsync();
+
         }
 
         private async void DeleteDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("هل انت متأكد انك تريد حذف القسم", "حذف القسم", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
-            Department _Department = await Department.GetDepartment((int)(dgvDepartments.CurrentRow.Cells[0].Value));
+            Departments Department = await _departmentService.GetDepartmentAsync((int)(dgvDepartments.CurrentRow.Cells[0].Value));
 
-            if (_Department != null && await _Department.DeleteDepartment())
+            if (Department != null && await _departmentService.DeleteDepartmentAsync(Department.ID,Department.UpdatedByUserID))
             {
                 MessageBox.Show("تم حذف القسم بنجاح", "حذف القسم", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                frmDepartments_Load(null, null);
+                await LoadDepartmentsAsync();
             }
             else
             {
@@ -133,29 +141,28 @@ namespace BMS
             this.Hide();
         }
 
-        private void ShwoDepartmentDetailsToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void ShwoDepartmentDetailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            frmDepartmentDetails frmDepartmentDetails = new frmDepartmentDetails(Convert.ToInt32(dgvDepartments.CurrentRow.Cells[0].Value));
+            using var frmDepartmentDetails = new frmDepartmentDetails(Convert.ToInt32(dgvDepartments.CurrentRow.Cells[0].Value));
             frmDepartmentDetails.ShowDialog();
 
+            await LoadDepartmentsAsync();
 
-            frmDepartments_Load(null, null);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void buttonForward_Click(object sender, EventArgs e)
         {
-            
             _PageNumber++;
-            frmDepartments_Load(null, null);
+            await LoadDepartmentsAsync();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void buttonBack_Click(object sender, EventArgs e)
         {
             if (_PageNumber > 1)
             {
                 _PageNumber--;
 
-                frmDepartments_Load(null, null);
+                await LoadDepartmentsAsync();
 
             }
 
@@ -173,31 +180,31 @@ namespace BMS
 
             string filterColumn = cbFilter.Text switch
             {
-                "رقم المسلسل" => "DepartmentID",
-                "اسم القسم" => "DepartmentName",
+                "رقم المسلسل" => "ID",
+                "اسم القسم" => "Name",
                 _ => string.Empty
             };
 
             if (string.IsNullOrEmpty(filterColumn) || string.IsNullOrWhiteSpace(txtFilter.Text))
             {
                 _PageNumber = 1; // Reset to first page
-                frmDepartments_Load(null, null);
+                await LoadDepartmentsAsync();
                 return;
             }
 
 
 
-            string filterValue = filterColumn == "DepartmentID" ? txtFilter.Text.Trim() : $"%{txtFilter.Text.Trim()}%";
+            string filterValue = filterColumn == "ID" ? txtFilter.Text.Trim() : $"%{txtFilter.Text.Trim()}%";
 
-            _PageNumber = 1; 
-            _dtAllDepartments = await Department.GetAllDepartments(_PageNumber, _PageSize, filterColumn, filterValue);
+            _PageNumber = 1;
+            _dtAllDepartments = await _departmentService.GetAllDepartmentsAsync(_PageNumber, _PageSize, filterColumn, filterValue);
             dgvDepartments.DataSource = _dtAllDepartments;
-
-            NumOfRecords = dgvDepartments.Rows.Count;
-            lblCount.Text = NumOfRecords.ToString();
+            lblCount.Text = dgvDepartments.Rows.Count.ToString();
 
 
-          
+
         }
+
+       
     }
 }

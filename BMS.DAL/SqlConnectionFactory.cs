@@ -9,7 +9,7 @@ using Utilities;
 
 namespace DAL
 {
-    internal class SqlConnectionFactory :ISqlConnectionFactory
+    public class SqlConnectionFactory :ISqlConnectionFactory
     {
         private readonly string _connectionString;
         public string ConnectionString => _connectionString;

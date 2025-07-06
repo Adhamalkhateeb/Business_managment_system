@@ -10,10 +10,11 @@ namespace BAL
 
         public interface IDepartmentService
         {
-            Task<List<Department>> GetAllDepartmentsAsync(int? page, int? rowCount, string? column = null, string? value = null);
-            Task<Department> GetDepartmentAsync(int id);
-            Task<bool> SaveAsync(Department dept);
+            Task<List<Departments>> GetAllDepartmentsAsync(int? page, int? rowCount, string? column = null, string? value = null);
+            Task<Departments> GetDepartmentAsync(int id);
+            Task<bool> SaveAsync(Departments dept);
             Task<bool> DeleteDepartmentAsync(int id, int? modifiedBy);
+            Task<int> GetNumberOfDepartmentsAsync(string TableName);
         }
    
 }

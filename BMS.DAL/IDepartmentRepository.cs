@@ -14,5 +14,6 @@ namespace DAL
         Task<bool> DeleteDepartmentAsync(int departmentID, int? UserID);
         Task<T> GetDepartmentByIDAsync<T>(int departmentID) where T : new();
         Task<T> GetDepartmentByNameAsync<T>(string DepartmentName) where T : new();
+        Task<int> GetNumberOfDepartmentsRecordsAsync(string TableName);
     }
 }

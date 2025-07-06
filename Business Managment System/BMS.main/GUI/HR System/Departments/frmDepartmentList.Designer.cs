@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             cmsDepartments = new ContextMenuStrip(components);
             ShwoDepartmentDetailsToolStripMenuItem = new ToolStripMenuItem();
             AddDepartmentToolStripMenuItem = new ToolStripMenuItem();
-            حذفالقسمToolStripMenuItem = new ToolStripMenuItem();
+            ToolStripMenuItem = new ToolStripMenuItem();
             UpdateDepartmentToolStripMenuItem = new ToolStripMenuItem();
             dgvDepartments = new DataGridView();
             label1 = new Label();
@@ -62,7 +62,7 @@
             // 
             cmsDepartments.Font = new Font("Segoe UI", 9F);
             cmsDepartments.ImageScalingSize = new Size(20, 20);
-            cmsDepartments.Items.AddRange(new ToolStripItem[] { ShwoDepartmentDetailsToolStripMenuItem, AddDepartmentToolStripMenuItem, حذفالقسمToolStripMenuItem, UpdateDepartmentToolStripMenuItem });
+            cmsDepartments.Items.AddRange(new ToolStripItem[] { ShwoDepartmentDetailsToolStripMenuItem, AddDepartmentToolStripMenuItem, ToolStripMenuItem, UpdateDepartmentToolStripMenuItem });
             cmsDepartments.Name = "cmsDepartments";
             cmsDepartments.RightToLeft = RightToLeft.Yes;
             cmsDepartments.Size = new Size(211, 156);
@@ -87,15 +87,15 @@
             AddDepartmentToolStripMenuItem.Text = "اضافة قسم";
             AddDepartmentToolStripMenuItem.Click += AddDepartmentToolStripMenuItem_Click;
             // 
-            // حذفالقسمToolStripMenuItem
+            // ToolStripMenuItem
             // 
-            حذفالقسمToolStripMenuItem.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            حذفالقسمToolStripMenuItem.Image = Properties.Resources.delete__1_;
-            حذفالقسمToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
-            حذفالقسمToolStripMenuItem.Name = "حذفالقسمToolStripMenuItem";
-            حذفالقسمToolStripMenuItem.Size = new Size(210, 38);
-            حذفالقسمToolStripMenuItem.Text = "حذف القسم";
-            حذفالقسمToolStripMenuItem.Click += DeleteDepartmentToolStripMenuItem_Click;
+            ToolStripMenuItem.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            ToolStripMenuItem.Image = Properties.Resources.delete__1_;
+            ToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
+            ToolStripMenuItem.Name = "ToolStripMenuItem";
+            ToolStripMenuItem.Size = new Size(210, 38);
+            ToolStripMenuItem.Text = "حذف القسم";
+            ToolStripMenuItem.Click += DeleteDepartmentToolStripMenuItem_Click;
             // 
             // UpdateDepartmentToolStripMenuItem
             // 
@@ -114,41 +114,41 @@
             dgvDepartments.AllowUserToOrderColumns = true;
             dgvDepartments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvDepartments.BackgroundColor = SystemColors.ButtonHighlight;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvDepartments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvDepartments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvDepartments.ColumnHeadersHeight = 20;
             dgvDepartments.ContextMenuStrip = cmsDepartments;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle6.BackColor = SystemColors.Window;
-            dataGridViewCellStyle6.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvDepartments.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvDepartments.DefaultCellStyle = dataGridViewCellStyle2;
             dgvDepartments.Location = new Point(10, 277);
             dgvDepartments.Margin = new Padding(2);
             dgvDepartments.Name = "dgvDepartments";
             dgvDepartments.ReadOnly = true;
             dgvDepartments.RightToLeft = RightToLeft.Yes;
             dgvDepartments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle7.BackColor = SystemColors.Control;
-            dataGridViewCellStyle7.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            dgvDepartments.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvDepartments.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvDepartments.RowHeadersWidth = 51;
-            dataGridViewCellStyle8.Font = new Font("Arial", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dgvDepartments.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Font = new Font("Arial", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dgvDepartments.RowsDefaultCellStyle = dataGridViewCellStyle4;
             dgvDepartments.RowTemplate.Height = 40;
             dgvDepartments.Size = new Size(830, 375);
             dgvDepartments.TabIndex = 0;
@@ -282,7 +282,7 @@
             btnForward.Text = "التالي";
             btnForward.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnForward.UseVisualStyleBackColor = false;
-            btnForward.Click += button2_Click;
+            btnForward.Click += buttonForward_Click;
             // 
             // btnBack
             // 
@@ -299,7 +299,7 @@
             btnBack.Text = "السابق";
             btnBack.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnBack.UseVisualStyleBackColor = false;
-            btnBack.Click += button1_Click;
+            btnBack.Click += buttonBack_Click;
             // 
             // pictureBox1
             // 
@@ -371,7 +371,7 @@
         #endregion
         private System.Windows.Forms.ContextMenuStrip cmsDepartments;
         private System.Windows.Forms.ToolStripMenuItem AddDepartmentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem حذفالقسمToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateDepartmentToolStripMenuItem;
         private System.Windows.Forms.DataGridView dgvDepartments;
         private System.Windows.Forms.Button btnAdd;

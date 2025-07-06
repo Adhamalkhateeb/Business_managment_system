@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BMS.BAL\BMS.BAL.csproj" />
+    <ProjectReference Include="..\..\BMS.DAL\BMS.DAL.csproj" />
     <ProjectReference Include="..\..\BMS.Utilities\BMS.Utilities.csproj" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Utilities
 {
 
-
+ 
     // Department stored procedures enum
     public enum SPDept
     {
@@ -38,7 +38,7 @@ namespace Utilities
                  { SPDept.DeleteDepartment,"SP_DeleteDepartment"},
                  { SPDept.GetDepartmentByName,"SP_GetDepartmentByName"},
                  { SPDept.GetDepartmentByID,"SP_GetDepartmentByID"},
-                 {SPDept.GetNumberOfDepartmentsRecords, "SP_GetNumberOfDepartmentsRecords" }
+                 {SPDept.GetNumberOfDepartmentsRecords, "SP_GetNumberOfActiveRecords" }
              }
 
 

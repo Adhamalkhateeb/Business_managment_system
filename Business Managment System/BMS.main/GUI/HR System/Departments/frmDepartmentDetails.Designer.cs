@@ -1,4 +1,6 @@
-﻿namespace BMS
+﻿using BMS.main;
+
+namespace BMS
 {
     partial class frmDepartmentDetails
     {
@@ -30,7 +32,7 @@
         {
             label1 = new Label();
             btnClose = new Button();
-            ctrlDepartmenttInfo1 = new ctrlDepartmenttInfo();
+            ctrlDepartmenttInfo1 = new ctrlDepartmenttInfo(Program.DepartmentService);
             SuspendLayout();
             // 
             // label1

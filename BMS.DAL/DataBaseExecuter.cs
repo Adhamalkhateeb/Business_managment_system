@@ -55,9 +55,14 @@ public  class DataBaseExecuter : IStoredProcedureRunner
                 T item = new T();
                 foreach (var prop in props)
                 {
-                    if (reader.HasRows && !reader.IsDBNull(reader.GetOrdinal(prop.Name)))
+
+                    if(!reader.HasColumn(prop.Name))
+                        continue;
+                    if (!reader.IsDBNull(reader.GetOrdinal(prop.Name)))
                     {
-                        prop.SetValue(item, reader[prop.Name]);
+                        var value = reader[prop.Name];
+                        var targetType = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        prop.SetValue(item, Convert.ChangeType(value, targetType));
                     }
                 }
                 result.Add(item);
@@ -235,7 +240,6 @@ public  class DataBaseExecuter : IStoredProcedureRunner
 
 
 }
-
 
 
 

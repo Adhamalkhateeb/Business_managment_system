@@ -62,7 +62,7 @@ namespace BMS
             if (this.ValidateChildren())
             {
 
-                _Department.DepartmentName = txtDepartment.Text;
+                _Department.Name = txtDepartment.Text;
                 _Department.Description = string.IsNullOrEmpty(txtDescription.Text) ? null : txtDescription.Text;
                 if (_Mode == enMode.AddNew)
                 {
@@ -72,7 +72,7 @@ namespace BMS
                 }
                 else
                 {
-                    _Department.ModifiedByUserID = 1;
+                    _Department.UpdatedByUserID = 1;
                     // Here will be Active User ID
                   
                 }
@@ -83,7 +83,7 @@ namespace BMS
                     {
                         MessageBox.Show("تم الحفظ بنجاح", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        lblDepartmentID.Text = _Department.DepartmentID.ToString();
+                        lblDepartmentID.Text = _Department.ID.ToString();
                         btnClose.Focus();
                         this.Text = lblTitle.Text = "تعديل بيانات القسم";
                         this.btnSave.Text = "تعديل";
@@ -116,9 +116,9 @@ namespace BMS
 
                 if (_Department != null)
                 {
-                    lblDepartmentID.Text = _Department.DepartmentID.ToString();
+                    lblDepartmentID.Text = _Department.ID.ToString();
                     txtDescription.Text = _Department.Description ?? string.Empty;
-                    txtDepartment.Text = _Department.DepartmentName;
+                    txtDepartment.Text = _Department.Name;
                     txtDepartment.SelectAll();
                 }
                 else

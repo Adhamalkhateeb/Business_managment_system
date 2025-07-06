@@ -93,7 +93,7 @@ namespace BMS
 
                 if (_job.Department != null)
                 {
-                    cbDeaprtments.SelectedValue = _job.Department.DepartmentID;
+                    cbDeaprtments.SelectedValue = _job.Department.ID;
                 }
                 else
                 {

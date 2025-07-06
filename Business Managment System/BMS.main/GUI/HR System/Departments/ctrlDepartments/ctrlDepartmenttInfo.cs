@@ -46,12 +46,12 @@ namespace BMS
 
         private void _FillDepartmentInfo()
         {
-            lblDepartmentID.Text = _Department.DepartmentID.ToString();
-            lblDepartmentName.Text = _Department.DepartmentName;
-            lblCreationDate.Text = _Department.CreatedDate.ToString("tt hh:mm  dd/MM/yyyy ");
-            lblUpdateDate.Text = _Department.ModifiedDate?.ToString("tt hh:mm  dd/MM/yyyy ") ?? "-";
+            lblDepartmentID.Text = _Department.ID.ToString();
+            lblDepartmentName.Text = _Department.Name;
+            lblCreationDate.Text = _Department.CreationDate.ToString("tt hh:mm  dd/MM/yyyy ");
+            lblUpdateDate.Text = _Department.LastUpdatedDate?.ToString("tt hh:mm  dd/MM/yyyy ") ?? "-";
             lblMadeByUser.Text = _Department.CreatedByUserID.ToString();
-            lblUpdatedbyUser.Text = _Department.ModifiedByUserID?.ToString();
+            lblUpdatedbyUser.Text = _Department.UpdatedByUserID?.ToString();
 
             // Will put user Name later not ID
         }

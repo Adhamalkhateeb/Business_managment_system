@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BMS.BAL</name>
+    </assembly>
+    <members>
+        <member name="T:BAL.Departments">
+            <summary>
+            Represents a department entity with properties for ID, Name, Description, and other metadata.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.ID">
+            <summary>
+            Gets or sets the unique identifier for the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.Name">
+            <summary>
+            Gets or sets the name of the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.Description">
+            <summary>
+            Gets or sets the description of the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.CreatedByUserID">
+            <summary>
+            Gets or sets the ID of the user who created the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.CreationDate">
+            <summary>
+            Gets or sets the creation date of the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.UpdatedByUserID">
+            <summary>
+            Gets or sets the ID of the user who last updated the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.LastUpdatedDate">
+            <summary>
+            Gets or sets the last updated date of the department.
+            </summary>
+        </member>
+        <member name="P:BAL.Departments.IsActive">
+            <summary>
+            Gets or sets a value indicating whether the department is active.
+            </summary>
+        </member>
+        <member name="T:BAL.DepartmentService">
+            <summary>
+            Provides services for managing departments, including retrieval, creation, updating, and deletion.
+            </summary>
+        </member>
+        <member name="M:BAL.DepartmentService.#ctor(DAL.IDepartmentRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BAL.DepartmentService"/> class with the specified repository.
+            </summary>
+            <param name="repo">The repository used for department operations.</param>
+        </member>
+        <member name="M:BAL.DepartmentService.GetAllDepartmentsAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+            <summary>
+            Retrieves a paginated list of departments asynchronously.
+            </summary>
+            <param name="page">The page number to retrieve.</param>
+            <param name="rowCount">The number of rows per page.</param>
+            <param name="column">The column to filter by (optional).</param>
+            <param name="value">The value to filter by (optional).</param>
+            <returns>A list of departments.</returns>
+        </member>
+        <member name="M:BAL.DepartmentService.GetDepartmentAsync(System.Int32)">
+            <summary>
+            Retrieves a department by its ID asynchronously.
+            </summary>
+            <param name="departmentID">The ID of the department.</param>
+            <returns>The department with the specified ID.</returns>
+        </member>
+        <member name="M:BAL.DepartmentService.GetDepartment(System.String)">
+            <summary>
+            Retrieves a department by its name asynchronously.
+            </summary>
+            <param name="DepartmentName">The name of the department.</param>
+            <returns>The department with the specified name.</returns>
+        </member>
+        <member name="M:BAL.DepartmentService.SaveAsync(BAL.Departments)">
+            <summary>
+            Saves a new department or updates an existing one asynchronously.
+            </summary>
+            <param name="department">The department to save or update.</param>
+            <returns>True if the operation was successful; otherwise, false.</returns>
+        </member>
+        <member name="M:BAL.DepartmentService.DeleteDepartmentAsync(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Soft deletes a department asynchronously.
+            </summary>
+            <param name="id">The ID of the department to delete.</param>
+            <param name="modifiedBy">The ID of the user performing the deletion (optional).</param>
+            <returns>True if the operation was successful; otherwise, false.</returns>
+        </member>
+        <member name="M:BAL.DepartmentService.GetNumberOfDepartmentsAsync(System.String)">
+            <summary>
+            Retrieves the total number of department records asynchronously.
+            </summary>
+            <param name="TableName">The name of the table containing department records.</param>
+            <returns>The total number of department records.</returns>
+        </member>
+        <member name="T:BAL.IDepartmentService">
+            <summary>  
+            Interface for department-related services.  
+            </summary>  
+        </member>
+        <member name="M:BAL.IDepartmentService.GetAllDepartmentsAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+            <summary>  
+            Retrieves a paginated list of departments based on optional filters.  
+            </summary>  
+            <param name="page">The page number for pagination.</param>  
+            <param name="rowCount">The number of rows per page.</param>  
+            <param name="column">The column to filter by (optional).</param>  
+            <param name="value">The value to filter by (optional).</param>  
+            <returns>A task that represents the asynchronous operation. The task result contains a list of departments.</returns>  
+        </member>
+        <member name="M:BAL.IDepartmentService.GetDepartmentAsync(System.Int32)">
+            <summary>  
+            Retrieves a specific department by its ID.  
+            </summary>  
+            <param name="id">The ID of the department.</param>  
+            <returns>A task that represents the asynchronous operation. The task result contains the department details.</returns>  
+        </member>
+        <member name="M:BAL.IDepartmentService.SaveAsync(BAL.Departments)">
+            <summary>  
+            Saves a department's details.  
+            </summary>  
+            <param name="dept">The department object to save.</param>  
+            <returns>A task that represents the asynchronous operation. The task result indicates whether the save operation was successful.</returns>  
+        </member>
+        <member name="M:BAL.IDepartmentService.DeleteDepartmentAsync(System.Int32,System.Nullable{System.Int32})">
+            <summary>  
+            Deletes a department by its ID.  
+            </summary>  
+            <param name="id">The ID of the department to delete.</param>  
+            <param name="modifiedBy">The ID of the user who modified the record (optional).</param>  
+            <returns>A task that represents the asynchronous operation. The task result indicates whether the delete operation was successful.</returns>  
+        </member>
+        <member name="M:BAL.IDepartmentService.GetNumberOfDepartmentsAsync(System.String)">
+            <summary>  
+            Retrieves the number of departments in a specified table.  
+            </summary>  
+            <param name="TableName">The name of the table.</param>  
+            <returns>A task that represents the asynchronous operation. The task result contains the number of departments.</returns>  
+        </member>
+    </members>
+</doc>

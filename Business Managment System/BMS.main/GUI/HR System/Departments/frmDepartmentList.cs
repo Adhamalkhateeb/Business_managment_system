@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BAL;
 
@@ -28,7 +29,23 @@ namespace BMS
             clsglobalSettings.AdjustGridDesign(dgvDepartments);
 
             _dtAllDepartments = await _departmentService.GetAllDepartmentsAsync(_PageNumber, _PageSize);
+
+            if(_dtAllDepartments == null)
+            {
+                MessageBox.Show("حدث خطأ اثناء استرجاع البينات يرجي اعاده المحاولة"); return;
+            }
+
             dgvDepartments.DataSource = _dtAllDepartments;
+
+            HandleDataGridView();
+
+            btnForward.Enabled = (await _departmentService.GetNumberOfDepartmentsAsync(nameof(Departments)) > _PageSize * _PageNumber);
+        }
+
+        private void HandleDataGridView()
+        {
+
+            
 
             foreach (DataGridViewColumn col in dgvDepartments.Columns)
             {
@@ -36,8 +53,7 @@ namespace BMS
                     col.Visible = false;
             }
 
-
-            lblCount.Text = dgvDepartments.Rows.Count.ToString();
+            
 
             if (dgvDepartments.Rows.Count > 0)
             {
@@ -56,8 +72,10 @@ namespace BMS
                 dgvDepartments.Columns[6].Width = 215;
             }
 
-            btnForward.Enabled = (await _departmentService.GetNumberOfDepartmentsAsync(nameof(Departments)) > _PageSize * _PageNumber);
+            lblCount.Text = dgvDepartments.Rows.Count.ToString();
         }
+
+
 
         private void frmDepartments_Load(object sender, EventArgs e)
         {

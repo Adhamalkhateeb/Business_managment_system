@@ -6,19 +6,49 @@ using DAL;
 using Utilities;
 namespace BAL
 {
-    public class  Departments  
+    /// <summary>
+    /// Represents a department entity with properties for ID, Name, Description, and other metadata.
+    /// </summary>
+    public class Departments
     {
-        /// private readonly IDepartmentRepository _departmentRepository;
-
+        /// <summary>
+        /// Gets or sets the unique identifier for the department.
+        /// </summary>
         public int ID { get; set; } = -1;
-        public string Name { get; set; }
-        public string? Description { get; set; }
-        public int CreatedByUserID { get; set; }
-        public string CreationDate { get; set; }
-        public int? UpdatedByUserID { get; set; }
-        public string? LastUpdatedDate { get; set; }
-        public bool IsActive { get; set; }
-        
 
+        /// <summary>
+        /// Gets or sets the name of the department.
+        /// </summary>
+        public  string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the department.
+        /// </summary>
+        public string? Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the user who created the department.
+        /// </summary>
+        public int CreatedByUserID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the creation date of the department.
+        /// </summary>
+        public  string CreationDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the user who last updated the department.
+        /// </summary>
+        public int? UpdatedByUserID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last updated date of the department.
+        /// </summary>
+        public string? LastUpdatedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the department is active.
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }

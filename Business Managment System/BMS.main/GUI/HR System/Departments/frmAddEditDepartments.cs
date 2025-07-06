@@ -14,6 +14,8 @@ using DAL;
 
 namespace BMS
 {
+
+    
     public partial class frmAddEditDepartments : Form
     {
         private int DepartmentID = -1;

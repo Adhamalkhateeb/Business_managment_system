@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -54,7 +53,7 @@ namespace BMS
             {
                 if (frm is T)
                 {
-                    frm.Show();
+                    frm.ShowDialog();
                     frm.BringToFront();
                     int x = (Screen.PrimaryScreen.Bounds.Width - frm.Width) / 2;
                     int y = (Screen.PrimaryScreen.Bounds.Height - frm.Height) / 2;
@@ -64,7 +63,7 @@ namespace BMS
             }
 
             T newForm = new T();
-            newForm.Show();
+            newForm.ShowDialog();
         }
 
 

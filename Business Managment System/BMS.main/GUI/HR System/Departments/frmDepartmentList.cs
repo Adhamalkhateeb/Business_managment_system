@@ -6,6 +6,7 @@ namespace BMS
     public partial class frmDepartmentList : Form
     {
         private DataTable _dtAllDepartments;
+        private int NumOfRecords = -1;
         private int _PageNumber = 1;
         private int _PageSize = 8;
 
@@ -30,7 +31,8 @@ namespace BMS
             cbFilter.SelectedIndex = 0;
 
 
-            lblCount.Text = dgvDepartments.Rows.Count.ToString();
+            NumOfRecords = dgvDepartments.Rows.Count;
+            lblCount.Text = NumOfRecords.ToString();
 
 
             if (dgvDepartments.Rows.Count > 0)
@@ -108,7 +110,7 @@ namespace BMS
             frmDepartments_Load(null, null);
         }
 
-        private async void حذفالقسمToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void DeleteDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("هل انت متأكد انك تريد حذف القسم", "حذف القسم", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
@@ -142,6 +144,7 @@ namespace BMS
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
             _PageNumber++;
             frmDepartments_Load(null, null);
         }
@@ -189,7 +192,9 @@ namespace BMS
             _PageNumber = 1; 
             _dtAllDepartments = await Department.GetAllDepartments(_PageNumber, _PageSize, filterColumn, filterValue);
             dgvDepartments.DataSource = _dtAllDepartments;
-            lblCount.Text = dgvDepartments.Rows.Count.ToString();
+
+            NumOfRecords = dgvDepartments.Rows.Count;
+            lblCount.Text = NumOfRecords.ToString();
 
 
           

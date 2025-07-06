@@ -11,6 +11,17 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
+<<<<<<< HEAD
+=======
+    public interface ICryptoHelper
+    {
+        
+        public string ComputeHash(string input);
+        public string Encrypt(string input);
+        public string Decrypt(string input);
+    }
+
+>>>>>>> ee1f3eec5ded94f0497950c9b86f6922072ee88c
     public class CryptoHelper : ICryptoHelper
     {
 
@@ -31,7 +42,11 @@ namespace Utilities
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+<<<<<<< HEAD
         public  string ComputeHash(string input)
+=======
+        public string ComputeHash(string input)
+>>>>>>> ee1f3eec5ded94f0497950c9b86f6922072ee88c
         {
             try
             {
@@ -56,7 +71,11 @@ namespace Utilities
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+<<<<<<< HEAD
         public  string AesEncrypt(string input)
+=======
+        public string Encrypt(string input)
+>>>>>>> ee1f3eec5ded94f0497950c9b86f6922072ee88c
         {
 
             try
@@ -96,7 +115,11 @@ namespace Utilities
         /// <param name="encryptedinput"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+<<<<<<< HEAD
         public string AesDecrypt(string encryptedinput)
+=======
+        public string Decrypt(string encryptedinput)
+>>>>>>> ee1f3eec5ded94f0497950c9b86f6922072ee88c
         {
             if (string.IsNullOrEmpty(encryptedinput))
             {

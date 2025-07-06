@@ -95,7 +95,7 @@
             حذفالقسمToolStripMenuItem.Name = "حذفالقسمToolStripMenuItem";
             حذفالقسمToolStripMenuItem.Size = new Size(210, 38);
             حذفالقسمToolStripMenuItem.Text = "حذف القسم";
-            حذفالقسمToolStripMenuItem.Click += حذفالقسمToolStripMenuItem_Click;
+            حذفالقسمToolStripMenuItem.Click += DeleteDepartmentToolStripMenuItem_Click;
             // 
             // UpdateDepartmentToolStripMenuItem
             // 

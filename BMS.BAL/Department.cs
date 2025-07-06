@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using DAL;
+using Utilities;
 namespace BAL
 {
     public class  Department
@@ -77,7 +78,9 @@ namespace BAL
                       (DateTime)result["CreationDate"],
                       result["UpdatedBy"] == null ? (int?)null : (int?)result["UpdatedBy"],
                      result["UpdateDate"] == null ? null : (DateTime?)result["UpdateDate"],
-                      (bool)result["IsActive"]) ;                   
+                      (bool)result["IsActive"]) ;
+
+                
             }
             else
             {

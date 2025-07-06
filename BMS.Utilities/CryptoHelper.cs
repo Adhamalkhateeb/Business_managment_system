@@ -10,7 +10,15 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public static  class CryptoHelper
+    public interface ICryptoHelper
+    {
+        
+        public string ComputeHash(string input);
+        public string Encrypt(string input);
+        public string Decrypt(string input);
+    }
+
+    public class CryptoHelper : ICryptoHelper
     {
         /// <summary>
         /// using SHA256 to compute hash of a string
@@ -18,7 +26,7 @@ namespace Utilities
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static string ComputeHash(string input)
+        public string ComputeHash(string input)
         {
             try
             {
@@ -43,7 +51,7 @@ namespace Utilities
         /// <param name="input"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static string AesEncrypt(string input)
+        public string Encrypt(string input)
         {
 
             byte[] Key = GetValidatedKey("AESkey");
@@ -86,7 +94,7 @@ namespace Utilities
         /// <param name="encryptedinput"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static string AesDecrypt(string encryptedinput)
+        public string Decrypt(string encryptedinput)
         {
             if (string.IsNullOrEmpty(encryptedinput))
             {

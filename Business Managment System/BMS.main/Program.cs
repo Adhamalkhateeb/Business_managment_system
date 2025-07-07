@@ -1,5 +1,6 @@
 using BAL;
 using BMS;
+using BMS.BAL.Interface;
 using DAL;
 
 namespace BMS.main

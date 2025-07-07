@@ -1,4 +1,5 @@
 ﻿
+using BMS.DAL.Interface;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
@@ -133,7 +134,7 @@ namespace DAL
         /// <typeparam name="T">The type of the record to retrieve.</typeparam>
         /// <param name="departmentID">The ID of the department to retrieve.</param>
         /// <returns>The department record.</returns>
-        public async Task<T> GetByIDAsync<T>(int departmentID) where T : new()
+        public async Task<T> GetInfoAsync<T>(int departmentID) where T : new()
         {
             try
             {
@@ -154,7 +155,7 @@ namespace DAL
         /// <typeparam name="T">The type of the record to retrieve.</typeparam>
         /// <param name="DepartmentName">The name of the department to retrieve.</param>
         /// <returns>The department record.</returns>
-        public async Task<T> GetDepartmentByNameAsync<T>(string DepartmentName) where T : new()
+        public async Task<T> GetInfoAsync<T>(string DepartmentName) where T : new()
         {
             try
             {
@@ -174,7 +175,7 @@ namespace DAL
         /// </summary>
         /// <param name="TableName">The name of the table to query.</param>
         /// <returns>The number of department records.</returns>
-        public async Task<int> GetNumberOfDepartmentsRecordsAsync(string TableName)
+        public async Task<int> GetNumberOfRecordsAsync(string TableName)
         {
             if (string.IsNullOrEmpty(TableName))
                 throw new ArgumentException("TableName cannot be null or empty", nameof(TableName));

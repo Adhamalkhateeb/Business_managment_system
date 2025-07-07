@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BAL.Interface;
-using DAL;
+using BMS.BAL.Interface;
+using BMS.DAL.Interface;
 
 namespace BAL
 {
     /// <summary>
     /// Provides services for managing departments, including retrieval, creation, updating, and deletion.
     /// </summary>
-    public class DepartmentService : iCRUDop<Departments>
+    public class DepartmentService : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
 
@@ -54,7 +55,7 @@ namespace BAL
             Departments result;
             try
             {
-                result = await _departmentRepository.GetByIDAsync<Departments>(departmentID);
+                result = await _departmentRepository.GetInfoAsync<Departments>(departmentID);
             }
             catch (Exception ex)
             {
@@ -73,7 +74,7 @@ namespace BAL
             Departments result;
             try
             {
-                result = await _departmentRepository.GetDepartmentByNameAsync<Departments>(DepartmentName);
+                result = await _departmentRepository.GetInfoAsync<Departments>(DepartmentName);
             }
             catch (Exception ex)
             {
@@ -146,11 +147,11 @@ namespace BAL
         /// </summary>
         /// <param name="TableName">The name of the table containing department records.</param>
         /// <returns>The total number of department records.</returns>
-        public async Task<int> GetNumberOfDepartmentsAsync(string TableName)
+        public async Task<int> GetNumberOfRecordsAsync(string TableName)
         {
             try
             {
-                return await _departmentRepository.GetNumberOfDepartmentsRecordsAsync(TableName);
+                return await _departmentRepository.GetNumberOfRecordsAsync(TableName);
             }
             catch (Exception ex)
             {

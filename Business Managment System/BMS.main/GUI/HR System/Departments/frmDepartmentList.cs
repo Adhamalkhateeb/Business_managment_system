@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BAL;
+using BMS.BAL.Interface;
 
 namespace BMS
 {
@@ -28,7 +29,7 @@ namespace BMS
 
             clsglobalSettings.AdjustGridDesign(dgvDepartments);
 
-            _dtAllDepartments = await _departmentService.GetAllDepartmentsAsync(_PageNumber, _PageSize);
+            _dtAllDepartments = await _departmentService.GetAllAsync(_PageNumber, _PageSize);
 
             if(_dtAllDepartments == null)
             {
@@ -39,7 +40,7 @@ namespace BMS
 
             HandleDataGridView();
 
-            btnForward.Enabled = (await _departmentService.GetNumberOfDepartmentsAsync(nameof(Departments)) > _PageSize * _PageNumber);
+            btnForward.Enabled = (await _departmentService.GetNumberOfRecordsAsync(nameof(Departments)) > _PageSize * _PageNumber);
         }
 
         private void HandleDataGridView()
@@ -140,9 +141,9 @@ namespace BMS
         {
             if (MessageBox.Show("هل انت متأكد انك تريد حذف القسم", "حذف القسم", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 return;
-            Departments Department = await _departmentService.GetDepartmentAsync((int)(dgvDepartments.CurrentRow.Cells[0].Value));
+            Departments Department = await _departmentService.GetInfoAsync((int)(dgvDepartments.CurrentRow.Cells[0].Value));
 
-            if (Department != null && await _departmentService.DeleteDepartmentAsync(Department.ID,Department.UpdatedByUserID))
+            if (Department != null && await _departmentService.DeleteAsync(Department.ID,Department.UpdatedByUserID))
             {
                 MessageBox.Show("تم حذف القسم بنجاح", "حذف القسم", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await LoadDepartmentsAsync();
@@ -215,7 +216,7 @@ namespace BMS
             string filterValue = filterColumn == "ID" ? txtFilter.Text.Trim() : $"%{txtFilter.Text.Trim()}%";
 
             _PageNumber = 1;
-            _dtAllDepartments = await _departmentService.GetAllDepartmentsAsync(_PageNumber, _PageSize, filterColumn, filterValue);
+            _dtAllDepartments = await _departmentService.GetAllAsync(_PageNumber, _PageSize, filterColumn, filterValue);
             dgvDepartments.DataSource = _dtAllDepartments;
             lblCount.Text = dgvDepartments.Rows.Count.ToString();
 

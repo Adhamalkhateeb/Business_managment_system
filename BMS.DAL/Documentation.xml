@@ -9,7 +9,7 @@
             Repository for managing Department-related database operations.
             </summary>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.#ctor(DAL.IStoredProcedureRunner)">
+        <member name="M:DAL.DepartmentRepositiry.#ctor(BMS.DAL.Interface.IStoredProcedureRunner)">
             <summary>
             Initializes a new instance of the <see cref="T:DAL.DepartmentRepositiry"/> class.
             </summary>
@@ -53,7 +53,7 @@
             <param name="UserID">The ID of the user performing the deletion.</param>
             <returns>True if the department was deleted successfully; false otherwise.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.GetByIDAsync``1(System.Int32)">
+        <member name="M:DAL.DepartmentRepositiry.GetInfoAsync``1(System.Int32)">
             <summary>
             Get a department by ID asynchronously.
             </summary>
@@ -61,7 +61,7 @@
             <param name="departmentID">The ID of the department to retrieve.</param>
             <returns>The department record.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.GetDepartmentByNameAsync``1(System.String)">
+        <member name="M:DAL.DepartmentRepositiry.GetInfoAsync``1(System.String)">
             <summary>
             Get a department by name asynchronously.
             </summary>
@@ -69,128 +69,12 @@
             <param name="DepartmentName">The name of the department to retrieve.</param>
             <returns>The department record.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.GetNumberOfDepartmentsRecordsAsync(System.String)">
+        <member name="M:DAL.DepartmentRepositiry.GetNumberOfRecordsAsync(System.String)">
             <summary>
             Get the number of department records asynchronously.
             </summary>
             <param name="TableName">The name of the table to query.</param>
             <returns>The number of department records.</returns>
-        </member>
-        <member name="T:DAL.IDepartmentRepository">
-            <summary>
-            Interface for Department Repository to manage department-related operations.
-            </summary>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.AddAsync(System.String,System.String,System.Int32)">
-            <summary>
-            Adds a new department asynchronously.
-            </summary>
-            <param name="departmentName">Name of the department.</param>
-            <param name="Description">Description of the department.</param>
-            <param name="CreatedBy">ID of the user who created the department.</param>
-            <returns>Returns the ID of the newly created department.</returns>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.UpdateAsync(System.Int32,System.String,System.String,System.Nullable{System.Int32})">
-            <summary>
-            Updates an existing department asynchronously.
-            </summary>
-            <param name="departmentID">ID of the department to update.</param>
-            <param name="Description">Updated description of the department.</param>
-            <param name="departmentName">Updated name of the department.</param>
-            <param name="modifiedByUserID">ID of the user who modified the department.</param>
-            <returns>Returns true if the update was successful, otherwise false.</returns>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.GetAllAsync``1(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
-            <summary>
-            Retrieves all departments asynchronously with optional filtering and pagination.
-            </summary>
-            <typeparam name="T">Type of the result object.</typeparam>
-            <param name="PageNumber">Page number for pagination.</param>
-            <param name="Records">Number of records per page.</param>
-            <param name="FilterColumn">Column to filter by.</param>
-            <param name="FilterValue">Value to filter by.</param>
-            <returns>Returns a list of departments.</returns>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.DeleteAsync(System.Int32,System.Nullable{System.Int32})">
-            <summary>
-            Deletes a department asynchronously.
-            </summary>
-            <param name="departmentID">ID of the department to delete.</param>
-            <param name="UserID">ID of the user performing the deletion.</param>
-            <returns>Returns true if the deletion was successful, otherwise false.</returns>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.GetByIDAsync``1(System.Int32)">
-            <summary>
-            Retrieves a department by its ID asynchronously.
-            </summary>
-            <typeparam name="T">Type of the result object.</typeparam>
-            <param name="departmentID">ID of the department to retrieve.</param>
-            <returns>Returns the department object.</returns>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.GetDepartmentByNameAsync``1(System.String)">
-            <summary>
-            Retrieves a department by its name asynchronously.
-            </summary>
-            <typeparam name="T">Type of the result object.</typeparam>
-            <param name="DepartmentName">Name of the department to retrieve.</param>
-            <returns>Returns the department object.</returns>
-        </member>
-        <member name="M:DAL.IDepartmentRepository.GetNumberOfDepartmentsRecordsAsync(System.String)">
-            <summary>
-            Retrieves the number of department records asynchronously.
-            </summary>
-            <param name="TableName">Name of the table to count records from.</param>
-            <returns>Returns the number of department records.</returns>
-        </member>
-        <member name="T:DAL.ISqlConnectionFactory">
-            <summary>
-             Provides a factory for creating SQL connections.
-             </summary>
-        </member>
-        <member name="M:DAL.ISqlConnectionFactory.CreateConnection">
-            <summary>
-            Creates and returns a new instance of <see cref="T:Microsoft.Data.SqlClient.SqlConnection"/>.
-            </summary>
-            <returns>A new <see cref="T:Microsoft.Data.SqlClient.SqlConnection"/> instance.</returns>
-        </member>
-        <member name="T:DAL.IStoredProcedureRunner">
-            <summary>
-            Interface for executing stored procedures in the database.
-            </summary>
-        </member>
-        <member name="M:DAL.IStoredProcedureRunner.ExecuteNonQueryAsync(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
-            <summary>
-            Executes a stored procedure that does not return any data.
-            </summary>
-            <param name="procedureName">The name of the stored procedure to execute.</param>
-            <param name="parameters">Optional parameters for the stored procedure.</param>
-            <returns>A task representing the asynchronous operation, with the number of rows affected.</returns>
-        </member>
-        <member name="M:DAL.IStoredProcedureRunner.GetAllBySPAsync``1(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
-            <summary>
-            Executes a stored procedure and retrieves all records as a list of type <typeparamref name="T"/>.
-            </summary>
-            <typeparam name="T">The type of the records to retrieve.</typeparam>
-            <param name="procedureName">The name of the stored procedure to execute.</param>
-            <param name="parameters">Optional parameters for the stored procedure.</param>
-            <returns>A task representing the asynchronous operation, with a list of records.</returns>
-        </member>
-        <member name="M:DAL.IStoredProcedureRunner.GetSingleRecordBySPAsync``1(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
-            <summary>
-            Executes a stored procedure and retrieves a single record of type <typeparamref name="T"/>.
-            </summary>
-            <typeparam name="T">The type of the record to retrieve.</typeparam>
-            <param name="ProcedureName">The name of the stored procedure to execute.</param>
-            <param name="parameters">Optional parameters for the stored procedure.</param>
-            <returns>A task representing the asynchronous operation, with the single record.</returns>
-        </member>
-        <member name="M:DAL.IStoredProcedureRunner.GetNumberOfActiveRecordsAsync(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
-            <summary>
-            Executes a stored procedure and retrieves the number of active records.
-            </summary>
-            <param name="procedureName">The name of the stored procedure to execute.</param>
-            <param name="parameters">Optional parameters for the stored procedure.</param>
-            <returns>A task representing the asynchronous operation, with the number of active records.</returns>
         </member>
         <member name="T:DAL.SqlConnectionFactory">
             <summary>
@@ -216,7 +100,7 @@
         <member name="T:DataBaseExecuter">
             <!-- Failed to insert some or all of included XML --><include file="DAL.xml" path="docs/members[@name=T:BMS.DAL.DataBaseExecuter]" />
         </member>
-        <member name="M:DataBaseExecuter.#ctor(DAL.ISqlConnectionFactory)">
+        <member name="M:DataBaseExecuter.#ctor(BMS.DAL.Interface.ISqlConnectionFactory)">
             <!-- Failed to insert some or all of included XML --><include file="DAL.xml" path="docs/members[@name=M:BMS.DAL.DataBaseExecuter.#ctor(System.Data.SqlClient.ISqlConnectionFactory)]" />
         </member>
         <member name="M:DataBaseExecuter.GetAllBySPAsync``1(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
@@ -230,6 +114,122 @@
         </member>
         <member name="M:DataBaseExecuter.GetNumberOfActiveRecordsAsync(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
             <!-- Failed to insert some or all of included XML --><include file="DAL.xml" path="docs/members[@name=M:BMS.DAL.DataBaseExecuter.GetNumberOfActiveRecordsAsync(System.String,System.Data.SqlClient.SqlParameter[])]" />
+        </member>
+        <member name="T:BMS.DAL.Interface.IRepository">
+            <summary>
+            Interface for Department Repository to manage department-related operations.
+            </summary>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.AddAsync(System.String,System.String,System.Int32)">
+            <summary>
+            Adds a new department asynchronously.
+            </summary>
+            <param name="departmentName">Name of the department.</param>
+            <param name="Description">Description of the department.</param>
+            <param name="CreatedBy">ID of the user who created the department.</param>
+            <returns>Returns the ID of the newly created department.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.UpdateAsync(System.Int32,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Updates an existing department asynchronously.
+            </summary>
+            <param name="departmentID">ID of the department to update.</param>
+            <param name="Description">Updated description of the department.</param>
+            <param name="departmentName">Updated name of the department.</param>
+            <param name="modifiedByUserID">ID of the user who modified the department.</param>
+            <returns>Returns true if the update was successful, otherwise false.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.GetAllAsync``1(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+            <summary>
+            Retrieves all departments asynchronously with optional filtering and pagination.
+            </summary>
+            <typeparam name="T">Type of the result object.</typeparam>
+            <param name="PageNumber">Page number for pagination.</param>
+            <param name="Records">Number of records per page.</param>
+            <param name="FilterColumn">Column to filter by.</param>
+            <param name="FilterValue">Value to filter by.</param>
+            <returns>Returns a list of departments.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.DeleteAsync(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Deletes a department asynchronously.
+            </summary>
+            <param name="departmentID">ID of the department to delete.</param>
+            <param name="UserID">ID of the user performing the deletion.</param>
+            <returns>Returns true if the deletion was successful, otherwise false.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.GetInfoAsync``1(System.Int32)">
+            <summary>
+            Retrieves a department by its ID asynchronously.
+            </summary>
+            <typeparam name="T">Type of the result object.</typeparam>
+            <param name="departmentID">ID of the department to retrieve.</param>
+            <returns>Returns the department object.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.GetInfoAsync``1(System.String)">
+            <summary>
+            Retrieves a department by its name asynchronously.
+            </summary>
+            <typeparam name="T">Type of the result object.</typeparam>
+            <param name="DepartmentName">Name of the department to retrieve.</param>
+            <returns>Returns the department object.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IRepository.GetNumberOfRecordsAsync(System.String)">
+            <summary>
+            Retrieves the number of department records asynchronously.
+            </summary>
+            <param name="TableName">Name of the table to count records from.</param>
+            <returns>Returns the number of department records.</returns>
+        </member>
+        <member name="T:BMS.DAL.Interface.ISqlConnectionFactory">
+            <summary>
+             Provides a factory for creating SQL connections.
+             </summary>
+        </member>
+        <member name="M:BMS.DAL.Interface.ISqlConnectionFactory.CreateConnection">
+            <summary>
+            Creates and returns a new instance of <see cref="T:Microsoft.Data.SqlClient.SqlConnection"/>.
+            </summary>
+            <returns>A new <see cref="T:Microsoft.Data.SqlClient.SqlConnection"/> instance.</returns>
+        </member>
+        <member name="T:BMS.DAL.Interface.IStoredProcedureRunner">
+            <summary>
+            Interface for executing stored procedures in the database.
+            </summary>
+        </member>
+        <member name="M:BMS.DAL.Interface.IStoredProcedureRunner.ExecuteNonQueryAsync(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Executes a stored procedure that does not return any data.
+            </summary>
+            <param name="procedureName">The name of the stored procedure to execute.</param>
+            <param name="parameters">Optional parameters for the stored procedure.</param>
+            <returns>A task representing the asynchronous operation, with the number of rows affected.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IStoredProcedureRunner.GetAllBySPAsync``1(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Executes a stored procedure and retrieves all records as a list of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type of the records to retrieve.</typeparam>
+            <param name="procedureName">The name of the stored procedure to execute.</param>
+            <param name="parameters">Optional parameters for the stored procedure.</param>
+            <returns>A task representing the asynchronous operation, with a list of records.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IStoredProcedureRunner.GetSingleRecordBySPAsync``1(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Executes a stored procedure and retrieves a single record of type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The type of the record to retrieve.</typeparam>
+            <param name="ProcedureName">The name of the stored procedure to execute.</param>
+            <param name="parameters">Optional parameters for the stored procedure.</param>
+            <returns>A task representing the asynchronous operation, with the single record.</returns>
+        </member>
+        <member name="M:BMS.DAL.Interface.IStoredProcedureRunner.GetNumberOfActiveRecordsAsync(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
+            <summary>
+            Executes a stored procedure and retrieves the number of active records.
+            </summary>
+            <param name="procedureName">The name of the stored procedure to execute.</param>
+            <param name="parameters">Optional parameters for the stored procedure.</param>
+            <returns>A task representing the asynchronous operation, with the number of active records.</returns>
         </member>
         <member name="T:SqlDataReaderExtensions">
             <summary>

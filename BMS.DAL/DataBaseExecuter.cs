@@ -1,5 +1,5 @@
 ﻿
-using DAL;
+using BMS.DAL.Interface;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;

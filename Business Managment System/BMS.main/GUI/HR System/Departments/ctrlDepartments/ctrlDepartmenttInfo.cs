@@ -1,4 +1,5 @@
 ﻿using BAL;
+using BMS.BAL.Interface;
 using System.Windows.Forms;
 
 
@@ -33,7 +34,7 @@ namespace BMS
         public async void LoadDepartmentInfo(int DepartmentID)
         {
             _departmentID = DepartmentID;
-            _Department = await _departmentService.GetDepartmentAsync(_departmentID);
+            _Department = await _departmentService.GetInfoAsync(_departmentID);
 
             if (_Department is null)
             {

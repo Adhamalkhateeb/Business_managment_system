@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace BMS.DAL.Interface
 {
     /// <summary>
     /// Interface for Department Repository to manage department-related operations.
@@ -55,7 +55,7 @@ namespace DAL
         /// <typeparam name="T">Type of the result object.</typeparam>
         /// <param name="departmentID">ID of the department to retrieve.</param>
         /// <returns>Returns the department object.</returns>
-        Task<T> GetByIDAsync<T>(int departmentID) where T : new();
+        Task<T> GetInfoAsync<T>(int departmentID) where T : new();
 
         /// <summary>
         /// Retrieves a department by its name asynchronously.
@@ -63,13 +63,13 @@ namespace DAL
         /// <typeparam name="T">Type of the result object.</typeparam>
         /// <param name="DepartmentName">Name of the department to retrieve.</param>
         /// <returns>Returns the department object.</returns>
-        Task<T> GetDepartmentByNameAsync<T>(string DepartmentName) where T : new();
+        Task<T> GetInfoAsync<T>(string DepartmentName) where T : new();
 
         /// <summary>
         /// Retrieves the number of department records asynchronously.
         /// </summary>
         /// <param name="TableName">Name of the table to count records from.</param>
         /// <returns>Returns the number of department records.</returns>
-        Task<int> GetNumberOfDepartmentsRecordsAsync(string TableName);
+        Task<int> GetNumberOfRecordsAsync(string TableName);
     }
 }

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DAL;
+using BMS.BAL.Interface;
 
 namespace BMS
 {
@@ -132,7 +133,7 @@ namespace BMS
 
             if (_Mode == enMode.Update)
             {
-                _Department = await _DepartmentService.GetDepartmentAsync(DepartmentID);
+                _Department = await _DepartmentService.GetInfoAsync(DepartmentID);
 
                 if (_Department != null)
                 {

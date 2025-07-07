@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BMS.DAL.DTOs
 {
-    public static class DepartmentDTO : IDTOs
-    {
+    //public static class DepartmentDTO : IDTOs
+    //{
 
-    }
+    //}
 }

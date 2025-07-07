@@ -59,7 +59,7 @@
             Provides services for managing departments, including retrieval, creation, updating, and deletion.
             </summary>
         </member>
-        <member name="M:BAL.DepartmentService.#ctor(BMS.DAL.Interface.IRepository)">
+        <member name="M:BAL.DepartmentService.#ctor(BMS.DAL.Interface.IDepartmentRepository)">
             <summary>
             Initializes a new instance of the <see cref="T:BAL.DepartmentService"/> class with the specified repository.
             </summary>

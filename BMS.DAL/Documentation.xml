@@ -115,12 +115,12 @@
         <member name="M:DataBaseExecuter.GetNumberOfActiveRecordsAsync(System.String,Microsoft.Data.SqlClient.SqlParameter[])">
             <!-- Failed to insert some or all of included XML --><include file="DAL.xml" path="docs/members[@name=M:BMS.DAL.DataBaseExecuter.GetNumberOfActiveRecordsAsync(System.String,System.Data.SqlClient.SqlParameter[])]" />
         </member>
-        <member name="T:BMS.DAL.Interface.IRepository">
+        <member name="T:BMS.DAL.Interface.IDepartmentRepository">
             <summary>
             Interface for Department Repository to manage department-related operations.
             </summary>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.AddAsync(System.String,System.String,System.Int32)">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.AddAsync(System.String,System.String,System.Int32)">
             <summary>
             Adds a new department asynchronously.
             </summary>
@@ -129,7 +129,7 @@
             <param name="CreatedBy">ID of the user who created the department.</param>
             <returns>Returns the ID of the newly created department.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.UpdateAsync(System.Int32,System.String,System.String,System.Nullable{System.Int32})">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.UpdateAsync(System.Int32,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
             Updates an existing department asynchronously.
             </summary>
@@ -139,7 +139,7 @@
             <param name="modifiedByUserID">ID of the user who modified the department.</param>
             <returns>Returns true if the update was successful, otherwise false.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.GetAllAsync``1(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetAllAsync``1(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
             <summary>
             Retrieves all departments asynchronously with optional filtering and pagination.
             </summary>
@@ -150,7 +150,7 @@
             <param name="FilterValue">Value to filter by.</param>
             <returns>Returns a list of departments.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.DeleteAsync(System.Int32,System.Nullable{System.Int32})">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.DeleteAsync(System.Int32,System.Nullable{System.Int32})">
             <summary>
             Deletes a department asynchronously.
             </summary>
@@ -158,7 +158,7 @@
             <param name="UserID">ID of the user performing the deletion.</param>
             <returns>Returns true if the deletion was successful, otherwise false.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.GetInfoAsync``1(System.Int32)">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetInfoAsync``1(System.Int32)">
             <summary>
             Retrieves a department by its ID asynchronously.
             </summary>
@@ -166,7 +166,7 @@
             <param name="departmentID">ID of the department to retrieve.</param>
             <returns>Returns the department object.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.GetInfoAsync``1(System.String)">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetInfoAsync``1(System.String)">
             <summary>
             Retrieves a department by its name asynchronously.
             </summary>
@@ -174,7 +174,7 @@
             <param name="DepartmentName">Name of the department to retrieve.</param>
             <returns>Returns the department object.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IRepository.GetNumberOfRecordsAsync(System.String)">
+        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetNumberOfRecordsAsync(System.String)">
             <summary>
             Retrieves the number of department records asynchronously.
             </summary>

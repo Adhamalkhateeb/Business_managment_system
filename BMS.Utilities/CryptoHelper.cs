@@ -12,14 +12,6 @@ using System.Threading.Tasks;
 namespace Utilities
 {
 
-    public interface ICryptoHelper
-    {
-        
-        public string ComputeHash(string input);
-        public string Encrypt(string input);
-        public string Decrypt(string input);
-    }
-
     public class CryptoHelper : ICryptoHelper
     {
 

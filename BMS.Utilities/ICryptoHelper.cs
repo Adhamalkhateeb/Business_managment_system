@@ -9,7 +9,7 @@ namespace BMS.Utilities
     internal interface ICryptoHelper
     {
         string ComputeHash(string input);
-        string AesEncrypt(string input);
-        string AesDecrypt(string encryptedInput);
+        string Encrypt(string input);
+        string Decrypt(string encryptedInput);
     }
 }

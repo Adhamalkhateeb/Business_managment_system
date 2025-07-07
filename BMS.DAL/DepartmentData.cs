@@ -32,7 +32,7 @@ namespace DAL
         /// <param name="Description">The description of the department.</param>
         /// <param name="CreatedBy">The ID of the user who created the department.</param>
         /// <returns>New Department ID.</returns>
-        public async Task<int> AddDepartmentAsync(string departmentName, string Description, int CreatedBy)
+        public async Task<int> AddAsync(string departmentName, string Description, int CreatedBy)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace DAL
         /// <param name="departmentName">The updated name of the department.</param>
         /// <param name="modifiedByUserID">The ID of the user who modified the department.</param>
         /// <returns>True if the department was updated successfully; false otherwise.</returns>
-        public async Task<bool> UpdateDepartmentAsync(int departmentID, string Description, string departmentName, int? modifiedByUserID)
+        public async Task<bool> UpdateAsync(int departmentID, string Description, string departmentName, int? modifiedByUserID)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace DAL
         /// <param name="FilterColumn">The column to filter by.</param>
         /// <param name="FilterValue">The value to filter by.</param>
         /// <returns>A list of department records.</returns>
-        public async Task<List<T>> GetAllDepartmentsAsync<T>(int? PageNumber, int? Records, string? FilterColumn, string? FilterValue) where T : new()
+        public async Task<List<T>> GetAllAsync<T>(int? PageNumber, int? Records, string? FilterColumn, string? FilterValue) where T : new()
         {
             try
             {
@@ -108,7 +108,7 @@ namespace DAL
         /// <param name="departmentID">The ID of the department to delete.</param>
         /// <param name="UserID">The ID of the user performing the deletion.</param>
         /// <returns>True if the department was deleted successfully; false otherwise.</returns>
-        public async Task<bool> DeleteDepartmentAsync(int departmentID, int? UserID)
+        public async Task<bool> DeleteAsync(int departmentID, int? UserID)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace DAL
         /// <typeparam name="T">The type of the record to retrieve.</typeparam>
         /// <param name="departmentID">The ID of the department to retrieve.</param>
         /// <returns>The department record.</returns>
-        public async Task<T> GetDepartmentByIDAsync<T>(int departmentID) where T : new()
+        public async Task<T> GetByIDAsync<T>(int departmentID) where T : new()
         {
             try
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BAL.Interface;
 using DAL;
 
 namespace BAL
@@ -10,7 +11,7 @@ namespace BAL
     /// <summary>
     /// Provides services for managing departments, including retrieval, creation, updating, and deletion.
     /// </summary>
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService : iCRUDop<Departments>
     {
         private readonly IDepartmentRepository _departmentRepository;
 
@@ -31,11 +32,11 @@ namespace BAL
         /// <param name="column">The column to filter by (optional).</param>
         /// <param name="value">The value to filter by (optional).</param>
         /// <returns>A list of departments.</returns>
-        public async Task<List<Departments>> GetAllDepartmentsAsync(int? page, int? rowCount, string? column = null, string? value = null) 
+        public async Task<List<Departments>> GetAllAsync(int? page, int? rowCount, string? column = null, string? value = null) 
         {
             try
             {
-                return await _departmentRepository.GetAllDepartmentsAsync<Departments>(page, rowCount, column, value);
+                return await _departmentRepository.GetAllAsync<Departments>(page, rowCount, column, value);
             }
             catch (Exception ex)
             {
@@ -48,12 +49,12 @@ namespace BAL
         /// </summary>
         /// <param name="departmentID">The ID of the department.</param>
         /// <returns>The department with the specified ID.</returns>
-        public async Task<Departments> GetDepartmentAsync(int departmentID)
+        public async Task<Departments> GetInfoAsync(int departmentID)
         {
             Departments result;
             try
             {
-                result = await _departmentRepository.GetDepartmentByIDAsync<Departments>(departmentID);
+                result = await _departmentRepository.GetByIDAsync<Departments>(departmentID);
             }
             catch (Exception ex)
             {
@@ -67,7 +68,7 @@ namespace BAL
         /// </summary>
         /// <param name="DepartmentName">The name of the department.</param>
         /// <returns>The department with the specified name.</returns>
-        public async Task<Departments> GetDepartment(string DepartmentName)
+        public async Task<Departments> GetInfoAsync(string DepartmentName)
         {
             Departments result;
             try
@@ -92,13 +93,11 @@ namespace BAL
             {
                 if (department.ID == -1)
                 {
-                    var newId = await _departmentRepository.AddDepartmentAsync(department.Name, department.Description, department.CreatedByUserID);
-                    department.ID = newId;
-                    return newId != -1;
+                    return await AddNewAsync(department);
                 }
                 else
                 {
-                    return await _departmentRepository.UpdateDepartmentAsync(department.ID, department.Description, department.Name, department.UpdatedByUserID);
+                    return await UpdateAsync(department);
                 }
             }
             catch (Exception ex)
@@ -108,16 +107,33 @@ namespace BAL
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateAsync(Departments department)
+        {
+            return await _departmentRepository.UpdateAsync(department.ID, department.Description, department.Name, department.UpdatedByUserID);
+        }
+
+        public async Task<bool> AddNewAsync(Departments department)
+        {
+            var newId = await _departmentRepository.AddAsync(department.Name, department.Description, department.CreatedByUserID);
+            department.ID = newId;
+            return newId != -1;
+        }
+
+        /// <summary>
         /// Soft deletes a department asynchronously.
         /// </summary>
         /// <param name="id">The ID of the department to delete.</param>
-        /// <param name="modifiedBy">The ID of the user performing the deletion (optional).</param>
+        /// <param name="UserID">The ID of the user performing the deletion (optional).</param>
         /// <returns>True if the operation was successful; otherwise, false.</returns>
-        public async Task<bool> DeleteDepartmentAsync(int id, int? modifiedBy)
+        public async Task<bool> DeleteAsync(int id, int? UserID)
         {
             try
             {
-                return await _departmentRepository.DeleteDepartmentAsync(id, modifiedBy);
+                return await _departmentRepository.DeleteAsync(id, UserID);
             }
             catch (Exception ex)
             {

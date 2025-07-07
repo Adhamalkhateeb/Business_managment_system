@@ -81,7 +81,7 @@ namespace BAL
     //                  (int)result["DepartmentID"]
     //            );
 
-    //            job.Department = await Department.GetDepartment(job.DepartmentID);
+    //            job.Department = await Department.GetInfoAsync(job.DepartmentID);
     //            return job;
     //        }
     //        else
@@ -116,7 +116,7 @@ namespace BAL
     //                  (int)result["DepartmentID"]
     //            );
 
-    //            job.Department = await Department.GetDepartment(job.DepartmentID); 
+    //            job.Department = await Department.GetInfoAsync(job.DepartmentID); 
     //            return job;
     //        }
     //        else

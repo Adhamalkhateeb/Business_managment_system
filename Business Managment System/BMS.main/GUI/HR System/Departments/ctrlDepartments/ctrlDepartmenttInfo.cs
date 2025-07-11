@@ -1,7 +1,7 @@
 ﻿using BAL;
 using BMS.BAL.Interface;
 using System.Windows.Forms;
-
+using MyApp.Entities;
 
 namespace BMS
 {

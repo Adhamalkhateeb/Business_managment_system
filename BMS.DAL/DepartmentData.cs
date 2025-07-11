@@ -4,7 +4,8 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
 using Utilities;
-
+using System.Collections.Generic;
+using MyApp.Entities;
 
 
 namespace DAL
@@ -29,19 +30,17 @@ namespace DAL
         /// <summary>
         /// Add Department Asynchronously.
         /// </summary>
-        /// <param name="departmentName">The name of the department.</param>
-        /// <param name="Description">The description of the department.</param>
-        /// <param name="CreatedBy">The ID of the user who created the department.</param>
+        /// <param name="departments">The department entity to add.</param>
         /// <returns>New Department ID.</returns>
-        public async Task<int> AddAsync(string departmentName, string Description, int CreatedBy)
+        public async Task<int> AddNewAsync(Departments departments)
         {
             try
             {
                 return await _db.ExecuteNonQueryAsync(SPHelper.GetName(SPDept.AddDepartment), new SqlParameter[]
                 {
-                        new SqlParameter("@Name", departmentName),
-                        new SqlParameter("@Description", Description),
-                        new SqlParameter("@CreatedByUserID", CreatedBy)
+                        new SqlParameter("@Name", departments.Name),
+                        new SqlParameter("@Description", departments.Description),
+                        new SqlParameter("@CreatedByUserID", departments.CreatedByUserID)
                 });
             }
             catch (Exception ex)
@@ -53,21 +52,18 @@ namespace DAL
         /// <summary>
         /// Update Department Asynchronously.
         /// </summary>
-        /// <param name="departmentID">The ID of the department to update.</param>
-        /// <param name="Description">The updated description of the department.</param>
-        /// <param name="departmentName">The updated name of the department.</param>
-        /// <param name="modifiedByUserID">The ID of the user who modified the department.</param>
+        /// <param name="departments">The department entity to add.</param>
         /// <returns>True if the department was updated successfully; false otherwise.</returns>
-        public async Task<bool> UpdateAsync(int departmentID, string Description, string departmentName, int? modifiedByUserID)
+        public async Task<bool> UpdateAsync(Departments departments)
         {
             try
             {
                 return await _db.ExecuteNonQueryAsync(SPHelper.GetName(SPDept.UpdateDepartment), new SqlParameter[]
                 {
-                        new SqlParameter("@Name", departmentName),
-                        new SqlParameter("@ID", departmentID),
-                        new SqlParameter("@Description", Description),
-                        new SqlParameter("@UpdatedByUserID", modifiedByUserID)
+                        new SqlParameter("@Name", departments.Name),
+                        new SqlParameter("@ID", departments.ID),
+                        new SqlParameter("@Description", departments.Description),
+                        new SqlParameter("@UpdatedByUserID", departments.UpdatedByUserID)
                 }) != -1;
             }
             catch (Exception ex)
@@ -85,11 +81,11 @@ namespace DAL
         /// <param name="FilterColumn">The column to filter by.</param>
         /// <param name="FilterValue">The value to filter by.</param>
         /// <returns>A list of department records.</returns>
-        public async Task<List<T>> GetAllAsync<T>(int? PageNumber, int? Records, string? FilterColumn, string? FilterValue) where T : new()
-        {
+        public async Task<List<Departments>> GetAllAsync(int? PageNumber, int? Records, string? FilterColumn, string? FilterValue)
+        { 
             try
             {
-                return await _db.GetAllBySPAsync<T>(SPHelper.GetName(SPDept.GetAllDepartments), new SqlParameter[]
+                return await _db.GetAllBySPAsync<Departments>(SPHelper.GetName(SPDept.GetAllDepartments), new SqlParameter[]
                 {
                         new SqlParameter("@PageNumber", PageNumber ?? 1),
                         new SqlParameter("@PageSize", Records ?? 8),
@@ -134,11 +130,11 @@ namespace DAL
         /// <typeparam name="T">The type of the record to retrieve.</typeparam>
         /// <param name="departmentID">The ID of the department to retrieve.</param>
         /// <returns>The department record.</returns>
-        public async Task<T> GetInfoAsync<T>(int departmentID) where T : new()
+        public async Task<Departments> GetInfoAsync(int departmentID) 
         {
             try
             {
-                return await _db.GetSingleRecordBySPAsync<T>(SPHelper.GetName(SPDept.GetDepartmentByID), new SqlParameter[]
+                return await _db.GetSingleRecordBySPAsync<Departments>(SPHelper.GetName(SPDept.GetDepartmentByID), new SqlParameter[]
                 {
                         new SqlParameter("@ID", departmentID)
                 });
@@ -155,11 +151,11 @@ namespace DAL
         /// <typeparam name="T">The type of the record to retrieve.</typeparam>
         /// <param name="DepartmentName">The name of the department to retrieve.</param>
         /// <returns>The department record.</returns>
-        public async Task<T> GetInfoAsync<T>(string DepartmentName) where T : new()
+        public async Task<Departments> GetInfoAsync(string DepartmentName)
         {
             try
             {
-                return await _db.GetSingleRecordBySPAsync<T>(SPHelper.GetName(SPDept.GetDepartmentByName), new SqlParameter[]
+                return await _db.GetSingleRecordBySPAsync<Departments>(SPHelper.GetName(SPDept.GetDepartmentByName), new SqlParameter[]
                 {
                         new SqlParameter("@Name", DepartmentName)
                 });

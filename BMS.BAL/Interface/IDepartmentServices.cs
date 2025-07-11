@@ -1,5 +1,6 @@
 ﻿using BAL;
 using BAL.Interface;
+using MyApp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

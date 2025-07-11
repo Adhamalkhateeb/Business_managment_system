@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DAL;
 using BMS.BAL.Interface;
+using MyApp.Entities;
 
 namespace BMS
 {
@@ -139,7 +140,7 @@ namespace BMS
                 {
                     lblDepartmentID.Text = _Department.ID.ToString();
                     txtDepartment.Text = _Department.Name;
-                    txtDescription.Text = _Department.Description ?? "";
+                    txtDescription.Text = (string)(_Department.Description ?? "");
                     txtDepartment.SelectAll();
                 }
                 else

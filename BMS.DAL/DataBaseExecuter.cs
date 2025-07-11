@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Utilities;
+using MyApp.Entities;
 
 /// <include file='DAL.xml' path='docs/members[@name=T:BMS.DAL.DataBaseExecuter]'/>
 public class DataBaseExecuter : IStoredProcedureRunner

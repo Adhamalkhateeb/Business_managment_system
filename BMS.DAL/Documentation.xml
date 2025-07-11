@@ -15,26 +15,21 @@
             </summary>
             <param name="db">The stored procedure runner instance.</param>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.AddAsync(System.String,System.String,System.Int32)">
+        <member name="M:DAL.DepartmentRepositiry.AddNewAsync(MyApp.Entities.Departments)">
             <summary>
             Add Department Asynchronously.
             </summary>
-            <param name="departmentName">The name of the department.</param>
-            <param name="Description">The description of the department.</param>
-            <param name="CreatedBy">The ID of the user who created the department.</param>
+            <param name="departments">The department entity to add.</param>
             <returns>New Department ID.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.UpdateAsync(System.Int32,System.String,System.String,System.Nullable{System.Int32})">
+        <member name="M:DAL.DepartmentRepositiry.UpdateAsync(MyApp.Entities.Departments)">
             <summary>
             Update Department Asynchronously.
             </summary>
-            <param name="departmentID">The ID of the department to update.</param>
-            <param name="Description">The updated description of the department.</param>
-            <param name="departmentName">The updated name of the department.</param>
-            <param name="modifiedByUserID">The ID of the user who modified the department.</param>
+            <param name="departments">The department entity to add.</param>
             <returns>True if the department was updated successfully; false otherwise.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.GetAllAsync``1(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+        <member name="M:DAL.DepartmentRepositiry.GetAllAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
             <summary>
             Get all department records asynchronously.
             </summary>
@@ -53,7 +48,7 @@
             <param name="UserID">The ID of the user performing the deletion.</param>
             <returns>True if the department was deleted successfully; false otherwise.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.GetInfoAsync``1(System.Int32)">
+        <member name="M:DAL.DepartmentRepositiry.GetInfoAsync(System.Int32)">
             <summary>
             Get a department by ID asynchronously.
             </summary>
@@ -61,7 +56,7 @@
             <param name="departmentID">The ID of the department to retrieve.</param>
             <returns>The department record.</returns>
         </member>
-        <member name="M:DAL.DepartmentRepositiry.GetInfoAsync``1(System.String)">
+        <member name="M:DAL.DepartmentRepositiry.GetInfoAsync(System.String)">
             <summary>
             Get a department by name asynchronously.
             </summary>
@@ -120,66 +115,59 @@
             Interface for Department Repository to manage department-related operations.
             </summary>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.AddAsync(System.String,System.String,System.Int32)">
+        <member name="M:BMS.DAL.Interface.IRepository`1.AddNewAsync(`0)">
             <summary>
-            Adds a new department asynchronously.
+            Asynchronously adds a new entity to the underlying data store.
             </summary>
-            <param name="departmentName">Name of the department.</param>
-            <param name="Description">Description of the department.</param>
-            <param name="CreatedBy">ID of the user who created the department.</param>
-            <returns>Returns the ID of the newly created department.</returns>
+            <param name="entity">The entity to add. Cannot be null.</param>
+            <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the entity
+            was successfully added; otherwise, <see langword="false"/>.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.UpdateAsync(System.Int32,System.String,System.String,System.Nullable{System.Int32})">
+        <member name="M:BMS.DAL.Interface.IRepository`1.DeleteAsync(System.Int32,System.Nullable{System.Int32})">
             <summary>
-            Updates an existing department asynchronously.
+            Asynchronously deletes an entity by its ID and optionally by the user ID.
             </summary>
-            <param name="departmentID">ID of the department to update.</param>
-            <param name="Description">Updated description of the department.</param>
-            <param name="departmentName">Updated name of the department.</param>
-            <param name="modifiedByUserID">ID of the user who modified the department.</param>
-            <returns>Returns true if the update was successful, otherwise false.</returns>
+            <param name="ID"></param>
+            <param name="UserID"></param>
+            <returns></returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetAllAsync``1(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
+        <member name="M:BMS.DAL.Interface.IRepository`1.UpdateAsync(`0)">
             <summary>
-            Retrieves all departments asynchronously with optional filtering and pagination.
+            Updates the specified entity in the data store asynchronously.
             </summary>
-            <typeparam name="T">Type of the result object.</typeparam>
-            <param name="PageNumber">Page number for pagination.</param>
-            <param name="Records">Number of records per page.</param>
-            <param name="FilterColumn">Column to filter by.</param>
-            <param name="FilterValue">Value to filter by.</param>
-            <returns>Returns a list of departments.</returns>
+            <param name="entity">The entity to update. Cannot be <see langword="null"/>.</param>
+            <returns><see langword="true"/> if the update operation succeeds; otherwise, <see langword="false"/>.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.DeleteAsync(System.Int32,System.Nullable{System.Int32})">
+        <member name="M:BMS.DAL.Interface.IRepository`1.GetAllAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String)">
             <summary>
-            Deletes a department asynchronously.
+            Asynchronously retrieves a paginated list of entities from the data store.
             </summary>
-            <param name="departmentID">ID of the department to delete.</param>
-            <param name="UserID">ID of the user performing the deletion.</param>
-            <returns>Returns true if the deletion was successful, otherwise false.</returns>
+            <param name="PageNumber">The page number to retrieve. If null, retrieves the first page.</param>
+            <param name="Records">The number of records per page. If null, retrieves 10 records.</param>
+            <param name="FilterColumn">The column to filter by. If null, no filtering is applied.</param>
+            <param name="FilterValue">The value to filter by. If null, no filtering is applied.</param>
+            <returns>A task that represents the asynchronous operation. The task result is a list of entities.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetInfoAsync``1(System.Int32)">
+        <member name="M:BMS.DAL.Interface.IRepository`1.GetInfoAsync(System.Int32)">
             <summary>
-            Retrieves a department by its ID asynchronously.
+            Asynchronously retrieves the information of an entity by its ID.
             </summary>
-            <typeparam name="T">Type of the result object.</typeparam>
-            <param name="departmentID">ID of the department to retrieve.</param>
-            <returns>Returns the department object.</returns>
+            <param name="ID">The ID of the entity to retrieve.</param>
+            <returns>A task that represents the asynchronous operation. The task result is the entity information.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetInfoAsync``1(System.String)">
+        <member name="M:BMS.DAL.Interface.IRepository`1.GetInfoAsync(System.String)">
             <summary>
-            Retrieves a department by its name asynchronously.
+            Asynchronously retrieves the information of an entity by its title.
             </summary>
-            <typeparam name="T">Type of the result object.</typeparam>
-            <param name="DepartmentName">Name of the department to retrieve.</param>
-            <returns>Returns the department object.</returns>
+            <param name="Title">The title of the entity to retrieve.</param>
+            <returns>A task that represents the asynchronous operation. The task result is the entity information.</returns>
         </member>
-        <member name="M:BMS.DAL.Interface.IDepartmentRepository.GetNumberOfRecordsAsync(System.String)">
+        <member name="M:BMS.DAL.Interface.IRepository`1.GetNumberOfRecordsAsync(System.String)">
             <summary>
-            Retrieves the number of department records asynchronously.
+            Asynchronously retrieves the number of records in a specified table.
             </summary>
-            <param name="TableName">Name of the table to count records from.</param>
-            <returns>Returns the number of department records.</returns>
+            <param name="TableName">The name of the table to count records in.</param>
+            <returns>A task that represents the asynchronous operation. The task result is the number of records.</returns>
         </member>
         <member name="T:BMS.DAL.Interface.ISqlConnectionFactory">
             <summary>

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BMS.Utilities\BMS.Utilities.csproj" />
+    <ProjectReference Include="..\Business Managment System\MyApp.Entities\MyApp.Entities.csproj" />
   </ItemGroup>
 
 </Project>

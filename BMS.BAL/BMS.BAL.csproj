@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BMS.DAL\BMS.DAL.csproj" />
     <ProjectReference Include="..\BMS.Utilities\BMS.Utilities.csproj" />
+    <ProjectReference Include="..\Business Managment System\MyApp.Entities\MyApp.Entities.csproj" />
   </ItemGroup>
 
 </Project>

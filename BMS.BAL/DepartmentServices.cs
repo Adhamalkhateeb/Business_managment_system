@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BAL.Interface;
 using BMS.BAL.Interface;
 using BMS.DAL.Interface;
+using MyApp.Entities;
 
 namespace BAL
 {
@@ -37,7 +38,7 @@ namespace BAL
         {
             try
             {
-                return await _departmentRepository.GetAllAsync<Departments>(page, rowCount, column, value);
+                return await _departmentRepository.GetAllAsync(page, rowCount, column, value);
             }
             catch (Exception ex)
             {
@@ -55,7 +56,7 @@ namespace BAL
             Departments result;
             try
             {
-                result = await _departmentRepository.GetInfoAsync<Departments>(departmentID);
+                result = await _departmentRepository.GetInfoAsync(departmentID);
             }
             catch (Exception ex)
             {
@@ -74,7 +75,7 @@ namespace BAL
             Departments result;
             try
             {
-                result = await _departmentRepository.GetInfoAsync<Departments>(DepartmentName);
+                result = await _departmentRepository.GetInfoAsync(DepartmentName);
             }
             catch (Exception ex)
             {
@@ -114,12 +115,12 @@ namespace BAL
         /// <returns></returns>
         public async Task<bool> UpdateAsync(Departments department)
         {
-            return await _departmentRepository.UpdateAsync(department.ID, department.Description, department.Name, department.UpdatedByUserID);
+            return await _departmentRepository.UpdateAsync(department);
         }
 
         public async Task<bool> AddNewAsync(Departments department)
         {
-            var newId = await _departmentRepository.AddAsync(department.Name, department.Description, department.CreatedByUserID);
+            var newId = await _departmentRepository.AddNewAsync(department);
             department.ID = newId;
             return newId != -1;
         }

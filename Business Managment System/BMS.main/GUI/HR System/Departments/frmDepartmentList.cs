@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using BAL;
 using BMS.BAL.Interface;
+using MyApp.Entities;
 
 namespace BMS
 {

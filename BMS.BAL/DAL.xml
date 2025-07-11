@@ -4,56 +4,6 @@
         <name>BMS.BAL</name>
     </assembly>
     <members>
-        <member name="T:BMS.BAL.Interface.IDepartmentService">
-            <summary>  
-            Interface for department-related services.  
-            </summary>  
-        </member>
-        <member name="T:BAL.Departments">
-            <summary>
-            Represents a department entity with properties for ID, Name, Description, and other metadata.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.ID">
-            <summary>
-            Gets or sets the unique identifier for the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.Name">
-            <summary>
-            Gets or sets the name of the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.Description">
-            <summary>
-            Gets or sets the description of the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.CreatedByUserID">
-            <summary>
-            Gets or sets the ID of the user who created the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.CreationDate">
-            <summary>
-            Gets or sets the creation date of the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.UpdatedByUserID">
-            <summary>
-            Gets or sets the ID of the user who last updated the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.LastUpdatedDate">
-            <summary>
-            Gets or sets the last updated date of the department.
-            </summary>
-        </member>
-        <member name="P:BAL.Departments.IsActive">
-            <summary>
-            Gets or sets a value indicating whether the department is active.
-            </summary>
-        </member>
         <member name="T:BAL.DepartmentService">
             <summary>
             Provides services for managing departments, including retrieval, creation, updating, and deletion.
@@ -89,14 +39,14 @@
             <param name="DepartmentName">The name of the department.</param>
             <returns>The department with the specified name.</returns>
         </member>
-        <member name="M:BAL.DepartmentService.SaveAsync(BAL.Departments)">
+        <member name="M:BAL.DepartmentService.SaveAsync(MyApp.Entities.Departments)">
             <summary>
             Saves a new department or updates an existing one asynchronously.
             </summary>
             <param name="department">The department to save or update.</param>
             <returns>True if the operation was successful; otherwise, false.</returns>
         </member>
-        <member name="M:BAL.DepartmentService.UpdateAsync(BAL.Departments)">
+        <member name="M:BAL.DepartmentService.UpdateAsync(MyApp.Entities.Departments)">
             <summary>
             
             </summary>
@@ -117,6 +67,11 @@
             </summary>
             <param name="TableName">The name of the table containing department records.</param>
             <returns>The total number of department records.</returns>
+        </member>
+        <member name="T:BMS.BAL.Interface.IDepartmentService">
+            <summary>  
+            Interface for department-related services.  
+            </summary>  
         </member>
     </members>
 </doc>

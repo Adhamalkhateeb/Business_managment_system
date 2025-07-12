@@ -18,12 +18,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
     <PackageReference Include="NPOI" Version="2.7.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BMS.Utilities\BMS.Utilities.csproj" />
-    <ProjectReference Include="..\Business Managment System\MyApp.Entities\MyApp.Entities.csproj" />
+    <ProjectReference Include="..\BMS.DTOs\BMS.DTOs.csproj" />
+    <ProjectReference Include="..\BMS.InfraStructure\BMS.InfraStructure.csproj" />
   </ItemGroup>
+
 
 </Project>

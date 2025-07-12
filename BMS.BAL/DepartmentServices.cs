@@ -1,29 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BAL.Interface;
+﻿
 using BMS.BAL.Interface;
-using BMS.DAL.Interface;
-using MyApp.Entities;
+using BMS.DAL.Interfaces;
+using BMS.DTOs;
+using BMS.InfraStructure.InfraStructure.interfaces;
 
-namespace BAL
+
+
+namespace BMS.BAL
 {
     /// <summary>
     /// Provides services for managing departments, including retrieval, creation, updating, and deletion.
     /// </summary>
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private const string className = nameof(DepartmentService);
+        private readonly IRepository<DepartmentDTO> _departmentRepository;
+        private readonly ILogger _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DepartmentService"/> class with the specified repository.
         /// </summary>
         /// <param name="repo">The repository used for department operations.</param>
-        public DepartmentService(IDepartmentRepository repo)
+        public DepartmentService(IRepository<DepartmentDTO> departmentRepository, ILogger logger)
         {
-            _departmentRepository = repo;
+            _departmentRepository = departmentRepository;
+            _logger = logger;
         }
 
         /// <summary>
@@ -34,7 +35,7 @@ namespace BAL
         /// <param name="column">The column to filter by (optional).</param>
         /// <param name="value">The value to filter by (optional).</param>
         /// <returns>A list of departments.</returns>
-        public async Task<List<Departments>> GetAllAsync(int? page, int? rowCount, string? column = null, string? value = null) 
+        public async Task<List<DepartmentDTO>> GetAllAsync(int? page, int? rowCount, string? column , string? value) 
         {
             try
             {
@@ -42,7 +43,8 @@ namespace BAL
             }
             catch (Exception ex)
             {
-                return null;
+                _logger.LogError($"[{className}.{nameof(GetAllAsync)}] {ex.Message}");
+                return new List<DepartmentDTO>(); // return empty list instead of null
             }
         }
 
@@ -51,18 +53,17 @@ namespace BAL
         /// </summary>
         /// <param name="departmentID">The ID of the department.</param>
         /// <returns>The department with the specified ID.</returns>
-        public async Task<Departments> GetInfoAsync(int departmentID)
+        public async Task<DepartmentDTO> GetInfoAsync(int id)
         {
-            Departments result;
             try
             {
-                result = await _departmentRepository.GetInfoAsync(departmentID);
+                return await _departmentRepository.GetInfoAsync(id);
             }
             catch (Exception ex)
             {
-                result = null;
+                _logger.LogError($"[{className}.{nameof(GetInfoAsync)},ByID] ID: {id}, Error: {ex.Message}");
+                return null!;
             }
-            return result;
         }
 
         /// <summary>
@@ -70,59 +71,56 @@ namespace BAL
         /// </summary>
         /// <param name="DepartmentName">The name of the department.</param>
         /// <returns>The department with the specified name.</returns>
-        public async Task<Departments> GetInfoAsync(string DepartmentName)
+        public async Task<DepartmentDTO> GetInfoAsync(string name)
         {
-            Departments result;
             try
             {
-                result = await _departmentRepository.GetInfoAsync(DepartmentName);
+                return await _departmentRepository.GetInfoAsync(name);
             }
             catch (Exception ex)
             {
-                result = null;
+                _logger.LogError($"[{className}.{nameof(GetInfoAsync)},ByName] Name: {name}, Error: {ex.Message}");
+                return null!;
             }
-            return result;
         }
 
+ 
         /// <summary>
-        /// Saves a new department or updates an existing one asynchronously.
+        /// Updates an existing department asynchronously.
         /// </summary>
-        /// <param name="department">The department to save or update.</param>
-        /// <returns>True if the operation was successful; otherwise, false.</returns>
-        public async Task<bool> SaveAsync(Departments department)
+        /// <param name="department">The department to update.</param>
+        /// <returns>True if the update was successful; otherwise, false.</returns>
+        public async Task<bool> UpdateAsync(DepartmentDTO department)
         {
             try
             {
-                if (department.ID == -1)
-                {
-                    return await AddNewAsync(department);
-                }
-                else
-                {
-                    return await UpdateAsync(department);
-                }
+                return await _departmentRepository.UpdateAsync(department);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"{className}.{nameof(UpdateAsync)}] ID: {department.ID}, Error: {ex.Message}");
                 return false;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        public async Task<bool> UpdateAsync(Departments department)
-        {
-            return await _departmentRepository.UpdateAsync(department);
-        }
 
-        public async Task<bool> AddNewAsync(Departments department)
+
+        /// <summary>
+        /// Adds a new department asynchronously.
+        /// </summary>
+        /// <param name="department">The department to add.</param>
+        /// <returns>The ID of the newly added department, or -1 if failed.</returns>
+        public async Task<int> AddAsync(DepartmentDTO department)
         {
-            var newId = await _departmentRepository.AddNewAsync(department);
-            department.ID = newId;
-            return newId != -1;
+            try
+            {
+                return await _departmentRepository.AddNewAsync(department);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{className}.{nameof(AddAsync)}] {ex.Message}");
+                return -1;
+            }
         }
 
         /// <summary>
@@ -131,14 +129,15 @@ namespace BAL
         /// <param name="id">The ID of the department to delete.</param>
         /// <param name="UserID">The ID of the user performing the deletion (optional).</param>
         /// <returns>True if the operation was successful; otherwise, false.</returns>
-        public async Task<bool> DeleteAsync(int id, int? UserID)
+        public async Task<bool> DeleteAsync(int id, int? userId)
         {
             try
             {
-                return await _departmentRepository.DeleteAsync(id, UserID);
+                return await _departmentRepository.DeleteAsync(id, userId);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"[{className}.{nameof(DeleteAsync)}] ID: {id}, Error: {ex.Message}");
                 return false;
             }
         }
@@ -148,15 +147,44 @@ namespace BAL
         /// </summary>
         /// <param name="TableName">The name of the table containing department records.</param>
         /// <returns>The total number of department records.</returns>
-        public async Task<int> GetNumberOfRecordsAsync(string TableName)
+        public async Task<int> GetCountAsync(string tableName)
         {
             try
             {
-                return await _departmentRepository.GetNumberOfRecordsAsync(TableName);
+                return await _departmentRepository.GetNumberOfRecordsAsync(tableName);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"[{className}.{nameof(GetCountAsync)}] Table: {tableName}, Error: {ex.Message}");
                 return 0;
+            }
+        }
+
+
+        /// <summary>
+        /// Saves a new department or updates an existing one asynchronously.
+        /// </summary>
+        /// <param name="department">The department to save or update.</param>
+        /// <returns>True if the operation was successful; otherwise, false.</returns>
+        public async Task<bool> SaveAsync(DepartmentDTO department)
+        {
+            try
+            {
+                if (department.ID == -1)
+                {
+                    var id = await AddAsync(department);
+                    department.ID = id;
+                    return id != -1;
+                }
+                else
+                {
+                    return await UpdateAsync(department);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[{className}.{nameof(SaveAsync)}] {ex.Message}");
+                return false;
             }
         }
     }

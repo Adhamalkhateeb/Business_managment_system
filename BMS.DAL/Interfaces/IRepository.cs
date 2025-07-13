@@ -60,6 +60,6 @@ namespace BMS.DAL.Interfaces
         /// </summary>
         /// <param name="TableName">The name of the table to count records in.</param>
         /// <returns>A task that represents the asynchronous operation. The task result is the number of records.</returns>
-        Task<int> GetNumberOfRecordsAsync(string TableName);
+        Task<long> GetNumberOfRecordsAsync(string TableName);
     }
 }

@@ -8,7 +8,7 @@ public interface ICrudService<T>
     Task<int> AddAsync(T entity);
     Task<bool> UpdateAsync(T entity);
     Task<bool> DeleteAsync(int id, int? userId);
-    Task<int> GetCountAsync(string tableName);
+    Task<long> GetCountAsync(string tableName);
 
     Task<bool> SaveAsync(T entity);
 }

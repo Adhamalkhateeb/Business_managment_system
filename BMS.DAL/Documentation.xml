@@ -13,7 +13,7 @@
             <summary>
             Initializes a new instance of the <see cref="T:DAL.DepartmentRepository"/> class.
             </summary>
-            <param name="db">The stored procedure runner instance.</param>
+            <param name="SP">The stored procedure runner instance.</param>
         </member>
         <member name="M:DAL.DepartmentRepository.AddNewAsync(BMS.DTOs.DepartmentDTO)">
             <summary>

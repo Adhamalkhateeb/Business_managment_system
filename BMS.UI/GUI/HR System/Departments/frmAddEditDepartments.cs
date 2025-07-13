@@ -124,9 +124,9 @@ namespace BMS
                 }
                 else
                 {
-                    MessageBox.Show("حدث خطأ أثناء الحفظ", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("حدث خطأ اثناء الحفظ , يرجي التاكد من عدم انشاء هذا القسم مسبقا", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                }
+                } 
             }finally
             {
                 btnSave.Enabled = true;
@@ -181,6 +181,10 @@ namespace BMS
             txtDepartment.Text = "";
             txtDescription.Text = "";
             btnNew.Visible = false;
+            btnSave.Text = "حفظ";
+            lblTitle.Text = "إضافة قسم";
+            _Department = new DepartmentDTO();
+
 
         }
 

@@ -46,6 +46,7 @@
             label2 = new Label();
             lblCount = new Label();
             panel1 = new Panel();
+            lblLoading = new Label();
             btnExport = new Button();
             btnSearch = new Button();
             btnForward = new Button();
@@ -53,6 +54,7 @@
             pictureBox1 = new PictureBox();
             btnClose = new Button();
             btnAdd = new Button();
+            timerLoading = new System.Windows.Forms.Timer(components);
             cmsDepartments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDepartments).BeginInit();
             panel1.SuspendLayout();
@@ -113,6 +115,8 @@
             dgvDepartments.AllowUserToAddRows = false;
             dgvDepartments.AllowUserToDeleteRows = false;
             dgvDepartments.AllowUserToOrderColumns = true;
+            dgvDepartments.AllowUserToResizeColumns = false;
+            dgvDepartments.AllowUserToResizeRows = false;
             dgvDepartments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvDepartments.BackgroundColor = SystemColors.ButtonHighlight;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -153,9 +157,7 @@
             dgvDepartments.RowTemplate.Height = 40;
             dgvDepartments.Size = new Size(830, 375);
             dgvDepartments.TabIndex = 0;
-            dgvDepartments.CellContentClick += dgvDepartments_CellContentClick;
             dgvDepartments.CellDoubleClick += dgvDepartments_CellDoubleClick;
-            dgvDepartments.DoubleClick += dgvDepartments_DoubleClick;
             // 
             // label1
             // 
@@ -235,6 +237,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(lblLoading);
             panel1.Controls.Add(btnExport);
             panel1.Controls.Add(btnSearch);
             panel1.Controls.Add(btnForward);
@@ -256,7 +259,18 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(850, 706);
             panel1.TabIndex = 4;
-            panel1.Paint += panel1_Paint;
+            // 
+            // lblLoading
+            // 
+            lblLoading.AutoSize = true;
+            lblLoading.BackColor = Color.Transparent;
+            lblLoading.Font = new Font("Tahoma", 16F, FontStyle.Bold);
+            lblLoading.Location = new Point(346, 455);
+            lblLoading.Name = "lblLoading";
+            lblLoading.RightToLeft = RightToLeft.Yes;
+            lblLoading.Size = new Size(157, 27);
+            lblLoading.TabIndex = 19;
+            lblLoading.Text = "جاري التحميل";
             // 
             // btnExport
             // 
@@ -367,6 +381,10 @@
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += btnAdd_Click;
             // 
+            // timerLoading
+            // 
+            timerLoading.Tick += timerLoading_Tick;
+            // 
             // frmDepartmentList
             // 
             AcceptButton = btnSearch;
@@ -382,7 +400,7 @@
             RightToLeftLayout = true;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
-            FormClosing += frmDepartments_FormClosing;
+            FormClosing += frmDepartmentList_FormClosing;
             Load += frmDepartments_Load;
             cmsDepartments.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvDepartments).EndInit();
@@ -414,5 +432,7 @@
         private System.Windows.Forms.Button btnBack;
         private Button btnSearch;
         private Button btnExport;
+        private Label lblLoading;
+        private System.Windows.Forms.Timer timerLoading;
     }
 }

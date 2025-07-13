@@ -31,6 +31,7 @@ namespace BMS
 
             dataGridView.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#3498DB");
             dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+            dataGridView.AllowUserToOrderColumns = true;
         }
 
 

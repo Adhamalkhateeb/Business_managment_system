@@ -16,6 +16,8 @@ namespace BMS
         private readonly IDepartmentService _departmentService;
         private int _PageNumber = 1;
         private int _PageSize = 8;
+        private long _TotalRecords;
+        private int dotCount = 0;
 
 
 
@@ -23,9 +25,6 @@ namespace BMS
         {
             InitializeComponent();
             _departmentService = departmentService;
-            // dgvDepartments.RightToLeft = RightToLeft.Yes;
-
-
         }
 
 
@@ -37,6 +36,7 @@ namespace BMS
         {
 
             cbFilter.SelectedIndex = 0;
+            _TotalRecords = await _departmentService.GetCountAsync("Departments");
             await LoadDepartmentsAsync();
 
         }
@@ -46,20 +46,44 @@ namespace BMS
         {
             btnBack.Enabled = _PageNumber > 1;
 
-            clsglobalSettings.AdjustGridDesign(dgvDepartments);
 
-            _dtAllDepartments = await _departmentService.GetAllAsync(_PageNumber, _PageSize, null, null);
-
-            if (_dtAllDepartments == null)
+            try
             {
-                MessageBox.Show("حدث خطأ اثناء استرجاع البيانات. يرجى إعادة المحاولة", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+
+                lblLoading.Visible = true;
+                timerLoading.Start();
+                dgvDepartments.Visible = false;
+                this.Cursor = Cursors.WaitCursor;
+
+                dgvDepartments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                dgvDepartments.SuspendLayout();
+                dgvDepartments.DataSource = null;
+
+                
+                
+
+                _dtAllDepartments = await _departmentService.GetAllAsync(_PageNumber, _PageSize, null, null);
+
+                if (_dtAllDepartments == null)
+                {
+                    MessageBox.Show("حدث خطأ اثناء استرجاع البيانات. يرجى إعادة المحاولة", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                dgvDepartments.DataSource = _dtAllDepartments;
+
+                FormatGrid();
+
+                btnForward.Enabled = (_TotalRecords > _PageSize * _PageNumber);
+
+                lblCount.Text = _dtAllDepartments.Count.ToString(); 
             }
-            dgvDepartments.DataSource = _dtAllDepartments;
-
-            FormatGrid();
-
-            btnForward.Enabled = (await _departmentService.GetCountAsync("Departments") > _PageSize * _PageNumber);
+            finally
+            {
+                timerLoading.Stop();
+                lblLoading.Visible = false;
+                dgvDepartments.Visible = true;
+                this.Cursor = Cursors.Default;
+            }
         }
 
 
@@ -68,8 +92,8 @@ namespace BMS
 
         private void FormatGrid()
         {
-            
 
+            clsglobalSettings.AdjustGridDesign(dgvDepartments);
 
             foreach (DataGridViewColumn col in dgvDepartments.Columns)
             {
@@ -97,7 +121,7 @@ namespace BMS
             dgvDepartments.Columns["LastUpdatedDate"].Visible = true;
             dgvDepartments.Columns["LastUpdatedDate"].DisplayIndex = 3;
 
-
+            dgvDepartments.AllowUserToOrderColumns = true;
 
             cbFilter.Visible = true;
         }
@@ -143,6 +167,7 @@ namespace BMS
             using var frm = new frmAddEditDepartments(_departmentService);
             frm.DepartmentSaved += async (s, e) =>
             {
+                _TotalRecords++;
                 await LoadDepartmentsAsync();
             };
 
@@ -157,6 +182,7 @@ namespace BMS
             using var frm = new frmAddEditDepartments(_departmentService);
             frm.DepartmentSaved += async (s, e) =>
             {
+                _TotalRecords++;
                 await LoadDepartmentsAsync();
             };
             frm.ShowDialog();
@@ -170,6 +196,7 @@ namespace BMS
             using var frm = new frmAddEditDepartments(id, _departmentService);
             frm.DepartmentSaved += async (s, e) =>
             {
+                _TotalRecords++;
                 await LoadDepartmentsAsync();
             };
             frm.ShowDialog();
@@ -190,6 +217,7 @@ namespace BMS
             if (Department != null && await _departmentService.DeleteAsync(Department.ID, Department.UpdatedByUserID))
             {
                 MessageBox.Show("تم حذف القسم بنجاح", "حذف القسم", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _TotalRecords--;
                 await LoadDepartmentsAsync();
             }
             else
@@ -236,10 +264,6 @@ namespace BMS
 
         }
 
-        private void frmDepartments_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
 
         private async void btnSearch_Click(object sender, EventArgs e)
         {
@@ -286,12 +310,6 @@ namespace BMS
             id = Convert.ToInt32(dgvDepartments.CurrentRow.Cells["ID"].Value);
             return true;
         }
-
-        private void dgvDepartments_DoubleClick(object sender, EventArgs e)
-        {
-
-        }
-
         private async void dgvDepartments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -380,14 +398,18 @@ namespace BMS
             }
         }
 
-        private void dgvDepartments_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
 
+
+        private void timerLoading_Tick(object sender, EventArgs e)
+        {
+            dotCount = (dotCount + 1) % 4;
+            lblLoading.Text =  "جاري التحميل" + new string('.', dotCount);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void frmDepartmentList_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            e.Cancel = true;
+            this.Hide();
         }
     }
 }

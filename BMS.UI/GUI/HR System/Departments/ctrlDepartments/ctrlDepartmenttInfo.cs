@@ -15,7 +15,7 @@ namespace BMS
         private bool enableUpdateDepartment = true;
 
 
-        public event EventHandler<DepartmentDTO>? DepartmentUpdated;
+        public event EventHandler<DepartmentDTO> DepartmentUpdated;
 
         public int DepartmentID => _departmentID;
         public DepartmentDTO SelectedDepartment => _Department;
@@ -95,12 +95,16 @@ namespace BMS
         private async void  llblUpdateDepartment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             using var frm = new frmAddEditDepartments(_departmentID,_departmentService);
+            frm.DepartmentSaved += Frm_DepartmentSaved;
             frm.ShowDialog();
-            await LoadDepartmentInfo(_departmentID);
-
-            DepartmentUpdated?.Invoke(this, _Department);
+                   
         }
 
+        private async void Frm_DepartmentSaved(object? sender, EventArgs e)
+        {
+            await LoadDepartmentInfo(_departmentID);
+            DepartmentUpdated?.Invoke(this, _Department);
+        }
 
         public void SetService(IDepartmentService service)
         {

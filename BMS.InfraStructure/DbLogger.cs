@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using BMS.InfraStructure.InfraStructure.interfaces;
+using Dapper;
 
 
 namespace BMS.InfraStructure.Logging
@@ -21,14 +22,14 @@ namespace BMS.InfraStructure.Logging
         {
             try
             {
-                var parameters = new[]
-                {
-                    new SqlParameter("@Message", SqlDbType.NVarChar) { Value = message },
-                    new SqlParameter("@LoggedAt", SqlDbType.DateTime) { Value = DateTime.Now },
-                    new SqlParameter("@Severity", SqlDbType.NVarChar) { Value = "Error" }
-                };
 
-                await _runner.ExecuteNonQueryAsync(SPHelper.GetName(SPLogger.LogError), parameters);
+                var param = new DynamicParameters();
+                param.Add("@Message", message);
+                param.Add("@LoggedAt", DateTime.Now);
+                param.Add("@Severity", "Error");
+               
+
+                await _runner.ExecuteNonQueryAsync(SPHelper.GetName(SPLogger.LogError), param);
             }
             catch (Exception ex)
             {

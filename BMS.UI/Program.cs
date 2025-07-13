@@ -76,6 +76,7 @@ namespace BMS.UI
            services.AddScoped<IRepository<DepartmentDTO>, DepartmentRepository>();
 
 
+
             //BAL
             services.AddScoped<IDepartmentService, DepartmentService>();
 

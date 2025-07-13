@@ -147,7 +147,7 @@ namespace BMS.BAL
         /// </summary>
         /// <param name="TableName">The name of the table containing department records.</param>
         /// <returns>The total number of department records.</returns>
-        public async Task<int> GetCountAsync(string tableName)
+        public async Task<long> GetCountAsync(string tableName)
         {
             try
             {

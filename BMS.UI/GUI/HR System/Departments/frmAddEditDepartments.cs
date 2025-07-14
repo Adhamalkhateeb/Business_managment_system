@@ -1,9 +1,9 @@
 ﻿
-using System.ComponentModel;
-
-using DAL;
 using BMS.BAL.Interface;
 using BMS.DTOs;
+using DAL;
+using DocumentFormat.OpenXml.Bibliography;
+using System.ComponentModel;
 
 namespace BMS
 {
@@ -11,51 +11,134 @@ namespace BMS
 
     public partial class frmAddEditDepartments : Form
     {
-        private int DepartmentID = -1;
-        private IDepartmentService _DepartmentService;
-        private DepartmentDTO _Department;
+        private enum FormMode { AddNew = 1, Update = 2 }
 
+        private readonly IDepartmentService _departmentService;
+        private DepartmentDTO _department;
+        private FormMode _mode;
+        private const int MaxDescriptionLength = 250;
+
+       
+        private int DepartmentID { get; set; } = -1;
+
+       
 
         public event EventHandler DepartmentSaved;
 
-        private void OnDepartmentSaved()
-        {
-            DepartmentSaved?.Invoke(this, EventArgs.Empty);
-        }
+        public frmAddEditDepartments(IDepartmentService departmentService)
+            : this(departmentService, -1) { }
 
-        public enum enMode { AddNew = 1, Update = 2 }
-        private enMode _Mode = enMode.AddNew;
-
-
-        public frmAddEditDepartments()
+        public frmAddEditDepartments(IDepartmentService departmentService, int departmentId)
         {
             InitializeComponent();
+            _departmentService = departmentService ?? throw new ArgumentNullException(nameof(departmentService));
+
+            InitializeForm(departmentId);
+            ConfigureFormBehavior();
         }
-        public frmAddEditDepartments(IDepartmentService departmentService) : this()
+
+       
+        
+
+
+        #region Initialization
+
+
+
+        private void InitializeForm(int departmentId)
         {
+            if (departmentId > 0)
+            {
+                _mode = FormMode.Update;
+                DepartmentID = departmentId;
+                ConfigureUpdateMode();
+            }
+            else
+            {
+                _mode = FormMode.AddNew;
+                _department = new DepartmentDTO();
+                ConfigureAddMode();
+            }
+        }
 
-            _DepartmentService = departmentService;
-            _Mode = enMode.AddNew;
-            _Department = new DepartmentDTO();
 
-
+        private void ConfigureFormBehavior()
+        {
             btnClose.CausesValidation = false;
+            this.ActiveControl = txtDepartment;
+        }
+
+        private void ConfigureAddMode()
+        {
             this.Text = lblTitle.Text = "إضافة قسم";
+            btnSave.Text = "حفظ";
+            btnNew.Visible = false;
+            lblDepartmentID.Text = "تلقائي";
         }
 
-        public frmAddEditDepartments(int departmentID, IDepartmentService departmentService) : this()
+        private void ConfigureUpdateMode()
+        {
+            this.Text = lblTitle.Text = "تعديل بيانات القسم";
+            btnSave.Text = "تعديل";
+            btnNew.Visible = true;
+        }
+
+        #endregion
+
+
+
+        #region Event Handlers
+
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private async void btnSave_Click(object sender, EventArgs e)
+        {
+            if (!ValidateForm()) return;
+
+            try
+            {
+                btnSave.Enabled = false;
+                await SaveDepartment();
+            }
+            finally
+            {
+                btnSave.Enabled = true;
+            }
+
+
+        }
+
+        private async void frmAddEditDepartments_Load(object sender, EventArgs e)
         {
 
-            _DepartmentService = departmentService;
-            DepartmentID = departmentID;
-            _Mode = enMode.Update;
+            if (_mode == FormMode.Update)
+            {
+                await LoadDepartmentData();
+            }
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            ResetFormForNewEntry();
+        }
+
+        #endregion
 
 
-
-            btnClose.CausesValidation = false;
-            this.Text = lblTitle.Text = "تعديل بيانات القسم";
-            this.btnSave.Text = "تعديل";
-
+        #region Validation
+        private void txtDescription_Validating(object sender, CancelEventArgs e)
+        {
+            if (txtDescription.Text.Length > 250)
+            {
+                ep.SetError(txtDescription, "الوصف طويل جدًا (أقصى حد 250 حرف).");
+                e.Cancel = true;
+            }
+            else
+                ep.SetError(txtDescription, null);
         }
 
         private void txtDepartment_Validating(object sender, CancelEventArgs e)
@@ -70,133 +153,127 @@ namespace BMS
                 ep.SetError(txtDepartment, null);
 
 
-
-
-
-
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private bool ValidateForm()
         {
-            this.Close();
+            return ValidateChildren(ValidationConstraints.Enabled);
         }
 
-        private async void btnSave_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Data Operations
+
+
+        private async Task LoadDepartmentData()
         {
-            if (!this.ValidateChildren()) return;
-            btnSave.Enabled = false;
+            _department = await _departmentService.GetInfoAsync(DepartmentID);
 
-            try
+            if (_department == null)
             {
-
-
-
-
-                _Department.Name = txtDepartment.Text.Trim();
-                _Department.Description = string.IsNullOrEmpty(txtDescription.Text) ? null : txtDescription.Text;
-                if (_Mode == enMode.AddNew)
-                {
-                    _Department.CreatedByUserID = 1;
-                    // Here will be Active User ID
-
-                }
-                else
-                {
-                    _Department.UpdatedByUserID = 1;
-                    // Here will be Active User ID
-
-                }
-
-
-
-                if (await _DepartmentService.SaveAsync(_Department))
-                {
-                    MessageBox.Show("تم الحفظ بنجاح", "تم الحفظ", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    lblDepartmentID.Text = _Department.ID.ToString();
-                    this.Text = lblTitle.Text = "تعديل بيانات القسم";
-                    btnSave.Text = "تعديل";
-                    _Mode = enMode.Update;
-                    btnNew.Visible = true;
-                    btnNew.Focus();
-                    OnDepartmentSaved(); 
-
-                }
-                else
-                {
-                    MessageBox.Show("حدث خطأ اثناء الحفظ , يرجي التاكد من عدم انشاء هذا القسم مسبقا", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                } 
-            }finally
-            {
-                btnSave.Enabled = true;
+                MessageBox.Show("حدث خطأ أثناء تحميل بيانات القسم", "خطأ",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
             }
 
-           
-
-
+            PopulateFormFields();
         }
 
-        private async void frmAddEditDepartments_Load_1(object sender, EventArgs e)
+        private void PopulateFormFields()
         {
+            lblDepartmentID.Text = _department.ID.ToString();
+            txtDepartment.Text = _department.Name;
+            txtDescription.Text = _department.Description ?? string.Empty;
+            txtDepartment.SelectAll();
+        }
 
-            txtDepartment.Focus();
+        private async Task SaveDepartment()
+        {
+            UpdateDepartmentFromForm();
 
+            bool saveResult = await _departmentService.SaveAsync(_department);
 
-
-            btnClose.CausesValidation = false;
-
-
-            if (_Mode == enMode.Update)
+            if (saveResult)
             {
-                _Department = await _DepartmentService.GetInfoAsync(DepartmentID);
-
-                if (_Department != null)
-                {
-                    lblDepartmentID.Text = _Department.ID.ToString();
-                    txtDepartment.Text = _Department.Name;
-                    txtDescription.Text = (string)(_Department.Description ?? "");
-                    txtDepartment.SelectAll();
-                }
-                else
-                {
-                    MessageBox.Show("حدث خطأ أثناء تحميل بيانات القسم", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
-                }
-            }
-
-
-
-        }
-
-        private void lblTitle_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            _Mode = enMode.AddNew;
-            lblDepartmentID.Text = "تلقائي";
-            txtDepartment.Text = "";
-            txtDescription.Text = "";
-            btnNew.Visible = false;
-            btnSave.Text = "حفظ";
-            lblTitle.Text = "إضافة قسم";
-            _Department = new DepartmentDTO();
-
-
-        }
-
-        private void txtDescription_Validating(object sender, CancelEventArgs e)
-        {
-            if (txtDescription.Text.Length > 250)
-            {
-                ep.SetError(txtDescription, "الوصف طويل جدًا (أقصى حد 250 حرف).");
-                e.Cancel = true;
+                ShowSuccessMessage();
+                HandleSuccessfulSave();
+                OnDepartmentSaved();
             }
             else
-                ep.SetError(txtDescription, null);
+            {
+                ShowErrorMessage();
+            }
         }
+
+
+        private void UpdateDepartmentFromForm()
+        {
+            _department.Name = txtDepartment.Text.Trim();
+            _department.Description = string.IsNullOrEmpty(txtDescription.Text) ? null : txtDescription.Text;
+
+            // TODO: Replace with actual user ID from session/context
+            if (_mode == FormMode.AddNew)
+            {
+                _department.CreatedByUserID = 1;
+            }
+            else
+            {
+                _department.UpdatedByUserID = 1;
+            }
+        }
+
+        #endregion
+
+
+        #region UI Helpers
+
+        private void ResetFormForNewEntry()
+        {
+            _mode = FormMode.AddNew;
+            _department = new DepartmentDTO();
+            ConfigureAddMode();
+            ClearFormFields();
+        }
+
+        private void ClearFormFields()
+        {
+            lblDepartmentID.Text = "تلقائي";
+            txtDepartment.Text = string.Empty;
+            txtDescription.Text = string.Empty;
+        }
+
+        private void ShowSuccessMessage()
+        {
+            MessageBox.Show("تم الحفظ بنجاح", "تم الحفظ",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowErrorMessage()
+        {
+            MessageBox.Show("حدث خطأ اثناء الحفظ , يرجي التاكد من عدم انشاء هذا القسم مسبقا",
+                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void HandleSuccessfulSave()
+        {
+            if (_mode == FormMode.AddNew)
+            {
+                _mode = FormMode.Update;
+                ConfigureUpdateMode();
+                lblDepartmentID.Text = _department.ID.ToString();
+            }
+        }
+
+        protected virtual void OnDepartmentSaved()
+        {
+            DepartmentSaved?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+     
+
     }
+
 }

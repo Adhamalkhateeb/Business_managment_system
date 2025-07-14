@@ -101,7 +101,7 @@
             lblTitle.TabIndex = 6;
             lblTitle.Text = "اضافة قسم";
             lblTitle.TextAlign = ContentAlignment.TopCenter;
-            lblTitle.Click += lblTitle_Click;
+           
             // 
             // label2
             // 
@@ -202,7 +202,7 @@
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "frmAddEditDepartments";
-            Load += frmAddEditDepartments_Load_1;
+            Load += frmAddEditDepartments_Load;
             ((System.ComponentModel.ISupportInitialize)ep).EndInit();
             ResumeLayout(false);
             PerformLayout();

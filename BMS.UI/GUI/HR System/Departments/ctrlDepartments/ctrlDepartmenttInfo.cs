@@ -94,7 +94,7 @@ namespace BMS
 
         private async void  llblUpdateDepartment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using var frm = new frmAddEditDepartments(_departmentID,_departmentService);
+            using var frm = new frmAddEditDepartments(_departmentService,_departmentID);
             frm.DepartmentSaved += Frm_DepartmentSaved;
             frm.ShowDialog();
                    

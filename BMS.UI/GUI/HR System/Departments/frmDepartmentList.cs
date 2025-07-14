@@ -162,7 +162,7 @@ namespace BMS
         private async Task ShowDepartmentForm(int? departmentId)
         {
             using var form = departmentId.HasValue ?
-                new frmAddEditDepartments(departmentId.Value, _departmentService) :
+                new frmAddEditDepartments( _departmentService, departmentId.Value) :
                 new frmAddEditDepartments(_departmentService);
 
             form.DepartmentSaved += async (s, e) =>
@@ -314,7 +314,7 @@ namespace BMS
             try
             {
                 this.Cursor = Cursors.WaitCursor;
-                _exporter.ExportToExcel(_departments, filePath);
+                _exporter.ExportToExcel(await _departmentService.GetAllAsync(null,null,null,null), filePath);
 
                 if (ConfirmOpenExportedFile())
                 {

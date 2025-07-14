@@ -1,5 +1,6 @@
 ﻿
 
+using BMS.Interfaces;
 using BMS.Properties;
 using BMS.UI;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,89 +12,78 @@ namespace BMS
     {
 
         private readonly IServiceProvider _serviceProvider;
-        public frmMain(IServiceProvider serviceProvider)
+        private readonly IFormManager _formManager;
+
+        public frmMain(IServiceProvider serviceProvider, IFormManager formManager)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
-            GetScreenState();
-            LoadMenuOrder();
+            _formManager = formManager;
+
+            RestoreWindowState();
+            RestoreMenuOrder();
         }
 
-        private void GetScreenState()
+        #region Form State Management
+
+        private void RestoreWindowState()
         {
-            this.WindowState = Settings.Default.IsMaximized ? FormWindowState.Maximized : FormWindowState.Normal;
+            this.WindowState = Settings.Default.IsMaximized ?
+                FormWindowState.Maximized : FormWindowState.Normal;
         }
-        private void LoadMenuOrder()
+        private void RestoreMenuOrder()
         {
             string order = Properties.Settings.Default.MenuOrder;
-
             if (string.IsNullOrWhiteSpace(order)) return;
-
-            string[] names = order.Split(',');
 
             var orderedItems = new List<ToolStripItem>();
 
-            foreach (string name in names)
+            foreach (string name in order.Split(','))
             {
                 var item = msMain.Items.Find(name, true).FirstOrDefault();
                 if (item != null)
                     orderedItems.Add(item);
             }
 
-            msMain.Items.Clear();
-            msMain.Items.AddRange(orderedItems.ToArray());
-        }
-        public static void ShowFormIfNotOpen<T>() where T : Form, new()
-        {
-            foreach (Form frm in Application.OpenForms)
+            if (orderedItems.Any())
             {
-                if (frm is T)
-                {
-                    frm.Show();
-                    frm.BringToFront();
-                    CenterForm(frm);
-                    return;
-                }
+                msMain.Items.Clear();
+                msMain.Items.AddRange(orderedItems.ToArray());
             }
-
-            T newForm = new T();
-            newForm.Show();
         }
 
-        public static void ShowFormIfNotOpen<T>(Func<T> formFactory) where T : Form
+        private void SaveWindowState()
         {
-            foreach (Form frm in Application.OpenForms)
-            {
-                if (frm is T)
-                {
-                    frm.Show();
-                    frm.BringToFront();
-                    CenterForm(frm);
-                    return;
-                }
-            }
-
-            T newForm = formFactory();
-            newForm.Show();
+            Settings.Default.IsMaximized = (WindowState == FormWindowState.Maximized);
+            Settings.Default.Save();
         }
 
-        private static void CenterForm(Form frm)
+        private void SaveMenuOrder()
         {
-            int x = (Screen.PrimaryScreen.Bounds.Width - frm.Width) / 2;
-            int y = (Screen.PrimaryScreen.Bounds.Height - frm.Height) / 2;
-            frm.Location = new Point(x, y);
+            var items = msMain.Items.OfType<ToolStripMenuItem>()
+                .Where(x => !string.IsNullOrEmpty(x.Name))
+                .Select(x => x.Name);
+
+            Settings.Default.MenuOrder = string.Join(",", items);
+            Settings.Default.Save();
         }
 
+        #endregion
 
+
+        #region Event Handlers
+        
+
+  
 
         private void SearchDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowFormIfNotOpen(() => _serviceProvider.GetRequiredService<frmDepartmentList>());
+            _formManager.ShowForm<frmDepartmentList>(this);
         }
 
         private void AddDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowFormIfNotOpen(() => _serviceProvider.GetRequiredService<frmAddEditDepartments>());
+            _formManager.ShowDialogForm<frmAddEditDepartments>(this);
         }
 
         private void SearchJobToolStripMenuItem_Click(object sender, EventArgs e)
@@ -112,30 +102,22 @@ namespace BMS
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SaveScreenState();
+            SaveWindowState();
             SaveMenuOrder();
         }
 
 
-        private void SaveScreenState()
-        {
-            Settings.Default.IsMaximized = (WindowState == FormWindowState.Maximized) ? true : false;
-            Settings.Default.Save();
-        }
 
-        // Save Items of Menu that user orderd for next launch
-        private void SaveMenuOrder()
-        {
+    
 
-            var items = msMain.Items.OfType<ToolStripMenuItem>().Select(x => x.Name).ToList();
-            string order = string.Join(",", items);
-            Settings.Default.MenuOrder = order;
-            Settings.Default.Save();
-        }
+       
+       
 
         private void EmployeesToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
+
+        #endregion
     }
 }

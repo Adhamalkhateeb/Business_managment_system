@@ -1,4 +1,5 @@
 ﻿
+using BMS;
 using BMS.BAL.Interface;
 using BMS.DTOs;
 using ClosedXML.Excel;
@@ -12,12 +13,14 @@ namespace BMS
 {
     public partial class frmDepartmentList : Form
     {
-        private List<DepartmentDTO> _dtAllDepartments;
+        private List<DepartmentDTO> _departments;
         private readonly IDepartmentService _departmentService;
-        private int _PageNumber = 1;
-        private int _PageSize = 8;
-        private long _TotalRecords;
-        private int dotCount = 0;
+        private int _pageNumber = 1;
+        private const int PageSize = 8;
+        private long _totalRecords;
+        private int _loadingDotCount = 1;
+        private readonly DepartmentGridFormatter _gridFormatter;
+        private readonly DepartmentExporter _exporter;
 
 
 
@@ -25,126 +28,105 @@ namespace BMS
         {
             InitializeComponent();
             _departmentService = departmentService;
+            _gridFormatter = new DepartmentGridFormatter(dgvDepartments);
+            _exporter = new DepartmentExporter();
         }
 
 
 
 
-
-
+        #region Form Lifecycle
         private async void frmDepartments_Load(object sender, EventArgs e)
         {
-
+            
             cbFilter.SelectedIndex = 0;
-            _TotalRecords = await _departmentService.GetCountAsync("Departments");
+            _totalRecords = await _departmentService.GetCountAsync("Departments");
             await LoadDepartmentsAsync();
 
         }
 
-
-        private async Task LoadDepartmentsAsync()
+        private void frmDepartmentList_FormClosing(object sender, FormClosingEventArgs e)
         {
-            btnBack.Enabled = _PageNumber > 1;
+            e.Cancel = true;
+            this.Hide();
+        }
+
+        #endregion
 
 
+        #region Data Loading
+        private async Task LoadDepartmentsAsync(string filterColumn = null, string filterValue = null)
+        {
             try
             {
+                SetLoadingState(true);
 
-                lblLoading.Visible = true;
-                timerLoading.Start();
-                dgvDepartments.Visible = false;
-                this.Cursor = Cursors.WaitCursor;
+                _departments = await _departmentService.GetAllAsync(_pageNumber, PageSize, filterColumn, filterValue);
 
-                dgvDepartments.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-                dgvDepartments.SuspendLayout();
-                dgvDepartments.DataSource = null;
-
-                
-                
-
-                _dtAllDepartments = await _departmentService.GetAllAsync(_PageNumber, _PageSize, null, null);
-
-                if (_dtAllDepartments == null)
+                if (_departments == null)
                 {
-                    MessageBox.Show("حدث خطأ اثناء استرجاع البيانات. يرجى إعادة المحاولة", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowErrorMessage("حدث خطأ اثناء استرجاع البيانات. يرجى إعادة المحاولة");
                     return;
                 }
-                dgvDepartments.DataSource = _dtAllDepartments;
 
-                FormatGrid();
-
-                btnForward.Enabled = (_TotalRecords > _PageSize * _PageNumber);
-
-                lblCount.Text = _dtAllDepartments.Count.ToString(); 
+                BindDataToGrid();
+                UpdatePaginationControls();
             }
             finally
             {
-                timerLoading.Stop();
-                lblLoading.Visible = false;
-                dgvDepartments.Visible = true;
-                this.Cursor = Cursors.Default;
+                SetLoadingState(false);
             }
         }
 
-
-
-
-
-        private void FormatGrid()
+        private void SetLoadingState(bool isLoading)
         {
+            lblLoading.Visible = isLoading;
+            dgvDepartments.Visible = !isLoading;
+            this.Cursor = isLoading ? Cursors.WaitCursor : Cursors.Default;
 
-            clsglobalSettings.AdjustGridDesign(dgvDepartments);
-
-            foreach (DataGridViewColumn col in dgvDepartments.Columns)
-            {
-                col.Visible = false;
-            }
-
-
-            dgvDepartments.Columns["ID"].HeaderText = "رقم المسلسل";
-            dgvDepartments.Columns["ID"].Width = 120;
-            dgvDepartments.Columns["ID"].Visible = true;
-            dgvDepartments.Columns["ID"].DisplayIndex = 0;
-
-            dgvDepartments.Columns["Name"].HeaderText = "القسم";
-            dgvDepartments.Columns["Name"].Width = 190;
-            dgvDepartments.Columns["Name"].Visible = true;
-            dgvDepartments.Columns["Name"].DisplayIndex = 1;
-
-            dgvDepartments.Columns["Description"].HeaderText = "وصف القسم";
-            dgvDepartments.Columns["Description"].Width = 250;
-            dgvDepartments.Columns["Description"].Visible = true;
-            dgvDepartments.Columns["Description"].DisplayIndex = 2;
-
-            dgvDepartments.Columns["LastUpdatedDate"].HeaderText = "تاريخ التعديل";
-            dgvDepartments.Columns["LastUpdatedDate"].Width = 215;
-            dgvDepartments.Columns["LastUpdatedDate"].Visible = true;
-            dgvDepartments.Columns["LastUpdatedDate"].DisplayIndex = 3;
-
-            dgvDepartments.AllowUserToOrderColumns = true;
-
-            cbFilter.Visible = true;
+            if (isLoading)
+                timerLoading.Start();
+            else
+                timerLoading.Stop();
         }
 
+        private void BindDataToGrid()
+        {
+            dgvDepartments.SuspendLayout();
+            dgvDepartments.DataSource = _departments;
+            _gridFormatter.FormatGrid();
+            dgvDepartments.ResumeLayout();
 
+            lblCount.Text = _departments.Count.ToString();
+        }
+
+        private void UpdatePaginationControls()
+        {
+            btnBack.Enabled = _pageNumber > 1;
+            btnForward.Enabled = (_totalRecords > PageSize * _pageNumber);
+        }
+
+        #endregion
+
+
+
+        #region Event Handlers
 
 
         private async void cbFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool isAll = cbFilter.Text == "الكل";
-            btnSearch.Enabled = btnSearch.Visible = txtFilter.Visible = !isAll;
+            bool showAll = cbFilter.Text == "الكل";
+            btnSearch.Enabled = btnSearch.Visible = txtFilter.Visible = !showAll;
 
-
-
-            if (!isAll)
+            if (showAll)
             {
-                txtFilter.Text = "";
-                txtFilter.Focus();
+                _pageNumber = 1;
+                await LoadDepartmentsAsync();
             }
             else
             {
-                _PageNumber = 1;
-                await LoadDepartmentsAsync();
+                txtFilter.Clear();
+                txtFilter.Focus();
             }
 
         }
@@ -158,67 +140,77 @@ namespace BMS
         }
 
 
-
-
-
-
         private async void btnAdd_Click(object sender, EventArgs e)
         {
-            using var frm = new frmAddEditDepartments(_departmentService);
-            frm.DepartmentSaved += async (s, e) =>
-            {
-                _TotalRecords++;
-                await LoadDepartmentsAsync();
-            };
-
-            frm.ShowDialog();
-
-            // Refresh the grid with latest data after adding or editing a department
+            await ShowDepartmentForm(null);
 
         }
 
         private async void AddDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using var frm = new frmAddEditDepartments(_departmentService);
-            frm.DepartmentSaved += async (s, e) =>
-            {
-                _TotalRecords++;
-                await LoadDepartmentsAsync();
-            };
-            frm.ShowDialog();
+            await ShowDepartmentForm(null);
 
         }
 
         private async void UpdateDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!TryGetSelectedDepartmentId(out int id)) return;
+            await ShowDepartmentForm(id);
 
-            using var frm = new frmAddEditDepartments(id, _departmentService);
-            frm.DepartmentSaved += async (s, e) =>
+        }
+
+        private async Task ShowDepartmentForm(int? departmentId)
+        {
+            using var form = departmentId.HasValue ?
+                new frmAddEditDepartments(departmentId.Value, _departmentService) :
+                new frmAddEditDepartments(_departmentService);
+
+            form.DepartmentSaved += async (s, e) =>
             {
-                _TotalRecords++;
+                _totalRecords++;
                 await LoadDepartmentsAsync();
             };
-            frm.ShowDialog();
 
+            form.ShowDialog();
 
+           
         }
 
         private async void DeleteDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!TryGetSelectedDepartmentId(out int id)) return;
 
-            if (MessageBox.Show("هل انت متأكد انك تريد حذف القسم", "حذف القسم", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                return;
+            if (!ConfirmDeletion()) return;
+
+            var result = await TryDeleteDepartmentAsync(id);
+            ShowDeletionResult(result);
+        }
+
+        private async Task<bool> TryDeleteDepartmentAsync(int id)
+        {
+            var department = await _departmentService.GetInfoAsync(id);
+            if (department == null) return false;
+
+            return await _departmentService.DeleteAsync(department.ID, department.UpdatedByUserID);
+        }
 
 
-            DepartmentDTO Department = await _departmentService.GetInfoAsync(id);
+        private bool ConfirmDeletion()
+        {
+            return MessageBox.Show("هل انت متأكد انك تريد حذف القسم",
+                "حذف القسم",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.Yes;
+        }
 
-            if (Department != null && await _departmentService.DeleteAsync(Department.ID, Department.UpdatedByUserID))
+
+        private void ShowDeletionResult(bool success)
+        {
+            if (success)
             {
                 MessageBox.Show("تم حذف القسم بنجاح", "حذف القسم", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _TotalRecords--;
-                await LoadDepartmentsAsync();
+                _totalRecords--;
+                LoadDepartmentsAsync();
             }
             else
             {
@@ -242,24 +234,22 @@ namespace BMS
             };
             frmDepartmentDetails.ShowDialog();
 
-
+            
 
         }
 
         private async void buttonForward_Click(object sender, EventArgs e)
         {
-            _PageNumber++;
+            _pageNumber++;
             await LoadDepartmentsAsync();
         }
 
         private async void buttonBack_Click(object sender, EventArgs e)
         {
-            if (_PageNumber > 1)
+            if (_pageNumber > 1)
             {
-                _PageNumber--;
-
+                _pageNumber--;
                 await LoadDepartmentsAsync();
-
             }
 
         }
@@ -278,23 +268,82 @@ namespace BMS
 
             if (string.IsNullOrEmpty(filterColumn) || string.IsNullOrWhiteSpace(txtFilter.Text))
             {
-                _PageNumber = 1;
+                _pageNumber = 1;
                 await LoadDepartmentsAsync();
                 return;
             }
 
+            string filterValue = filterColumn == "ID" ?
+                txtFilter.Text.Trim() :
+                $"%{txtFilter.Text.Trim()}%";
 
-
-            string filterValue = filterColumn == "ID" ? txtFilter.Text.Trim() : $"%{txtFilter.Text.Trim()}%";
-
-            _PageNumber = 1;
-            _dtAllDepartments = await _departmentService.GetAllAsync(_PageNumber, _PageSize, filterColumn, filterValue);
-            dgvDepartments.DataSource = _dtAllDepartments;
-            lblCount.Text = dgvDepartments.Rows.Count.ToString();
-
-
-
+            _pageNumber = 1;
+            await LoadDepartmentsAsync(filterColumn, filterValue);
         }
+
+
+        private async void dgvDepartments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (!TryGetSelectedDepartmentId(out int id)) return;
+
+            using var form = new frmDepartmentDetails(id, _departmentService);
+            form.ctrlDepartmenttInfo2.DepartmentUpdated += async (s, eArgs) =>
+            {
+                await LoadDepartmentsAsync();
+            };
+
+            form.ShowDialog();
+
+           
+        }
+
+
+
+        private async void btnExport_Click(object sender, EventArgs e)
+        {
+            if (_departments == null || !_departments.Any())
+            {
+                ShowWarningMessage("لا توجد بيانات للتصدير");
+                return;
+            }
+
+            string filePath = GetExportFilePath();
+            if (string.IsNullOrEmpty(filePath)) return;
+
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                _exporter.ExportToExcel(_departments, filePath);
+
+                if (ConfirmOpenExportedFile())
+                {
+                    OpenExportedFile(filePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"فشل تصدير البيانات: {ex.Message}");
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+        
+
+
+
+        private void timerLoading_Tick(object sender, EventArgs e)
+        {
+            _loadingDotCount = (_loadingDotCount % 3) + 1;
+            lblLoading.Text = "جاري التحميل" + new string('.', _loadingDotCount);
+        }
+        #endregion
+
+
+        #region Helper Methods
+
 
 
 
@@ -310,106 +359,113 @@ namespace BMS
             id = Convert.ToInt32(dgvDepartments.CurrentRow.Cells["ID"].Value);
             return true;
         }
-        private async void dgvDepartments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+
+        private string GetExportFilePath()
         {
-            if (e.RowIndex >= 0)
-            {
-                if (!TryGetSelectedDepartmentId(out int id)) return;
-
-                using var frm = new frmDepartmentDetails(id, _departmentService);
-                frm.ctrlDepartmenttInfo2.DepartmentUpdated += async (s, eArgs) =>
-                {
-                    await LoadDepartmentsAsync();
-                };
-                frm.ShowDialog();
-
-            }
-        }
-
-
-
-        private async void btnExport_Click(object sender, EventArgs e)
-        {
-            if (_dtAllDepartments == null || !_dtAllDepartments.Any())
-            {
-                MessageBox.Show("لا توجد بيانات للتصدير", "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            using SaveFileDialog svg = new SaveFileDialog
+            using var saveDialog = new SaveFileDialog
             {
                 Filter = "Excel WorkBook (*.xlsx)|*.xlsx",
                 Title = "تصدير الأقسام إلى ملف Excel",
                 FileName = "Departments.xlsx"
             };
 
-            if (svg.ShowDialog() == DialogResult.OK)
+            return saveDialog.ShowDialog() == DialogResult.OK ? saveDialog.FileName : null;
+        }
+
+        private bool ConfirmOpenExportedFile()
+        {
+            return MessageBox.Show("تم تصدير البيانات بنجاح. هل تريد فتح الملف الآن؟",
+                "نجاح", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        private void OpenExportedFile(string filePath)
+        {
+            Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+        }
+
+        private void ShowWarningMessage(string message)
+        {
+            MessageBox.Show(message, "تحذير", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        #endregion
+
+
+
+    }
+
+
+}
+
+    public class DepartmentGridFormatter
+    {
+        private readonly DataGridView _grid;
+
+        public DepartmentGridFormatter(DataGridView grid)
+        {
+            _grid = grid;
+        }
+
+        public void FormatGrid()
+        {
+            clsglobalSettings.AdjustGridDesign(_grid);
+
+        _grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            foreach (DataGridViewColumn col in _grid.Columns)
             {
-                try
-                {
-                    this.Cursor = Cursors.WaitCursor;
-
-                    using (var workbook = new XLWorkbook())
-                    {
-                        var worksheet = workbook.Worksheets.Add("Departments");
-
-
-                        worksheet.Cell(1, 1).Value = "رقم المسلسل";
-                        worksheet.Cell(1, 2).Value = "القسم";
-                        worksheet.Cell(1, 3).Value = "وصف القسم";
-                        worksheet.Cell(1, 4).Value = "تاريخ التعديل";
-
-
-                        int row = 2;
-                        var orderedData = _dtAllDepartments.Select(d => new
-                        {
-                            ID = d.ID,
-                            Name = d.Name,
-                            Description = d.Description,
-                            LastUpdatedDate = d.LastUpdatedDate
-                        });
-
-                        worksheet.Cell(2, 1).InsertData(orderedData);
-
-
-                        var range = worksheet.Range(1, 1, _dtAllDepartments.Count + 1, 4);
-                        var table = range.CreateTable();
-                        table.Theme = XLTableTheme.TableStyleMedium13;
-                        worksheet.Columns().AdjustToContents();
-                        worksheet.RightToLeft = true;
-
-                        workbook.SaveAs(svg.FileName);
-                    }
-
-                    if (MessageBox.Show("تم تصدير البيانات بنجاح. هل تريد فتح الملف الآن؟",
-                                      "نجاح", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        Process.Start(new ProcessStartInfo(svg.FileName) { UseShellExecute = true });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"فشل تصدير البيانات: {ex.Message}", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    this.Cursor = Cursors.Default;
-                }
+                col.Visible = false;
             }
+
+            clsglobalSettings.ConfigureColumn("ID", "رقم المسلسل", 120, 0,_grid);
+            clsglobalSettings.ConfigureColumn("Name", "القسم", 190, 1,_grid);
+            clsglobalSettings.ConfigureColumn("Description", "وصف القسم", 250, 2, _grid);
+            clsglobalSettings.ConfigureColumn("LastUpdatedDate", "تاريخ التعديل", 215, 3, _grid);
+
+            _grid.AllowUserToOrderColumns = true;
         }
 
+        
+    }
 
 
-        private void timerLoading_Tick(object sender, EventArgs e)
+    public class DepartmentExporter
+    {
+        public void ExportToExcel(List<DepartmentDTO> departments, string filePath)
         {
-            dotCount = (dotCount + 1) % 4;
-            lblLoading.Text =  "جاري التحميل" + new string('.', dotCount);
-        }
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Departments");
 
-        private void frmDepartmentList_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            e.Cancel = true;
-            this.Hide();
+           
+            worksheet.Cell(1, 1).Value = "رقم المسلسل";
+            worksheet.Cell(1, 2).Value = "القسم";
+            worksheet.Cell(1, 3).Value = "وصف القسم";
+            worksheet.Cell(1, 4).Value = "تاريخ التعديل";
+
+            
+            var data = departments.Select(d => new
+            {
+                d.ID,
+                d.Name,
+                d.Description,
+                d.LastUpdatedDate
+            });
+
+            worksheet.Cell(2, 1).InsertData(data);
+
+          
+            var range = worksheet.Range(1, 1, departments.Count + 1, 4);
+            var table = range.CreateTable();
+            table.Theme = XLTableTheme.TableStyleMedium13;
+            worksheet.Columns().AdjustToContents();
+            worksheet.RightToLeft = true;
+
+            workbook.SaveAs(filePath);
         }
     }
-}
+

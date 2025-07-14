@@ -35,5 +35,14 @@ namespace BMS
         }
 
 
+        public  static  void ConfigureColumn(string name, string headerText, int width, int displayIndex, DataGridView dgv)
+        {
+            var column = dgv.Columns[name];
+            column.HeaderText = headerText;
+            column.Width = width;
+            column.Visible = true;
+            column.DisplayIndex = displayIndex;
+        }
+
     }
 }

@@ -67,7 +67,6 @@
             HelptoolstripMenuItem = new ToolStripMenuItem();
             AbouttoolStripMenuItem = new ToolStripMenuItem();
             pnlMenu = new Panel();
-            pnlContainer = new Panel();
             msMain.SuspendLayout();
             pnlMenu.SuspendLayout();
             SuspendLayout();
@@ -207,7 +206,7 @@
             AddDepartmentToolStripMenuItem.Image = Properties.Resources.add__1_;
             AddDepartmentToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
             AddDepartmentToolStripMenuItem.Name = "AddDepartmentToolStripMenuItem";
-            AddDepartmentToolStripMenuItem.Size = new Size(186, 38);
+            AddDepartmentToolStripMenuItem.Size = new Size(196, 38);
             AddDepartmentToolStripMenuItem.Text = "إضافة قسم";
             AddDepartmentToolStripMenuItem.Click += AddDepartmentToolStripMenuItem_Click;
             // 
@@ -217,7 +216,7 @@
             SearchDepartmentToolStripMenuItem.Image = Properties.Resources.search__1_;
             SearchDepartmentToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
             SearchDepartmentToolStripMenuItem.Name = "SearchDepartmentToolStripMenuItem";
-            SearchDepartmentToolStripMenuItem.Size = new Size(186, 38);
+            SearchDepartmentToolStripMenuItem.Size = new Size(196, 38);
             SearchDepartmentToolStripMenuItem.Text = "بحث عن قسم";
             SearchDepartmentToolStripMenuItem.Click += SearchDepartmentToolStripMenuItem_Click;
             // 
@@ -471,28 +470,17 @@
             pnlMenu.Size = new Size(1064, 130);
             pnlMenu.TabIndex = 2;
             // 
-            // pnlContainer
-            // 
-            pnlContainer.BackColor = Color.White;
-            pnlContainer.BorderStyle = BorderStyle.FixedSingle;
-            pnlContainer.Dock = DockStyle.Fill;
-            pnlContainer.Location = new Point(0, 130);
-            pnlContainer.Name = "pnlContainer";
-            pnlContainer.Size = new Size(1064, 551);
-            pnlContainer.TabIndex = 3;
-            // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
             BackColor = Color.FromArgb(240, 242, 245);
             ClientSize = new Size(1064, 681);
-            Controls.Add(pnlContainer);
             Controls.Add(pnlMenu);
             DoubleBuffered = true;
             Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            IsMdiContainer = true;
             Margin = new Padding(2);
             MinimumSize = new Size(800, 600);
             Name = "frmMain";
@@ -548,7 +536,6 @@
         private System.Windows.Forms.MenuStrip msMain;
         private System.Windows.Forms.Panel pnlMenu;
         private ToolStripMenuItem الحساباتToolStripMenuItem;
-        public Panel pnlContainer;
         private ToolStripMenuItem HelptoolstripMenuItem;
         private ToolStripMenuItem AbouttoolStripMenuItem;
     }

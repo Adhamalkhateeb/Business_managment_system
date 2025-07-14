@@ -7,6 +7,7 @@ using BMS.InfraStructure;
 using BMS.InfraStructure.Core.Interfaces;
 using BMS.InfraStructure.InfraStructure.interfaces;
 using BMS.InfraStructure.Logging;
+using BMS.Interfaces;
 using DAL;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -67,8 +68,11 @@ namespace BMS.UI
                 return new CompositeLogger(loggers);
             });
 
+
+             services.AddSingleton<IFormManager, FormManager>();
+
             //// Repository & Services
-            
+
             services.AddScoped<IDepartmentService, DepartmentService>();
        
 
@@ -81,9 +85,9 @@ namespace BMS.UI
             services.AddScoped<IDepartmentService, DepartmentService>();
 
             //// Forms
-            services.AddScoped<frmMain>();
-            services.AddScoped<frmDepartmentList>();
-            services.AddScoped<frmAddEditDepartments>();
+            services.AddTransient<frmMain>();
+            services.AddTransient<frmDepartmentList>();
+            services.AddTransient<frmAddEditDepartments>();
         }
     }
 }

@@ -163,12 +163,12 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Tahoma", 22F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(715, 236);
+            label1.Location = new Point(732, 236);
             label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(126, 36);
+            label1.Size = new Size(108, 36);
             label1.TabIndex = 5;
-            label1.Text = " : ابحث ";
+            label1.Text = "ابحث :";
             // 
             // txtFilter
             // 
@@ -180,7 +180,7 @@
             txtFilter.Name = "txtFilter";
             txtFilter.RightToLeft = RightToLeft.Yes;
             txtFilter.Size = new Size(185, 27);
-            txtFilter.TabIndex = 6;
+            txtFilter.TabIndex = 2;
             txtFilter.Visible = false;
             txtFilter.KeyPress += txtFilter_KeyPress;
             // 
@@ -195,7 +195,7 @@
             cbFilter.Name = "cbFilter";
             cbFilter.RightToLeft = RightToLeft.Yes;
             cbFilter.Size = new Size(138, 29);
-            cbFilter.TabIndex = 7;
+            cbFilter.TabIndex = 2;
             cbFilter.Visible = false;
             cbFilter.SelectedIndexChanged += cbFilter_SelectedIndexChanged;
             // 
@@ -282,7 +282,7 @@
             btnExport.Margin = new Padding(2);
             btnExport.Name = "btnExport";
             btnExport.Size = new Size(103, 72);
-            btnExport.TabIndex = 18;
+            btnExport.TabIndex = 1;
             btnExport.Text = "تصدير";
             btnExport.TextImageRelation = TextImageRelation.ImageAboveText;
             btnExport.UseVisualStyleBackColor = true;
@@ -298,7 +298,7 @@
             btnSearch.Margin = new Padding(2);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(46, 37);
-            btnSearch.TabIndex = 17;
+            btnSearch.TabIndex = 3;
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Visible = false;
             btnSearch.Click += btnSearch_Click;
@@ -314,7 +314,7 @@
             btnForward.Margin = new Padding(2);
             btnForward.Name = "btnForward";
             btnForward.Size = new Size(104, 40);
-            btnForward.TabIndex = 16;
+            btnForward.TabIndex = 4;
             btnForward.Text = "التالي";
             btnForward.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnForward.UseVisualStyleBackColor = false;
@@ -331,7 +331,7 @@
             btnBack.Margin = new Padding(2);
             btnBack.Name = "btnBack";
             btnBack.Size = new Size(106, 40);
-            btnBack.TabIndex = 15;
+            btnBack.TabIndex = 5;
             btnBack.Text = "السابق";
             btnBack.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnBack.UseVisualStyleBackColor = false;
@@ -359,7 +359,7 @@
             btnClose.Margin = new Padding(2);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(104, 40);
-            btnClose.TabIndex = 10;
+            btnClose.TabIndex = 6;
             btnClose.Text = "إغلاق";
             btnClose.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnClose.UseVisualStyleBackColor = false;
@@ -375,7 +375,7 @@
             btnAdd.Margin = new Padding(2);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(103, 72);
-            btnAdd.TabIndex = 4;
+            btnAdd.TabIndex = 0;
             btnAdd.Text = "إضافة";
             btnAdd.TextImageRelation = TextImageRelation.ImageAboveText;
             btnAdd.UseVisualStyleBackColor = true;
@@ -397,7 +397,9 @@
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Margin = new Padding(4);
             Name = "frmDepartmentList";
+            RightToLeft = RightToLeft.Yes;
             RightToLeftLayout = true;
+            ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterScreen;
             FormClosing += frmDepartmentList_FormClosing;

@@ -8,6 +8,6 @@ namespace BMS.InfraStructure.InfraStructure.interfaces
 {
     public interface ILogger
     {
-        void  LogError(string message);
+        Task  LogError(string message);
     }
 }

@@ -21,7 +21,7 @@ namespace BMS.InfraStructure.Logging
             _logFilePath = Path.Combine(logDirectory, "errors.log");
         }
 
-        public async void LogError(string message)
+        public async Task LogError(string message)
         {
             try
             {

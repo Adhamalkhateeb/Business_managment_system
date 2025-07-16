@@ -1,5 +1,6 @@
 ﻿using BMS.InfraStructure.InfraStructure.interfaces;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace BMS.InfraStructure.Logging
 {
@@ -12,19 +13,11 @@ namespace BMS.InfraStructure.Logging
             _loggers = loggers;
         }
 
-        public void LogError(string message)
+        public async Task  LogError(string message)
         {
-            foreach (var logger in _loggers)
-            {
-                try
-                {
-                    logger.LogError(message);
-                }
-                catch
-                {
-                    // Don't let one logger crash the others
-                }
-            }
+            var tasks = _loggers.Select(logger =>
+            Task.Run(() => logger.LogError(message)));
+            await Task.WhenAll(tasks);
         }
     }
 }

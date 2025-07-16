@@ -18,7 +18,7 @@ namespace BMS.InfraStructure.Logging
             _fallbackLogger = fallbackLogger;
         }
 
-        public async void LogError(string message)
+        public async Task LogError(string message)
         {
             try
             {

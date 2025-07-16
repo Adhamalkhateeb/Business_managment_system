@@ -21,6 +21,7 @@ public class StoredProcedureRunner : IStoredProcedureRunner
   
     public async Task<List<T>> GetAllBySPAsync<T>(string procedureName, object? parameters = null) where T : new()
     {
+        ValidateProcedureName(procedureName);
         using var conn = _connectionFactory.CreateConnection();
         var result = await conn.QueryAsync<T>(procedureName, parameters, commandType: CommandType.StoredProcedure);
         return result.ToList();
@@ -29,12 +30,14 @@ public class StoredProcedureRunner : IStoredProcedureRunner
 
     public async Task<T> GetSingleRecordBySPAsync<T>(string procedureName, object? parameters = null) where T : new()
     {
+        ValidateProcedureName(procedureName);
         using var conn = _connectionFactory.CreateConnection();
         return await conn.QueryFirstOrDefaultAsync<T>(procedureName, parameters, commandType: CommandType.StoredProcedure);
     }
 
     public async Task<int> ExecuteNonQueryAsync(string procedureName, DynamicParameters param)
     {
+        ValidateProcedureName(procedureName);
         using var conn = _connectionFactory.CreateConnection();
 
           
@@ -47,8 +50,15 @@ public class StoredProcedureRunner : IStoredProcedureRunner
 
     public async Task<long> GetNumberOfActiveRecordsAsync(string procedureName, object? parameters = null)
     {
+        ValidateProcedureName(procedureName);
         using var conn = _connectionFactory.CreateConnection();
         return await conn.ExecuteScalarAsync<int>(procedureName, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    private static void ValidateProcedureName(string procedureName)
+    {
+        if (string.IsNullOrWhiteSpace(procedureName) || !procedureName.StartsWith("SP_"))
+            throw new ArgumentException($"Invalid procedure name: {procedureName}");
     }
 
 }

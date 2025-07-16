@@ -25,7 +25,7 @@ namespace BMS.InfraStructure.Logging
             }
         }
 
-        public  void LogError(string message)
+        public async Task LogError(string message)
         {
             try
             {

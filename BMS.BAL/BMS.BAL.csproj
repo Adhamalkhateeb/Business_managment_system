@@ -1,24 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <DocumentationFile>DAL.xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>DAL.xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DapperExtensions.NetCore" Version="2.0.7" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DapperExtensions.NetCore" Version="2.0.7" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BMS.DAL\BMS.DAL.csproj" />
-    <ProjectReference Include="..\BMS.DTOs\BMS.DTOs.csproj" />
-    <ProjectReference Include="..\BMS.InfraStructure\BMS.InfraStructure.csproj" />
-    <ProjectReference Include="..\BMS.Utilities\BMS.InfraStructure.csproj" />
-    <ProjectReference Include="..\Business Managment System\MyApp.Entities\BMS.DTOs.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BMS.DAL\BMS.DAL.csproj" />
+		<ProjectReference Include="..\BMS.DTOs\BMS.DTOs.csproj" />
+		<ProjectReference Include="..\BMS.InfraStructure\BMS.InfraStructure.csproj" />
+	</ItemGroup>
 
 </Project>

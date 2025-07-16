@@ -1,6 +1,11 @@
-﻿namespace BMS.GUI.Controls
+﻿using BMS.BAL.Interface;
+using BMS.DTOs;
+
+namespace BMS.GUI.Controls
 {
-    partial class ctrlListOf
+    partial class ctrlListOf<T, TService>
+        where T : BaseDTOs
+        where TService : ICrudService<T>
     {
         /// <summary> 
         /// Required designer variable.
@@ -59,6 +64,7 @@
             panel10 = new Panel();
             panel6 = new Panel();
             panel5 = new Panel();
+            lblLoading = new Label();
             ((System.ComponentModel.ISupportInitialize)pbxImage).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
@@ -81,7 +87,7 @@
             // 
             pbxImage.Anchor = AnchorStyles.None;
             pbxImage.Image = Properties.Resources.List;
-            pbxImage.Location = new Point(416, 3);
+            pbxImage.Location = new Point(444, 3);
             pbxImage.Name = "pbxImage";
             pbxImage.Size = new Size(167, 118);
             pbxImage.SizeMode = PictureBoxSizeMode.Zoom;
@@ -94,13 +100,12 @@
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.ForeColor = Color.DarkRed;
-            lblTitle.Location = new Point(445, 133);
+            lblTitle.Location = new Point(472, 133);
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(110, 32);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "List Title";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
-            lblTitle.Click += label1_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -115,7 +120,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.Size = new Size(1000, 181);
+            tableLayoutPanel1.Size = new Size(1055, 181);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // btnExport
@@ -171,7 +176,7 @@
             panel1.Controls.Add(cbxFilter);
             panel1.Controls.Add(label1);
             panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(425, 0);
+            panel1.Location = new Point(480, 0);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(5);
             panel1.Size = new Size(575, 50);
@@ -230,16 +235,17 @@
             panel3.Dock = DockStyle.Top;
             panel3.Location = new Point(0, 181);
             panel3.Name = "panel3";
-            panel3.Size = new Size(1000, 50);
+            panel3.Size = new Size(1055, 50);
             panel3.TabIndex = 27;
             // 
             // dgvList
             // 
+            dgvList.BackgroundColor = SystemColors.Control;
             dgvList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvList.Dock = DockStyle.Fill;
             dgvList.Location = new Point(0, 231);
             dgvList.Name = "dgvList";
-            dgvList.Size = new Size(1000, 337);
+            dgvList.Size = new Size(1055, 388);
             dgvList.TabIndex = 28;
             // 
             // btnForward
@@ -324,9 +330,9 @@
             panel4.Controls.Add(panel6);
             panel4.Controls.Add(panel5);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 510);
+            panel4.Location = new Point(0, 561);
             panel4.Name = "panel4";
-            panel4.Size = new Size(1000, 58);
+            panel4.Size = new Size(1055, 58);
             panel4.TabIndex = 34;
             // 
             // panel7
@@ -337,7 +343,7 @@
             panel7.Dock = DockStyle.Fill;
             panel7.Location = new Point(123, 0);
             panel7.Name = "panel7";
-            panel7.Size = new Size(670, 58);
+            panel7.Size = new Size(725, 58);
             panel7.TabIndex = 34;
             // 
             // panel8
@@ -348,7 +354,7 @@
             panel8.Dock = DockStyle.Fill;
             panel8.Location = new Point(231, 0);
             panel8.Name = "panel8";
-            panel8.Size = new Size(222, 58);
+            panel8.Size = new Size(277, 58);
             panel8.TabIndex = 40;
             // 
             // panel13
@@ -357,7 +363,7 @@
             panel13.Dock = DockStyle.Fill;
             panel13.Location = new Point(49, 0);
             panel13.Name = "panel13";
-            panel13.Size = new Size(119, 58);
+            panel13.Size = new Size(174, 58);
             panel13.TabIndex = 39;
             // 
             // label2
@@ -365,7 +371,7 @@
             label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            label2.Location = new Point(52, 15);
+            label2.Location = new Point(80, 15);
             label2.Name = "label2";
             label2.Size = new Size(25, 32);
             label2.TabIndex = 36;
@@ -395,7 +401,7 @@
             // 
             panel11.Controls.Add(lblTotalPages);
             panel11.Dock = DockStyle.Right;
-            panel11.Location = new Point(168, 0);
+            panel11.Location = new Point(223, 0);
             panel11.Name = "panel11";
             panel11.Size = new Size(54, 58);
             panel11.TabIndex = 37;
@@ -415,7 +421,7 @@
             // 
             panel9.Controls.Add(btnBack);
             panel9.Dock = DockStyle.Right;
-            panel9.Location = new Point(453, 0);
+            panel9.Location = new Point(508, 0);
             panel9.Name = "panel9";
             panel9.Size = new Size(217, 58);
             panel9.TabIndex = 38;
@@ -443,22 +449,36 @@
             panel5.Controls.Add(lblRowsCountTitle);
             panel5.Controls.Add(lblCount);
             panel5.Dock = DockStyle.Right;
-            panel5.Location = new Point(793, 0);
+            panel5.Location = new Point(848, 0);
             panel5.Name = "panel5";
             panel5.Size = new Size(207, 58);
             panel5.TabIndex = 32;
+            // 
+            // lblLoading
+            // 
+            lblLoading.Anchor = AnchorStyles.None;
+            lblLoading.AutoSize = true;
+            lblLoading.BackColor = Color.Transparent;
+            lblLoading.Font = new Font("Tahoma", 16F, FontStyle.Bold);
+            lblLoading.Location = new Point(451, 372);
+            lblLoading.Name = "lblLoading";
+            lblLoading.RightToLeft = RightToLeft.Yes;
+            lblLoading.Size = new Size(157, 27);
+            lblLoading.TabIndex = 35;
+            lblLoading.Text = "جاري التحميل";
             // 
             // ctrlListOf
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(lblLoading);
             Controls.Add(panel4);
             Controls.Add(dgvList);
             Controls.Add(panel3);
             Controls.Add(tableLayoutPanel1);
             Name = "ctrlListOf";
             Padding = new Padding(0, 0, 5, 0);
-            Size = new Size(1005, 568);
+            Size = new Size(1060, 619);
             ((System.ComponentModel.ISupportInitialize)pbxImage).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
@@ -482,6 +502,7 @@
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -517,5 +538,6 @@
         private Panel panel12;
         private Panel panel11;
         private Panel panel13;
+        private Label lblLoading;
     }
 }

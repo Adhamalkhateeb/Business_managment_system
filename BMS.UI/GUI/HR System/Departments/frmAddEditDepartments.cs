@@ -13,7 +13,7 @@ namespace BMS
     {
         private enum FormMode { AddNew = 1, Update = 2 }
 
-        private readonly IDepartmentService _departmentService;
+        private readonly IDepartmentService _dataListervice;
         private DepartmentDTO _department;
         private FormMode _mode;
         private const int MaxDescriptionLength = 250;
@@ -31,7 +31,7 @@ namespace BMS
         public frmAddEditDepartments(IDepartmentService departmentService, int departmentId)
         {
             InitializeComponent();
-            _departmentService = departmentService ?? throw new ArgumentNullException(nameof(departmentService));
+            _dataListervice = departmentService ?? throw new ArgumentNullException(nameof(departmentService));
 
             InitializeForm(departmentId);
             ConfigureFormBehavior();
@@ -167,7 +167,7 @@ namespace BMS
 
         private async Task LoadDepartmentData()
         {
-            _department = await _departmentService.GetInfoAsync(DepartmentID);
+            _department = await _dataListervice.GetInfoAsync(DepartmentID);
 
             if (_department == null)
             {
@@ -192,7 +192,7 @@ namespace BMS
         {
             UpdateDepartmentFromForm();
 
-            bool saveResult = await _departmentService.SaveAsync(_department);
+            bool saveResult = await _dataListervice.SaveAsync(_department);
 
             if (saveResult)
             {

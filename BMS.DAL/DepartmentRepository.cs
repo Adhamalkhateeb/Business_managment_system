@@ -27,6 +27,12 @@ namespace DAL
             _sp = SP;
         }
 
+        public DepartmentRepository()
+        {
+        }
+
+
+
         /// <summary>
         /// Add Department Asynchronously.
         /// </summary>

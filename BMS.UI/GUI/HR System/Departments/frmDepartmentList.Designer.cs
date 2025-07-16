@@ -38,7 +38,7 @@
             AddDepartmentToolStripMenuItem = new ToolStripMenuItem();
             ToolStripMenuItem = new ToolStripMenuItem();
             UpdateDepartmentToolStripMenuItem = new ToolStripMenuItem();
-            dgvDepartments = new DataGridView();
+            dgvList = new DataGridView();
             label1 = new Label();
             txtFilter = new TextBox();
             cbFilter = new ComboBox();
@@ -56,7 +56,7 @@
             btnAdd = new Button();
             timerLoading = new System.Windows.Forms.Timer(components);
             cmsDepartments.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvDepartments).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvList).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -110,15 +110,15 @@
             UpdateDepartmentToolStripMenuItem.Text = "تعديل القسم";
             UpdateDepartmentToolStripMenuItem.Click += UpdateDepartmentToolStripMenuItem_Click;
             // 
-            // dgvDepartments
+            // dgvList
             // 
-            dgvDepartments.AllowUserToAddRows = false;
-            dgvDepartments.AllowUserToDeleteRows = false;
-            dgvDepartments.AllowUserToOrderColumns = true;
-            dgvDepartments.AllowUserToResizeColumns = false;
-            dgvDepartments.AllowUserToResizeRows = false;
-            dgvDepartments.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dgvDepartments.BackgroundColor = SystemColors.ButtonHighlight;
+            dgvList.AllowUserToAddRows = false;
+            dgvList.AllowUserToDeleteRows = false;
+            dgvList.AllowUserToOrderColumns = true;
+            dgvList.AllowUserToResizeColumns = false;
+            dgvList.AllowUserToResizeRows = false;
+            dgvList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvList.BackgroundColor = SystemColors.ButtonHighlight;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -126,9 +126,9 @@
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvDepartments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvDepartments.ColumnHeadersHeight = 20;
-            dgvDepartments.ContextMenuStrip = cmsDepartments;
+            dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvList.ColumnHeadersHeight = 20;
+            dgvList.ContextMenuStrip = cmsDepartments;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -136,13 +136,13 @@
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvDepartments.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvDepartments.Location = new Point(10, 277);
-            dgvDepartments.Margin = new Padding(2);
-            dgvDepartments.Name = "dgvDepartments";
-            dgvDepartments.ReadOnly = true;
-            dgvDepartments.RightToLeft = RightToLeft.Yes;
-            dgvDepartments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvList.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvList.Location = new Point(10, 277);
+            dgvList.Margin = new Padding(2);
+            dgvList.Name = "dgvList";
+            dgvList.ReadOnly = true;
+            dgvList.RightToLeft = RightToLeft.Yes;
+            dgvList.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle3.BackColor = SystemColors.Control;
             dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -150,14 +150,14 @@
             dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvDepartments.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            dgvDepartments.RowHeadersWidth = 51;
+            dgvList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dgvList.RowHeadersWidth = 51;
             dataGridViewCellStyle4.Font = new Font("Arial", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dgvDepartments.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            dgvDepartments.RowTemplate.Height = 40;
-            dgvDepartments.Size = new Size(830, 375);
-            dgvDepartments.TabIndex = 0;
-            dgvDepartments.CellDoubleClick += dgvDepartments_CellDoubleClick;
+            dgvList.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dgvList.RowTemplate.Height = 40;
+            dgvList.Size = new Size(830, 375);
+            dgvList.TabIndex = 0;
+            dgvList.CellDoubleClick += dgvList_CellDoubleClick;
             // 
             // label1
             // 
@@ -251,7 +251,7 @@
             panel1.Controls.Add(txtFilter);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(btnAdd);
-            panel1.Controls.Add(dgvDepartments);
+            panel1.Controls.Add(dgvList);
             panel1.Cursor = Cursors.Hand;
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
@@ -405,7 +405,7 @@
             FormClosing += frmDepartmentList_FormClosing;
             Load += frmDepartments_Load;
             cmsDepartments.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvDepartments).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvList).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -418,7 +418,7 @@
         private System.Windows.Forms.ToolStripMenuItem AddDepartmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem UpdateDepartmentToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dgvDepartments;
+        private System.Windows.Forms.DataGridView dgvList;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtFilter;

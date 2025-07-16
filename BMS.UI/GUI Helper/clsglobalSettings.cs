@@ -1,8 +1,10 @@
 ﻿
 
+using System.Text.RegularExpressions;
+
 namespace BMS
 {
-   public  class clsglobalSettings
+    public class clsglobalSettings
     {
       
         private readonly frmMain main;
@@ -12,7 +14,7 @@ namespace BMS
             this.main = main;
         }
 
-        static public void AdjustGridDesign(DataGridView dataGridView)
+        public static void AdjustGridDesign(DataGridView dataGridView)
         {
 
            
@@ -44,5 +46,14 @@ namespace BMS
             column.DisplayIndex = displayIndex;
         }
 
+
+        //public static string SplitPascalCase(this string input)
+        //{
+        //    if (string.IsNullOrWhiteSpace(input))
+        //        return input;
+
+        //    var result = Regex.Replace(input, @"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", " ");
+        //    return result.Trim();
+        //}
     }
 }

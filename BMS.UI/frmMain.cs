@@ -1,5 +1,6 @@
 ﻿
 
+using BMS.GUI.HR_System.POS;
 using BMS.Interfaces;
 using BMS.Properties;
 using BMS.UI;
@@ -72,9 +73,9 @@ namespace BMS
 
 
         #region Event Handlers
-        
 
-  
+
+
 
         private void SearchDepartmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -108,10 +109,10 @@ namespace BMS
 
 
 
-    
 
-       
-       
+
+
+
 
         private void EmployeesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -119,5 +120,25 @@ namespace BMS
         }
 
         #endregion
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddPosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _formManager.ShowForm<frmAddEditPos>(this);
+        }
+
+        private void SearchPosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _formManager.ShowForm<frmPOSList>(this);
+        }
+
+        private void قاطالبيعToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

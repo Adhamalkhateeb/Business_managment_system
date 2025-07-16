@@ -37,27 +37,6 @@ namespace BMS
         }
 
 
-        public void ShowFormDialog<T>() where T : Form
-        {
-            var existingForm = Application.OpenForms.OfType<T>().FirstOrDefault();
-
-            if (existingForm != null)
-            {
-                existingForm.Show();
-                existingForm.BringToFront();
-                CenterForm(existingForm);
-                return;
-            }
-
-          
-            var newForm = _serviceProvider.GetRequiredService<T>();
-          
-
-
-            newForm.Show();
-        }
-
-
         public void ShowDialogForm<T>(Form owner) where T : Form
         {
             using (var form = _serviceProvider.GetRequiredService<T>())

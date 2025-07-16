@@ -143,7 +143,7 @@ namespace DAL
             if (string.IsNullOrEmpty(TableName))
                 throw new ArgumentException("TableName cannot be null or empty", nameof(TableName));
           
-                var result = await _sp.GetNumberOfActiveRecordsAsync(SPHelper.GetName(SPDept.GetNumberOfDepartmentsRecords),new {TableName = TableName});
+                var result = await _sp.GetNumberOfActiveRecordsAsync(SPHelper.GetName(SPGeneral.GetNumberOfActiveRecords),new {TableName = TableName});
                 return result;
            
         }

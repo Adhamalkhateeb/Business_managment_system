@@ -277,7 +277,7 @@
             btnExport.Cursor = Cursors.Hand;
             btnExport.DialogResult = DialogResult.Cancel;
             btnExport.Font = new Font("Tahoma", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExport.Image = Properties.Resources.export;
+            btnExport.Image = Properties.Resources.excel;
             btnExport.Location = new Point(118, 200);
             btnExport.Margin = new Padding(2);
             btnExport.Name = "btnExport";

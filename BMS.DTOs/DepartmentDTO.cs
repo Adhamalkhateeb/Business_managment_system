@@ -9,10 +9,10 @@ namespace BMS.DTOs
     public class DepartmentDTO : BaseDTOs
     {
 
-        [Display(Name = "القسم", Order = 2)]
+      
         public string Name { get; set; }
 
-        [Display(Name = "وصف القسم", Order = 3)]
+       
         public string Description { get; set; }
 
         public DepartmentDTO(int iD, string name, string? description, int createdByUserID, string creationDate, int? updatedByUserID, string? lastUpdatedDate, bool isActive)

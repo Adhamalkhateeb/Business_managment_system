@@ -436,7 +436,7 @@ namespace BMS
 
     public class DepartmentExporter
     {
-        public void ExportToExcel(List<DepartmentDTO> departments, string filePath)
+        public void ExportToExcel( List<DepartmentDTO> departments,string filePath)
         {
             using var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Departments");
@@ -447,7 +447,7 @@ namespace BMS
             worksheet.Cell(1, 3).Value = "وصف القسم";
             worksheet.Cell(1, 4).Value = "تاريخ التعديل";
 
-            
+           
             var data = departments.Select(d => new
             {
                 d.ID,

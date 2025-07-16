@@ -1,8 +1,10 @@
 
 using BMS.BAL;
 using BMS.BAL.Interface;
+using BMS.DAL;
 using BMS.DAL.Interfaces;
 using BMS.DTOs;
+using BMS.GUI.HR_System.POS;
 using BMS.InfraStructure;
 using BMS.InfraStructure.Core.Interfaces;
 using BMS.InfraStructure.InfraStructure.interfaces;
@@ -78,16 +80,19 @@ namespace BMS.UI
 
             //DAL
            services.AddScoped<IRepository<DepartmentDTO>, DepartmentRepository>();
+            services.AddScoped<IRepository<PosDTO>, PosRepository>();
 
 
 
             //BAL
             services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IPosServices, PosServices>();
 
             //// Forms
             services.AddTransient<frmMain>();
             services.AddTransient<frmDepartmentList>();
             services.AddTransient<frmAddEditDepartments>();
+            services.AddTransient<frmPOSList>();
         }
     }
 }

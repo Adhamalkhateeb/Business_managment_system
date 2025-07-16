@@ -11,7 +11,7 @@ namespace BMS
     {
         private int _departmentID = -1;
         private DepartmentDTO _Department;
-        private IDepartmentService _departmentService;
+        private IDepartmentService _dataListervice;
         private bool enableUpdateDepartment = true;
 
 
@@ -45,7 +45,7 @@ namespace BMS
             try
             {
                 _departmentID = DepartmentID;
-                _Department = await _departmentService.GetInfoAsync(_departmentID);
+                _Department = await _dataListervice.GetInfoAsync(_departmentID);
 
                 if (_Department is null)
                 {
@@ -94,13 +94,13 @@ namespace BMS
 
         private async void  llblUpdateDepartment_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            using var frm = new frmAddEditDepartments(_departmentService,_departmentID);
-            frm.DepartmentSaved += Frm_DepartmentSaved;
+            using var frm = new frmAddEditDepartments(_dataListervice,_departmentID);
+            frm.DepartmentSaved += Frm_dataListaved;
             frm.ShowDialog();
                    
         }
 
-        private async void Frm_DepartmentSaved(object? sender, EventArgs e)
+        private async void Frm_dataListaved(object? sender, EventArgs e)
         {
             await LoadDepartmentInfo(_departmentID);
             DepartmentUpdated?.Invoke(this, _Department);
@@ -108,7 +108,7 @@ namespace BMS
 
         public void SetService(IDepartmentService service)
         {
-            _departmentService = service;
+            _dataListervice = service;
         }
     }
 }

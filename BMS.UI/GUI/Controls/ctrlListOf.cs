@@ -1,80 +1,117 @@
-﻿using BMS.DTOs;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using BMS.BAL;
+using BMS.BAL.Interface;
+using BMS.DTOs;
+using BMS.InfraStructure;
+using BMS.InfraStructure.Logging;
+using DAL;
+using NPOI.SS.Formula.Functions;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Reflection;
 using static BMS.GUI_Helper.TablesNameEnum;
 
 namespace BMS.GUI.Controls
 {
-    public partial class ctrlListOf : UserControl
+    public partial class ctrlListOf<T, TService> : UserControl
+        where T : BaseDTOs
+    where TService : ICrudService<T>
+
     {
+        private List<T> _dataList = new List<T>();
+        private TService _crudService;
+        private int _pageNumber = 1;
+        private const int PageSize = 8;
+        private long _totalRecords;
+        private int _loadingDotCount = 1;
+        private List<PropertyInfo> _propertes;
+
+        //private enTableNames _TableName { get; set; }
+
         public ctrlListOf()
         {
             InitializeComponent();
+            _propertes = GetAllProperties();
+            _ResetControls();
         }
 
-        DataTable _dataTable = new DataTable();
-        private enTableNames _TableName { get; set; }
+        
 
-        public ctrlListOf(enTableNames enTableNames)
+        private async void _ResetControls()
         {
-            InitializeComponent();
-            _TableName = enTableNames;
-            lblTitle.Text = enTableNames.ToString();
-            _LoadDataInfo();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
+            
+            _ResetCbxFilterForUsers();
+            _ResetDgvUsers();
+            await _LoadData();
 
         }
 
-        private void _LoadDataInfo()
+        private async Task _LoadData(string? filterColumn = null, string? filterValue = null)
         {
-            switch (_TableName)
+            try
             {
-                case enTableNames.Users:
-                    _ResetControlsForUsers();
-                    break;
-                case enTableNames.Employees:
-                    break;
-                case enTableNames.Departments:
-                    _ResetControlsForDepartments();
-                    break;
-                case enTableNames.Jobs:
-                    break;
-                default:
-                    break;
+                //SetLoadingState(true);
+
+                _dataList = await _crudService.GetAllAsync(_pageNumber, PageSize, filterColumn, filterValue);
+
+                if (_dataList == null)
+                {
+                    ShowErrorMessage("حدث خطأ اثناء استرجاع البيانات. يرجى إعادة المحاولة");
+                    return;
+                }
+
+                BindDataToGrid();
+                UpdatePaginationControls();
+            }
+            finally
+            {
+                SetLoadingState(false);
             }
         }
 
-        private void _ResetControlsForUsers()
+        private void SetLoadingState(bool isLoading)
         {
-            _ResetCbxFilterForUsers();
-            _ResetDgvUsers();
+            //lblLoading.Visible = isLoading;
+            //dgvList.Visible = !isLoading;
+            //this.Cursor = isLoading ? Cursors.WaitCursor : Cursors.Default;
 
+            //if (isLoading)
+            //    timerLoading.Start();
+            //else
+            //    timerLoading.Stop();
+        }
 
+        private void BindDataToGrid()
+        {
+            dgvList.SuspendLayout();
+            dgvList.DataSource = _dataList;
+            //_gridFormatter.FormatGrid();
+            dgvList.ResumeLayout();
+
+            lblCount.Text = _dataList.Count.ToString();
+        }
+
+        private void UpdatePaginationControls()
+        {
+            btnBack.Enabled = _pageNumber > 1;
+            btnForward.Enabled = (_totalRecords > PageSize * _pageNumber);
+        }
+
+        private List<PropertyInfo> GetAllProperties()
+        {
+            return typeof(T).GetProperties().ToList();
         }
 
         private void _ResetCbxFilterForUsers()
         {
             cbxFilter.Items.Clear();
 
-            cbxFilter.Items.Add("All");
-            cbxFilter.Items.Add("Active");
-            cbxFilter.Items.Add("Inactive");
-            cbxFilter.Items.Add("ID");
-            cbxFilter.Items.Add("Name");
-            cbxFilter.Items.Add("Email");
+            foreach (var property in _propertes)
+            {
+                
+                cbxFilter.Items.Add(property.Name);
+                
+            }
 
             cbxFilter.SelectedIndex = 0;
-            cbxFilter.SelectedIndex = -1;
         }
 
         private void _ResetDgvUsers()
@@ -84,14 +121,23 @@ namespace BMS.GUI.Controls
             dgvList.Rows.Clear();
             dgvList.Refresh();
 
-            dgvList.Columns.Add("ID", "ID");
-            dgvList.Columns.Add("Name", "Name");
-            dgvList.Columns.Add("Email", "Email");
-            dgvList.Columns.Add("IsActive", "Is Active");
+            foreach (var property in _propertes)
+            {
+                var column = new DataGridViewTextBoxColumn
+                {
+                    Name = property.Name,
+                    HeaderText = property.Name,
+                    DataPropertyName = property.Name,
+                    Width = 150,
+                    Visible = true
+                };
+                dgvList.Columns.Add(column);
+            }
 
         }
 
-        private void _ResetControlsForDepartments()
+
+        public void ShowErrorMessage(string message)
         {
             _ResetCbxFilterForDepartments();
             _ResetDgvDepartments();
@@ -130,5 +176,10 @@ namespace BMS.GUI.Controls
         {
 
         }
+
+
     }
+
+    
 }
+

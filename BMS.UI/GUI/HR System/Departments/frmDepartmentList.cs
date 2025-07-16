@@ -13,8 +13,8 @@ namespace BMS
 {
     public partial class frmDepartmentList : Form
     {
-        private List<DepartmentDTO> _departments;
-        private readonly IDepartmentService _departmentService;
+        private List<DepartmentDTO> _dataList;
+        private readonly IDepartmentService _dataListervice;
         private int _pageNumber = 1;
         private const int PageSize = 8;
         private long _totalRecords;
@@ -22,25 +22,20 @@ namespace BMS
         private readonly DepartmentGridFormatter _gridFormatter;
         private readonly DepartmentExporter _exporter;
 
-
-
         public frmDepartmentList(IDepartmentService departmentService)
         {
             InitializeComponent();
-            _departmentService = departmentService;
-            _gridFormatter = new DepartmentGridFormatter(dgvDepartments);
+            _dataListervice = departmentService;
+            _gridFormatter = new DepartmentGridFormatter(dgvList);
             _exporter = new DepartmentExporter();
         }
-
-
-
 
         #region Form Lifecycle
         private async void frmDepartments_Load(object sender, EventArgs e)
         {
             
             cbFilter.SelectedIndex = 0;
-            _totalRecords = await _departmentService.GetCountAsync("Departments");
+            _totalRecords = await _dataListervice.GetCountAsync("Departments");
             await LoadDepartmentsAsync();
 
         }
@@ -53,7 +48,6 @@ namespace BMS
 
         #endregion
 
-
         #region Data Loading
         private async Task LoadDepartmentsAsync(string filterColumn = null, string filterValue = null)
         {
@@ -61,9 +55,9 @@ namespace BMS
             {
                 SetLoadingState(true);
 
-                _departments = await _departmentService.GetAllAsync(_pageNumber, PageSize, filterColumn, filterValue);
+                _dataList = await _dataListervice.GetAllAsync(_pageNumber, PageSize, filterColumn, filterValue);
 
-                if (_departments == null)
+                if (_dataList == null)
                 {
                     ShowErrorMessage("حدث خطأ اثناء استرجاع البيانات. يرجى إعادة المحاولة");
                     return;
@@ -81,7 +75,7 @@ namespace BMS
         private void SetLoadingState(bool isLoading)
         {
             lblLoading.Visible = isLoading;
-            dgvDepartments.Visible = !isLoading;
+            dgvList.Visible = !isLoading;
             this.Cursor = isLoading ? Cursors.WaitCursor : Cursors.Default;
 
             if (isLoading)
@@ -92,12 +86,12 @@ namespace BMS
 
         private void BindDataToGrid()
         {
-            dgvDepartments.SuspendLayout();
-            dgvDepartments.DataSource = _departments;
+            dgvList.SuspendLayout();
+            dgvList.DataSource = _dataList;
             _gridFormatter.FormatGrid();
-            dgvDepartments.ResumeLayout();
+            dgvList.ResumeLayout();
 
-            lblCount.Text = _departments.Count.ToString();
+            lblCount.Text = _dataList.Count.ToString();
         }
 
         private void UpdatePaginationControls()
@@ -107,8 +101,6 @@ namespace BMS
         }
 
         #endregion
-
-
 
         #region Event Handlers
 
@@ -162,8 +154,8 @@ namespace BMS
         private async Task ShowDepartmentForm(int? departmentId)
         {
             using var form = departmentId.HasValue ?
-                new frmAddEditDepartments( _departmentService, departmentId.Value) :
-                new frmAddEditDepartments(_departmentService);
+                new frmAddEditDepartments( _dataListervice, departmentId.Value) :
+                new frmAddEditDepartments(_dataListervice);
 
             form.DepartmentSaved += async (s, e) =>
             {
@@ -188,10 +180,10 @@ namespace BMS
 
         private async Task<bool> TryDeleteDepartmentAsync(int id)
         {
-            var department = await _departmentService.GetInfoAsync(id);
+            var department = await _dataListervice.GetInfoAsync(id);
             if (department == null) return false;
 
-            return await _departmentService.DeleteAsync(department.ID, department.UpdatedByUserID);
+            return await _dataListervice.DeleteAsync(department.ID, department.UpdatedByUserID);
         }
 
 
@@ -227,7 +219,7 @@ namespace BMS
         {
             if (!TryGetSelectedDepartmentId(out int id)) return;
 
-            using var frmDepartmentDetails = new frmDepartmentDetails(id, _departmentService);
+            using var frmDepartmentDetails = new frmDepartmentDetails(id, _dataListervice);
             frmDepartmentDetails.ctrlDepartmenttInfo2.DepartmentUpdated += async (s, eArgs) =>
             {
                 await LoadDepartmentsAsync();
@@ -282,12 +274,12 @@ namespace BMS
         }
 
 
-        private async void dgvDepartments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private async void dgvList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
             if (!TryGetSelectedDepartmentId(out int id)) return;
 
-            using var form = new frmDepartmentDetails(id, _departmentService);
+            using var form = new frmDepartmentDetails(id, _dataListervice);
             form.ctrlDepartmenttInfo2.DepartmentUpdated += async (s, eArgs) =>
             {
                 await LoadDepartmentsAsync();
@@ -302,7 +294,7 @@ namespace BMS
 
         private async void btnExport_Click(object sender, EventArgs e)
         {
-            if (_departments == null || !_departments.Any())
+            if (_dataList == null || !_dataList.Any())
             {
                 ShowWarningMessage("لا توجد بيانات للتصدير");
                 return;
@@ -314,7 +306,7 @@ namespace BMS
             try
             {
                 this.Cursor = Cursors.WaitCursor;
-                _exporter.ExportToExcel(await _departmentService.GetAllAsync(null,null,null,null), filePath);
+                _exporter.ExportToExcel(await _dataListervice.GetAllAsync(null,null,null,null), filePath);
 
                 if (ConfirmOpenExportedFile())
                 {
@@ -341,7 +333,6 @@ namespace BMS
         }
         #endregion
 
-
         #region Helper Methods
 
 
@@ -350,13 +341,13 @@ namespace BMS
         private bool TryGetSelectedDepartmentId(out int id)
         {
             id = -1;
-            if (dgvDepartments.CurrentRow == null)
+            if (dgvList.CurrentRow == null)
             {
                 MessageBox.Show("يرجى اختيار قسم أولاً.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
-            id = Convert.ToInt32(dgvDepartments.CurrentRow.Cells["ID"].Value);
+            id = Convert.ToInt32(dgvList.CurrentRow.Cells["ID"].Value);
             return true;
         }
 
@@ -394,8 +385,6 @@ namespace BMS
         }
 
         #endregion
-
-
 
     }
 

@@ -27,6 +27,12 @@ namespace BMS.BAL
             _logger = logger;
         }
 
+        public DepartmentService()
+        {
+        }
+
+
+
         /// <summary>
         /// Retrieves a paginated list of departments asynchronously.
         /// </summary>

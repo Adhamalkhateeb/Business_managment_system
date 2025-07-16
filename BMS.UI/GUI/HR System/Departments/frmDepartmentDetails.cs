@@ -8,14 +8,14 @@ namespace BMS
     {
         private int DepartmentID = -1;
 
-        private readonly IDepartmentService _departmentService;
+        private readonly IDepartmentService _dataListervice;
         public frmDepartmentDetails(int departmentID, IDepartmentService departmentService)
         {
             InitializeComponent();
             DepartmentID = departmentID;
-            _departmentService = departmentService;
+            _dataListervice = departmentService;
 
-            ctrlDepartmenttInfo2.SetService(_departmentService);
+            ctrlDepartmenttInfo2.SetService(_dataListervice);
         }
 
 

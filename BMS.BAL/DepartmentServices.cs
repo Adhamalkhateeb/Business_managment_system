@@ -3,6 +3,7 @@ using BMS.BAL.Interface;
 using BMS.DAL.Interfaces;
 using BMS.DTOs;
 using BMS.InfraStructure.InfraStructure.interfaces;
+using NPOI.SS.UserModel;
 
 
 
@@ -11,7 +12,7 @@ namespace BMS.BAL
     /// <summary>
     /// Provides services for managing departments, including retrieval, creation, updating, and deletion.
     /// </summary>
-    public class DepartmentService : IDepartmentService
+    public class DepartmentService : IDepartmentService,IService<DepartmentDTO>
     {
         private const string className = nameof(DepartmentService);
         private readonly IRepository<DepartmentDTO> _departmentRepository;
@@ -26,11 +27,6 @@ namespace BMS.BAL
             _departmentRepository = departmentRepository;
             _logger = logger;
         }
-
-        public DepartmentService()
-        {
-        }
-
 
 
         /// <summary>

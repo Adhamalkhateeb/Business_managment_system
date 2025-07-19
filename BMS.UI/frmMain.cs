@@ -1,5 +1,6 @@
 ﻿
 
+using BMS.GUI.Controls;
 using BMS.GUI.HR_System.POS;
 using BMS.Interfaces;
 using BMS.Properties;
@@ -139,6 +140,11 @@ namespace BMS
         private void قاطالبيعToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void BranchesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _formManager.ShowForm<testControls>(this);
         }
     }
 }

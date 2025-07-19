@@ -56,6 +56,9 @@
             DeuctionToolStripMenuItem = new ToolStripMenuItem();
             AdditionAndDeductionSheetToolStripMenuItem = new ToolStripMenuItem();
             PayRollSheetToolStripMenuItem = new ToolStripMenuItem();
+            الأقسامونقاطالبيعToolStripMenuItem = new ToolStripMenuItem();
+            الأقسامToolStripMenuItem = new ToolStripMenuItem();
+            قاطالبيعToolStripMenuItem = new ToolStripMenuItem();
             BranchesToolStripMenuItem = new ToolStripMenuItem();
             InventoriesToolStripMenuItem = new ToolStripMenuItem();
             CategoriesToolStripMenuItem = new ToolStripMenuItem();
@@ -70,9 +73,6 @@
             HelptoolstripMenuItem = new ToolStripMenuItem();
             AbouttoolStripMenuItem = new ToolStripMenuItem();
             pnlMenu = new Panel();
-            الأقسامونقاطالبيعToolStripMenuItem = new ToolStripMenuItem();
-            الأقسامToolStripMenuItem = new ToolStripMenuItem();
-            قاطالبيعToolStripMenuItem = new ToolStripMenuItem();
             msMain.SuspendLayout();
             pnlMenu.SuspendLayout();
             SuspendLayout();
@@ -212,7 +212,7 @@
             AddDepartmentToolStripMenuItem.Image = Properties.Resources.add__1_;
             AddDepartmentToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
             AddDepartmentToolStripMenuItem.Name = "AddDepartmentToolStripMenuItem";
-            AddDepartmentToolStripMenuItem.Size = new Size(196, 38);
+            AddDepartmentToolStripMenuItem.Size = new Size(186, 38);
             AddDepartmentToolStripMenuItem.Text = "إضافة قسم";
             AddDepartmentToolStripMenuItem.Click += AddDepartmentToolStripMenuItem_Click;
             // 
@@ -222,7 +222,7 @@
             SearchDepartmentToolStripMenuItem.Image = Properties.Resources.search__1_;
             SearchDepartmentToolStripMenuItem.ImageScaling = ToolStripItemImageScaling.None;
             SearchDepartmentToolStripMenuItem.Name = "SearchDepartmentToolStripMenuItem";
-            SearchDepartmentToolStripMenuItem.Size = new Size(196, 38);
+            SearchDepartmentToolStripMenuItem.Size = new Size(186, 38);
             SearchDepartmentToolStripMenuItem.Text = "بحث عن قسم";
             SearchDepartmentToolStripMenuItem.Click += SearchDepartmentToolStripMenuItem_Click;
             // 
@@ -336,6 +336,27 @@
             PayRollSheetToolStripMenuItem.Size = new Size(307, 38);
             PayRollSheetToolStripMenuItem.Text = "كشف رواتب الموظفين";
             // 
+            // الأقسامونقاطالبيعToolStripMenuItem
+            // 
+            الأقسامونقاطالبيعToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { الأقسامToolStripMenuItem, قاطالبيعToolStripMenuItem });
+            الأقسامونقاطالبيعToolStripMenuItem.Font = new Font("Tahoma", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            الأقسامونقاطالبيعToolStripMenuItem.Name = "الأقسامونقاطالبيعToolStripMenuItem";
+            الأقسامونقاطالبيعToolStripMenuItem.Size = new Size(322, 54);
+            الأقسامونقاطالبيعToolStripMenuItem.Text = "الأقسام و نقاط البيع";
+            // 
+            // الأقسامToolStripMenuItem
+            // 
+            الأقسامToolStripMenuItem.Name = "الأقسامToolStripMenuItem";
+            الأقسامToolStripMenuItem.Size = new Size(147, 24);
+            الأقسامToolStripMenuItem.Text = "الأقسام";
+            // 
+            // قاطالبيعToolStripMenuItem
+            // 
+            قاطالبيعToolStripMenuItem.Name = "قاطالبيعToolStripMenuItem";
+            قاطالبيعToolStripMenuItem.Size = new Size(147, 24);
+            قاطالبيعToolStripMenuItem.Text = "نقاط البيع";
+            قاطالبيعToolStripMenuItem.Click += قاطالبيعToolStripMenuItem_Click;
+            // 
             // BranchesToolStripMenuItem
             // 
             BranchesToolStripMenuItem.BackColor = Color.Transparent;
@@ -349,6 +370,7 @@
             BranchesToolStripMenuItem.Text = "الفروع  ";
             BranchesToolStripMenuItem.TextImageRelation = TextImageRelation.ImageAboveText;
             BranchesToolStripMenuItem.ToolTipText = "إدارة الفروع";
+            BranchesToolStripMenuItem.Click += BranchesToolStripMenuItem_Click;
             // 
             // InventoriesToolStripMenuItem
             // 
@@ -502,27 +524,6 @@
             pnlMenu.RightToLeft = RightToLeft.Yes;
             pnlMenu.Size = new Size(1064, 130);
             pnlMenu.TabIndex = 2;
-            // 
-            // الأقسامونقاطالبيعToolStripMenuItem
-            // 
-            الأقسامونقاطالبيعToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { الأقسامToolStripMenuItem, قاطالبيعToolStripMenuItem });
-            الأقسامونقاطالبيعToolStripMenuItem.Font = new Font("Tahoma", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            الأقسامونقاطالبيعToolStripMenuItem.Name = "الأقسامونقاطالبيعToolStripMenuItem";
-            الأقسامونقاطالبيعToolStripMenuItem.Size = new Size(322, 54);
-            الأقسامونقاطالبيعToolStripMenuItem.Text = "الأقسام و نقاط البيع";
-            // 
-            // الأقسامToolStripMenuItem
-            // 
-            الأقسامToolStripMenuItem.Name = "الأقسامToolStripMenuItem";
-            الأقسامToolStripMenuItem.Size = new Size(180, 24);
-            الأقسامToolStripMenuItem.Text = "الأقسام";
-            // 
-            // قاطالبيعToolStripMenuItem
-            // 
-            قاطالبيعToolStripMenuItem.Name = "قاطالبيعToolStripMenuItem";
-            قاطالبيعToolStripMenuItem.Size = new Size(180, 24);
-            قاطالبيعToolStripMenuItem.Text = "نقاط البيع";
-            قاطالبيعToolStripMenuItem.Click += قاطالبيعToolStripMenuItem_Click;
             // 
             // frmMain
             // 

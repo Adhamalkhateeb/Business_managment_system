@@ -3,9 +3,7 @@ using BMS.DTOs;
 
 namespace BMS.GUI.Controls
 {
-    partial class ctrlListOf<T, TService>
-        where T : BaseDTOs
-        where TService : ICrudService<T>
+    partial class GenericListControl :UserControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -33,13 +31,14 @@ namespace BMS.GUI.Controls
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             pbxImage = new PictureBox();
             lblTitle = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             btnExport = new Button();
-            label1 = new Label();
+            lblSearch = new Label();
             btnAdd = new Button();
-            panel1 = new Panel();
+            pnlSearch = new Panel();
             txtSearch = new TextBox();
             btnSearch = new Button();
             cbxFilter = new ComboBox();
@@ -55,7 +54,7 @@ namespace BMS.GUI.Controls
             panel7 = new Panel();
             panel8 = new Panel();
             panel13 = new Panel();
-            label2 = new Label();
+            lblSeperator = new Label();
             panel12 = new Panel();
             lblCurrentPage = new Label();
             panel11 = new Panel();
@@ -65,9 +64,10 @@ namespace BMS.GUI.Controls
             panel6 = new Panel();
             panel5 = new Panel();
             lblLoading = new Label();
+            timerLoading = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pbxImage).BeginInit();
             tableLayoutPanel1.SuspendLayout();
-            panel1.SuspendLayout();
+            pnlSearch.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvList).BeginInit();
@@ -129,28 +129,28 @@ namespace BMS.GUI.Controls
             btnExport.DialogResult = DialogResult.Cancel;
             btnExport.Dock = DockStyle.Right;
             btnExport.Font = new Font("Tahoma", 12F, FontStyle.Bold);
-            btnExport.Image = Properties.Resources.export;
+            btnExport.Image = Properties.Resources.excel;
             btnExport.ImageAlign = ContentAlignment.MiddleLeft;
-            btnExport.Location = new Point(147, 0);
+            btnExport.Location = new Point(127, 0);
             btnExport.Margin = new Padding(2);
             btnExport.Name = "btnExport";
-            btnExport.Size = new Size(115, 50);
+            btnExport.Size = new Size(116, 50);
             btnExport.TabIndex = 24;
             btnExport.Text = "تصدير";
             btnExport.TextAlign = ContentAlignment.MiddleRight;
             btnExport.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblSearch
             // 
-            label1.AutoSize = true;
-            label1.Dock = DockStyle.Right;
-            label1.Font = new Font("Tahoma", 22F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(444, 5);
-            label1.Margin = new Padding(2, 0, 2, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(126, 36);
-            label1.TabIndex = 20;
-            label1.Text = " : ابحث ";
+            lblSearch.AutoSize = true;
+            lblSearch.Dock = DockStyle.Right;
+            lblSearch.Font = new Font("Tahoma", 22F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSearch.Location = new Point(444, 5);
+            lblSearch.Margin = new Padding(2, 0, 2, 0);
+            lblSearch.Name = "lblSearch";
+            lblSearch.Size = new Size(126, 36);
+            lblSearch.TabIndex = 20;
+            lblSearch.Text = " : ابحث ";
             // 
             // btnAdd
             // 
@@ -163,25 +163,24 @@ namespace BMS.GUI.Controls
             btnAdd.Location = new Point(0, 0);
             btnAdd.Margin = new Padding(2);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(123, 50);
+            btnAdd.Size = new Size(92, 50);
             btnAdd.TabIndex = 19;
             btnAdd.Text = "إضافة";
             btnAdd.TextAlign = ContentAlignment.MiddleRight;
             btnAdd.UseVisualStyleBackColor = true;
-            btnAdd.Click += btnAdd_Click;
             // 
-            // panel1
+            // pnlSearch
             // 
-            panel1.Controls.Add(txtSearch);
-            panel1.Controls.Add(btnSearch);
-            panel1.Controls.Add(cbxFilter);
-            panel1.Controls.Add(label1);
-            panel1.Dock = DockStyle.Right;
-            panel1.Location = new Point(480, 0);
-            panel1.Name = "panel1";
-            panel1.Padding = new Padding(5);
-            panel1.Size = new Size(575, 50);
-            panel1.TabIndex = 25;
+            pnlSearch.Controls.Add(txtSearch);
+            pnlSearch.Controls.Add(btnSearch);
+            pnlSearch.Controls.Add(cbxFilter);
+            pnlSearch.Controls.Add(lblSearch);
+            pnlSearch.Dock = DockStyle.Right;
+            pnlSearch.Location = new Point(480, 0);
+            pnlSearch.Name = "pnlSearch";
+            pnlSearch.Padding = new Padding(5);
+            pnlSearch.Size = new Size(575, 50);
+            pnlSearch.TabIndex = 25;
             // 
             // txtSearch
             // 
@@ -226,12 +225,12 @@ namespace BMS.GUI.Controls
             panel2.Dock = DockStyle.Left;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(262, 50);
+            panel2.Size = new Size(243, 50);
             panel2.TabIndex = 26;
             // 
             // panel3
             // 
-            panel3.Controls.Add(panel1);
+            panel3.Controls.Add(pnlSearch);
             panel3.Controls.Add(panel2);
             panel3.Dock = DockStyle.Top;
             panel3.Location = new Point(0, 181);
@@ -360,23 +359,23 @@ namespace BMS.GUI.Controls
             // 
             // panel13
             // 
-            panel13.Controls.Add(label2);
+            panel13.Controls.Add(lblSeperator);
             panel13.Dock = DockStyle.Fill;
             panel13.Location = new Point(49, 0);
             panel13.Name = "panel13";
             panel13.Size = new Size(174, 58);
             panel13.TabIndex = 39;
             // 
-            // label2
+            // lblSeperator
             // 
-            label2.Anchor = AnchorStyles.None;
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            label2.Location = new Point(80, 15);
-            label2.Name = "label2";
-            label2.Size = new Size(25, 32);
-            label2.TabIndex = 36;
-            label2.Text = "/";
+            lblSeperator.Anchor = AnchorStyles.None;
+            lblSeperator.AutoSize = true;
+            lblSeperator.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblSeperator.Location = new Point(80, 15);
+            lblSeperator.Name = "lblSeperator";
+            lblSeperator.Size = new Size(25, 32);
+            lblSeperator.TabIndex = 36;
+            lblSeperator.Text = "/";
             // 
             // panel12
             // 
@@ -468,7 +467,11 @@ namespace BMS.GUI.Controls
             lblLoading.TabIndex = 35;
             lblLoading.Text = "جاري التحميل";
             // 
-            // ctrlListOf
+            // timerLoading
+            // 
+            timerLoading.Tick += timerLoading_Tick;
+            // 
+            // GenericListControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -477,14 +480,14 @@ namespace BMS.GUI.Controls
             Controls.Add(dgvList);
             Controls.Add(panel3);
             Controls.Add(tableLayoutPanel1);
-            Name = "ctrlListOf";
+            Name = "GenericListControl";
             Padding = new Padding(0, 0, 5, 0);
             Size = new Size(1060, 619);
             ((System.ComponentModel.ISupportInitialize)pbxImage).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            pnlSearch.ResumeLayout(false);
+            pnlSearch.PerformLayout();
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvList).EndInit();
@@ -508,37 +511,38 @@ namespace BMS.GUI.Controls
 
         #endregion
 
-        private PictureBox pbxImage;
-        private Label lblTitle;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Button btnExport;
-        private Label label1;
-        private Button btnAdd;
-        private Panel panel1;
-        private ComboBox cbxFilter;
-        private TextBox txtSearch;
-        private Button btnSearch;
-        private Panel panel2;
-        private Panel panel3;
-        private DataGridView dgvList;
-        private Button btnForward;
-        private Button btnBack;
-        private Label lblCount;
-        private Label lblRowsCountTitle;
-        private Button btnClose;
-        private Panel panel4;
-        private Panel panel5;
-        private Panel panel7;
-        private Label lblTotalPages;
-        private Label lblCurrentPage;
-        private Panel panel6;
-        private Label label2;
-        private Panel panel8;
-        private Panel panel9;
-        private Panel panel10;
-        private Panel panel12;
-        private Panel panel11;
-        private Panel panel13;
-        private Label lblLoading;
+        public PictureBox pbxImage;
+        public Label lblTitle;
+        public TableLayoutPanel tableLayoutPanel1;
+        public Button btnExport;
+        public Label lblSearch;
+        public Button btnAdd;
+        public Panel pnlSearch;
+        public ComboBox cbxFilter;
+        public TextBox txtSearch;
+        public Button btnSearch;
+        public Panel panel2;
+        public Panel panel3;
+        public DataGridView dgvList;
+        public Button btnForward;
+        public Button btnBack;
+        public Label lblCount;
+        public Label lblRowsCountTitle;
+        public Button btnClose;
+        public Panel panel4;
+        public Panel panel5;
+        public Panel panel7;
+        public Label lblTotalPages;
+        public Label lblCurrentPage;
+        public Panel panel6;
+        public Label lblSeperator;
+        public Panel panel8;
+        public Panel panel9;
+        public Panel panel10;
+        public Panel panel12;
+        public Panel panel11;
+        public Panel panel13;
+        public Label lblLoading;
+        public System.Windows.Forms.Timer timerLoading;
     }
 }

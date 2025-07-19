@@ -28,12 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "testControls";
+            genericListControl1 = new GenericListControl();
+            SuspendLayout();
+            // 
+            // genericListControl1
+            // 
+            genericListControl1.Dock = DockStyle.Fill;
+            genericListControl1.Location = new Point(0, 0);
+            genericListControl1.Name = "genericListControl1";
+            genericListControl1.Padding = new Padding(0, 0, 5, 0);
+            genericListControl1.Size = new Size(1176, 840);
+            genericListControl1.TabIndex = 0;
+            // 
+            // testControls
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1176, 840);
+            Controls.Add(genericListControl1);
+            Name = "testControls";
+            Text = "testControls";
+            Load += testControls_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private GenericListControl genericListControl1;
     }
 }

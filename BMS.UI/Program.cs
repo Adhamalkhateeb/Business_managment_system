@@ -4,6 +4,7 @@ using BMS.BAL.Interface;
 using BMS.DAL;
 using BMS.DAL.Interfaces;
 using BMS.DTOs;
+using BMS.GUI.Controls;
 using BMS.GUI.HR_System.POS;
 using BMS.InfraStructure;
 using BMS.InfraStructure.Core.Interfaces;
@@ -31,8 +32,13 @@ namespace BMS.UI
 
             using (ServiceProvider provider = services.BuildServiceProvider())
             {
-                ApplicationConfiguration.Initialize();
+              
 
+                // Replace this line:
+                // ApplicationConfiguration.Initialize();
+                // With the following for .NET Framework or .NET Core WinForms:
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
                 // Resolve the main form with dependencies
                 var mainForm = provider.GetRequiredService<frmMain>();
                 Application.Run(mainForm);
@@ -75,17 +81,18 @@ namespace BMS.UI
 
             //// Repository & Services
 
-            services.AddScoped<IDepartmentService, DepartmentService>();
+          
        
 
             //DAL
-           services.AddScoped<IRepository<DepartmentDTO>, DepartmentRepository>();
+            services.AddScoped<IRepository<DepartmentDTO>, DepartmentRepository>();
             services.AddScoped<IRepository<PosDTO>, PosRepository>();
 
 
 
             //BAL
             services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IService<DepartmentDTO>, DepartmentService>();
             services.AddScoped<IPosServices, PosServices>();
 
             //// Forms
@@ -93,6 +100,7 @@ namespace BMS.UI
             services.AddTransient<frmDepartmentList>();
             services.AddTransient<frmAddEditDepartments>();
             services.AddTransient<frmPOSList>();
+            services.AddTransient<testControls>();
         }
     }
 }
